@@ -17,6 +17,7 @@ public class PlayerControl : CharCustomControl
     }
     public override Vector3 BaseMovement()
     {
-        return new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+        Vector3 v = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+        return v.normalized;
     }
 }
