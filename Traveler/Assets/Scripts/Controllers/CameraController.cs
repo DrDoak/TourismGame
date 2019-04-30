@@ -14,7 +14,7 @@ public class CameraController : MonoBehaviour
     {
         if (AutoFindTarget)
         {
-            Target = FindObjectOfType<PlayerControl>().gameObject;
+            Target = FindObjectOfType<ControlPlayer>().gameObject;
         }
     }
 
