@@ -28,8 +28,11 @@ public class MovementBase : MonoBehaviour
     private BasicPhysics m_physics;
     private const float MIN_JUMP_INTERVAL = 0.2f;
     private const float SMOOTH_TIME = .1f;
-    CharCustomControl m_customControl;
+    ControlPlayer m_playerCustomControl;
+    ControlAI m_aiCustomControl;
+    CharCustomControl m_currentControl;
 
+    public bool IsPlayerControl = false;
     public bool CanJump = true;
     public int MidAirJumps = 0;
     [SerializeField]
@@ -62,11 +65,13 @@ public class MovementBase : MonoBehaviour
     {
         m_physics = GetComponent<BasicPhysics>();
 
-        m_customControl = GetComponent<CharCustomControl>();
+        m_aiCustomControl = GetComponent<ControlAI>();
+        m_playerCustomControl = GetComponent<ControlPlayer>();
         m_orient = GetComponent<Orientation>();
         if (CanJump)
             SetJumpHeight(JumpHeight);
         //m_savedCurrentPlayer = IsCurrentPlayer;
+        updateCustomControl();
     }
 
     // Start is called before the first frame update
@@ -77,6 +82,7 @@ public class MovementBase : MonoBehaviour
 
     internal void Update()
     {
+        updateCustomControl();
         if (!m_physics.CanMove)
         {
             m_inputMove = new Vector2(0f, 0f);
@@ -88,12 +94,23 @@ public class MovementBase : MonoBehaviour
         resetJumps();
     }
 
+    public void SetTargetPoint(Vector3 target)
+    {
+        m_currentControl.SetTarget(target);
+    }
     public void SetJumpHeight(float jumpHeight)
     {
         m_jumpVector.y = (-m_physics.GravityForce * (20f * Mathf.Sqrt(jumpHeight))) + 25f;
         m_jumpHeight = jumpHeight;
     }
 
+    private void updateCustomControl()
+    {
+        if (IsPlayerControl)
+            m_currentControl = m_playerCustomControl;
+        else
+            m_currentControl = m_aiCustomControl;
+    }
     private void playStepSounds()
     {
         if (m_inputMove.x != 0f && m_physics.OnGround())
@@ -134,7 +151,7 @@ public class MovementBase : MonoBehaviour
             ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnControllableChange(IsCurrentPlayer));
             m_savedCurrentPlayer = IsCurrentPlayer;
         }*/
-        InputPacket ip = m_customControl.BaseMovement();
+        InputPacket ip = m_currentControl.BaseMovement();
         if (ip.InputMove.magnitude > 0.01f)
         {
             Direction d = m_orient.VectorToDirection(ip.InputMove);
@@ -165,7 +182,7 @@ public class MovementBase : MonoBehaviour
         //ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnJump());
         if (!CanBasicJump())
             return;
-
+        
         if (VariableJumpHeight)
         {
             ApplyJumpVector(new Vector2(1f, 0.8f));

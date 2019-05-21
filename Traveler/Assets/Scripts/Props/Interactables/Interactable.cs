@@ -6,8 +6,9 @@ public class Interactable : MonoBehaviour
 {
 
     public Interactor Actor;
-    public string InteractionPrompt = "Interact";
+    public string InteractionPrompt = "to Interact";
 
+    public int Priority = 1;
     public bool autoTrigger = true;
     public float TriggerRefresh = 2.0f;
     public float lastTimeTriggered = 0.0f;
@@ -107,6 +108,7 @@ public class Interactable : MonoBehaviour
 
     public virtual void onPress(GameObject interactor)
     {
+        Debug.Log("Default On Press Interact");
         TriggerWithCoolDown(interactor);
     }
 }

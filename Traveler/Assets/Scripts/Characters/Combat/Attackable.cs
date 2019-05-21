@@ -260,9 +260,9 @@ public class Attackable : MonoBehaviour
 			TakeDoT (hd);
 			return HitResult.NONE;
 		}
-		/*if (GetComponent<AIBase>()) {
-			GetComponent<AIBase> ().OnHit (hi);
-		}*/
+		if (GetComponent<AICharacter>()) {
+			GetComponent<AICharacter> ().OnHit (hi);
+		}
 		Resistence r =  GetAverageResistences(hi.Element);
 		float d;
 		//Debug.Log ("Damage; " + hi.Damage + " r: " + r.Percentage);

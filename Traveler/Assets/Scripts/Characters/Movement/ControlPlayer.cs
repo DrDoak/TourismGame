@@ -18,6 +18,10 @@ public class ControlPlayer : CharCustomControl
         {
             m_inputMove.z -= 1f;
         }
+        if (Input.GetButtonDown("Fire1"))
+        {
+            GetComponent<Interactor>().OnAttemptInteract();
+        }
         newPacket.InputMove = m_inputMove;
         newPacket.JumpDown = Input.GetButtonDown("Jump");
         newPacket.JumpHold = Input.GetButton("Jump");
