@@ -4,20 +4,22 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-
+    [HideInInspector]
     public Interactor Actor;
+
     public string InteractionPrompt = "to Interact";
 
     public int Priority = 1;
     public bool autoTrigger = true;
     public float TriggerRefresh = 2.0f;
-    public float lastTimeTriggered = 0.0f;
+    private float lastTimeTriggered = 0.0f;
 
     public bool oneTime = true;
     public bool TriggerUsed = false;
 
-
+    [HideInInspector]
     public bool HoldTrigger;
+    [HideInInspector]
     public bool PressTrigger;
 
    // private UIActionText m_prompt;
@@ -109,6 +111,11 @@ public class Interactable : MonoBehaviour
     public virtual void onPress(GameObject interactor)
     {
         Debug.Log("Default On Press Interact");
-        TriggerWithCoolDown(interactor);
+        if (IsInteractable(interactor))
+            TriggerWithCoolDown(interactor);
+    }
+    public virtual bool IsInteractable(GameObject interactor)
+    {
+        return true;
     }
 }

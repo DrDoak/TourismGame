@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class Item : Interactable
 {
     public bool Equipabble;
     public int MaxStack = 1;
@@ -10,6 +10,7 @@ public class Item : MonoBehaviour
     public InventorySlot CurrentSlot;
     public Vector2 baseSize;
     public string UIPrefabName;
+    public string displayname;
 
     // Start is called before the first frame update
     void Start()
@@ -30,4 +31,15 @@ public class Item : MonoBehaviour
     public virtual void OnExitInventory(InventoryContainer i) { }
 
     public virtual bool CanEnterInventory(InventoryContainer i) { return true; }
+
+    protected override void onTrigger(GameObject interactor) {
+        Debug.Log("Item interacted by: " + interactor);
+        if (interactor.GetComponent<InventoryHolder>())
+        {
+            bool added = interactor.GetComponent<InventoryHolder>().AddItemIfFree(this);
+            Debug.Log("add attempt result: " + added);
+            if (added)
+                Destroy(gameObject);
+        }
+    }
 }

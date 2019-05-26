@@ -45,6 +45,7 @@ public class InventoryManager : MonoBehaviour
     public static GameObject CreateInventoryGUI(InventoryContainer ic)
     {
         GameObject go = Instantiate(m_instance.InvPrefab,FindObjectOfType<Canvas>().transform);
+        Debug.Log("Creating Inventory GUI");
         m_instance.m_containerPrefabs.Add(ic, go);
         if (m_instance.m_openHolder.ContainsKey(ic.Holder))
             m_instance.m_openHolder[ic.Holder]++;
@@ -70,18 +71,17 @@ public class InventoryManager : MonoBehaviour
             GameObject newSlot = Instantiate(m_instance.SlotPrefab, slotParent);
             newSlot.GetComponent<InventorySlot>().m_container = ic;
             Vector2 coordinates = new Vector2(Mathf.FloorToInt(i / ic.size.x), i % ic.size.x);
-            newSlot.GetComponent<InventorySlot>().ItemOffsetPos = new Vector2(25 + (coordinates.y - 1) * 50f,
-                25 + (-coordinates.x) * 50f);
+            newSlot.GetComponent<InventorySlot>().ItemOffsetPos = new Vector2(50 + (coordinates.y - 1) * 50f,
+                (-coordinates.x) * 50f);
             newSlot.GetComponent<InventorySlot>().Coordinate = coordinates;
             slots.Add(coordinates, newSlot.GetComponent<InventorySlot>());
         }
         Transform itemParent = go.transform.Find("Inv").Find("Items");
-        InventoryItemData[] oldList = new InventoryItemData [ic.initItemData.Count];
-        ic.initItemData.CopyTo(oldList);
-        ic.initItemData.Clear();
-        foreach (InventoryItemData i in oldList)
+        Debug.Log("Number of items to draw: " + ic.items.Keys);
+        foreach (Vector2 v in ic.items.Keys)
         {
-            m_instance.addItemIcon(i,slots,itemParent,ic);
+            Debug.Log("Adding item at location: " + v);
+            m_instance.addItemIcon(ic.items[v],v,slots,itemParent,ic);
         }
         return go;
     }
@@ -112,16 +112,17 @@ public class InventoryManager : MonoBehaviour
         }
         return false;
     }
-    private void addItemIcon(InventoryItemData i, Dictionary<Vector2, InventorySlot> slots, Transform parent,InventoryContainer c)
+    private void addItemIcon(InventoryItemData i, Vector2 loc, Dictionary<Vector2, InventorySlot> slots, Transform parent,InventoryContainer c)
     {
-        if ((GameObject)Resources.Load(i.itemName) == null)
+        Debug.Log("Attempting to load prefab: " + i.prefabName);
+        if ((GameObject)Resources.Load(i.prefabName) == null)
             return;
-        GameObject go = Instantiate((GameObject)Resources.Load(i.itemName), parent);
+        GameObject go = Instantiate((GameObject)Resources.Load(i.prefabName), parent);
         
-        go.transform.localPosition = new Vector3(25 + (i.inventoryLocation.y - 1) * 50f,
-                25 + (-i.inventoryLocation.x) * 50f, 3f);
-        c.AddItem(go.GetComponent<Item>(), i.inventoryLocation);
-        go.GetComponent<Item>().CurrentSlot = slots[i.inventoryLocation];
+        go.transform.localPosition = new Vector3(50 + (loc.y - 1) * 50f,
+                (-loc.x) * 50f, 3f);
+        Debug.Log("instantiated at: " + go.transform.localPosition);
+        go.GetComponent<Item>().CurrentSlot = slots[loc];
     }
 
     public static List<Vector2> GetOccupiedSlots(Item i)

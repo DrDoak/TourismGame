@@ -681,12 +681,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 540099222}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &627352596
 GameObject:
@@ -736,6 +736,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 164034ec28575aa4ab40270c4f43acb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Actor: {fileID: 0}
+  InteractionPrompt: to Interact
+  Priority: 1
+  autoTrigger: 1
+  TriggerRefresh: 2
+  oneTime: 1
+  TriggerUsed: 0
+  HoldTrigger: 0
+  PressTrigger: 0
   InventoryHolderName: 
 --- !u!4 &627352599
 Transform:
@@ -749,7 +758,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &689937013
 GameObject:
@@ -860,7 +869,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1217013648
 MonoBehaviour:
@@ -874,7 +883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e747dcde46a3e3f4098be395b21f19b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: {x: 2, y: 2}
+  size: {x: 3, y: 3}
   initItemData:
   - itemName: UIItemTest
     inventoryLocation: {x: 1, y: 1}
@@ -892,6 +901,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 164034ec28575aa4ab40270c4f43acb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Actor: {fileID: 0}
+  InteractionPrompt: to Interact
+  Priority: 1
+  autoTrigger: 1
+  TriggerRefresh: 2
+  oneTime: 1
+  TriggerUsed: 0
+  HoldTrigger: 0
+  PressTrigger: 0
   InventoryHolderName: 
 --- !u!1 &2110679083
 GameObject:

@@ -58,13 +58,13 @@ public class Interactor : MonoBehaviour
 
     public void OnAttemptInteract()
     {
-        Debug.Log("On Attempt Interact");
+        Debug.Log("On Attempt Interact num overlap: " + OverlapInteractions.Count);
         float minDistance = 4000;
         int maxPriority = -1;
         Interactable bestInteractable = null;
         foreach(Interactable i in OverlapInteractions)
         {
-            if (i != null)
+            if (i == null)
                 continue;
             if (i.Priority > maxPriority || 
                 ( i.Priority == maxPriority && 
@@ -76,7 +76,9 @@ public class Interactor : MonoBehaviour
             }
         }
         if (bestInteractable != null)
+        {
             bestInteractable.onPress(gameObject);
+        }
     }
 
     public void OnAttemptInteract(Interactable i, bool force = false)

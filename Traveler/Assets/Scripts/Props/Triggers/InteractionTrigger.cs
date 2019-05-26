@@ -19,7 +19,7 @@ public class InteractionTrigger : MonoBehaviour
     {
         //Debug.Log("Trigger enter other INteractor: ");
         //Debug.Log(other.gameObject.GetComponent<Interactable>());
-        if (other.gameObject.GetComponent<Interactable>() != null)
+        if (other.gameObject.GetComponent<Interactable>() != null && other.gameObject != MasterInteractor.gameObject)
         {
             //Debug.Log("Adding an INteractable");
             MasterInteractor.OverlapInteractions.Add(other.GetComponent<Interactable>());

@@ -21,6 +21,7 @@ public class ControlAI : CharCustomControl
     }
     void Update()
     {
+        m_agent.updateRotation = false;
         if (m_isFollow)
         {
             if (m_followTarget != null)
