@@ -75,7 +75,7 @@ public class CharacterBase : MonoBehaviour
         if (false) //!m_controller.isGrounded)
         {
             m_haveMovedOnGround = false;
-            if (m_controller.velocity.y > 0f)
+            if (GetComponent<MovementBase>().TrueAverageVelocity.y > 0f)
             {
                 m_anim.Play(new string[] { JumpAnimation, AirAnimation });
             }
@@ -86,9 +86,18 @@ public class CharacterBase : MonoBehaviour
         }
         else
         {
-            if (GetComponent<MovementBase>().IsAttemptingMovement() || m_controller.velocity.magnitude > 0.1f)
+            Debug.Log(GetComponent<MovementBase>().IsAttemptingMovement());
+            Debug.Log(GetComponent<MovementBase>().TrueAverageVelocity.magnitude);
+            if (GetComponent<MovementBase>().IsAttemptingMovement() || GetComponent<MovementBase>().TrueAverageVelocity.magnitude > 0.1f)
             {
-                m_anim.Play(WalkAnimation);
+                if (GetComponent<MovementBase>().TrueAverageVelocity.z > 0.1f)
+                {
+                    m_anim.Play(WalkAnimation + "_back");
+                    //m_anim.Play(new string[] { WalkAnimation + "_back", WalkAnimation });
+                } else
+                {
+                    m_anim.Play(WalkAnimation);
+                }
                 m_haveMovedOnGround = true;
             }
             else

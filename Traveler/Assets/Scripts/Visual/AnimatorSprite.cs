@@ -5,17 +5,19 @@ using UnityEngine;
 public class AnimatorSprite : MonoBehaviour
 {
 	private Animator m_anim;
+    protected SpriteRenderer m_sprite;
 	private List<string> m_states;
 	public string CurrentAnimation { get { return m_currentAnim; } private set { m_currentAnim = value; } }
-	private string m_currentAnim = "";
-    private string m_baseAnimName = "";
-    private string suffix = "";
-    private bool m_autoAlign = true;
+    protected string m_currentAnim = "";
+    protected string m_baseAnimName = "";
+    protected string suffix = "";
+    protected bool m_autoAlign = true;
 
 	internal void Awake()
 	{
 		m_states = new List<string>();
 		m_anim = GetComponent<Animator>();
+        m_sprite = GetComponent<SpriteRenderer>();
         if (m_anim == null)
         {
             m_anim = GetComponentInChildren<Animator>();
@@ -23,7 +25,7 @@ public class AnimatorSprite : MonoBehaviour
 		//transform.position = new Vector3 (transform.position.x, transform.position.y,  -1f * (GetComponent<Renderer> ().sortingOrder) / 32);
 	}
 
-	public void Play(string[] stateNames, bool autoAlign = true)
+	public virtual void Play(string[] stateNames, bool autoAlign = true)
 	{
 		foreach (string s in stateNames)
 		{
@@ -34,7 +36,7 @@ public class AnimatorSprite : MonoBehaviour
 		}
 	}
 
-	public bool Play(string stateName, bool autoAlign = true, bool forceReset = false)
+	public virtual bool Play(string stateName, bool autoAlign = true, bool forceReset = false)
 	{
 		if (!forceReset && (m_currentAnim == (stateName + suffix) || m_currentAnim == "none"))
 			return true;
@@ -62,7 +64,7 @@ public class AnimatorSprite : MonoBehaviour
 		return false;
 	}
 
-	private bool SetAndPlay(string stateName, string suffix = "")
+	private  bool SetAndPlay(string stateName, string suffix = "")
 	{
         m_baseAnimName = stateName;
         m_currentAnim = stateName + suffix;
@@ -74,9 +76,20 @@ public class AnimatorSprite : MonoBehaviour
 	{
 		m_anim.speed = speed;
 	}
-    public void SetDirection(Direction d)
+    public virtual void SetDirection(Direction d)
     {
         string lastSuffix = suffix;
+        if (m_sprite != null && m_sprite.sprite)
+        {
+            if (d == Direction.LEFT)
+            {
+                m_sprite.flipX = true;
+            }
+            if (d == Direction.RIGHT)
+            {
+                m_sprite.flipX = false;
+            }
+        }
         if (d == Direction.DOWN)
         {
             suffix = "_d";

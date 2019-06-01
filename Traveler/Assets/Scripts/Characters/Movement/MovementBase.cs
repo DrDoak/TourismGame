@@ -53,6 +53,7 @@ public class MovementBase : MonoBehaviour
     public Vector3 m_jumpVector;
     private float m_jumpVelocity;
     private Vector3 m_velocity;
+
     private float m_lastJump = 0.0f;
     public FootstepInfo m_FootStepInfo;
     private bool m_variableJumpApplied = false;
@@ -61,6 +62,11 @@ public class MovementBase : MonoBehaviour
     private float m_accelerationTimeZ = .1f;
     private Orientation m_orient;
 
+    private const float VEL_CALC_INTERVAL = 0.2f;
+    private float LastCalculatedTime = 0;
+    private Vector3 lastPos;
+    public Vector3 TrueAverageVelocity;
+
     internal void Awake()
     {
         m_physics = GetComponent<BasicPhysics>();
@@ -68,6 +74,8 @@ public class MovementBase : MonoBehaviour
         m_aiCustomControl = GetComponent<ControlAI>();
         m_playerCustomControl = GetComponent<ControlPlayer>();
         m_orient = GetComponent<Orientation>();
+        TrueAverageVelocity = new Vector3();
+        lastPos = transform.position;
         if (CanJump)
             SetJumpHeight(JumpHeight);
         //m_savedCurrentPlayer = IsCurrentPlayer;
@@ -92,8 +100,19 @@ public class MovementBase : MonoBehaviour
         moveSmoothly();
         currentPlayerControl();
         resetJumps();
+        updateAverageVelocity();
     }
 
+    public void updateAverageVelocity()
+    {
+        if (Time.timeSinceLevelLoad - LastCalculatedTime > VEL_CALC_INTERVAL)
+        {
+            Vector3 diff = transform.position - lastPos;
+            TrueAverageVelocity = diff / (Time.timeSinceLevelLoad - LastCalculatedTime);
+            lastPos = transform.position;
+            LastCalculatedTime = Time.timeSinceLevelLoad;
+        }
+    }
     public void SetTargetPoint(Vector3 target)
     {
         m_currentControl.SetTarget(target);

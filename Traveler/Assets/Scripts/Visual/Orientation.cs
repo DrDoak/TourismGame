@@ -10,13 +10,14 @@ public class Orientation : MonoBehaviour
 {
 
     // Tracking m_sprite orientation (flipping if left)...
-    private SpriteRenderer m_sprite;
+    //private SpriteRenderer m_sprite;
+    public bool FacingLeft = false;
     public Direction CurrentDirection = Direction.DOWN;
 
     // Use this for initialization
     internal void Awake()
     {
-        m_sprite = GetComponent<SpriteRenderer>();
+        //m_sprite = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -27,16 +28,18 @@ public class Orientation : MonoBehaviour
     public void SetDirection(Direction d)
     {
         CurrentDirection = d;
-        if (m_sprite != null && m_sprite.sprite)
+        if (d == Direction.LEFT)
         {
-            if (d == Direction.LEFT)
-            {
-                m_sprite.flipX = true;
-            }
-            else
-            {
-                m_sprite.flipX = false;
-            }
+            FacingLeft = true;
+        }
+        else
+        {
+                
+                
+        }
+        if (d == Direction.RIGHT)
+        {
+            FacingLeft = false;
         }
         if (GetComponent<AnimatorSprite>() != null)
         {
