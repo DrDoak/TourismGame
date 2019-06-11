@@ -20,6 +20,8 @@ public class InputPacket
     public Vector3 InputMove;
     public bool JumpDown;
     public bool JumpHold;
+    public string equipmentSlotUsed = "None";
+    public bool OpenInventory;
 }
 
 public class MovementBase : MonoBehaviour
@@ -31,6 +33,8 @@ public class MovementBase : MonoBehaviour
     ControlPlayer m_playerCustomControl;
     ControlAI m_aiCustomControl;
     CharCustomControl m_currentControl;
+    InventoryContainer m_eqp;
+
 
     public bool IsPlayerControl = false;
     public bool CanJump = true;
@@ -62,18 +66,22 @@ public class MovementBase : MonoBehaviour
     private float m_accelerationTimeZ = .1f;
     private Orientation m_orient;
 
-    private const float VEL_CALC_INTERVAL = 0.2f;
+    private const float VEL_CALC_INTERVAL = 0.1f;
     private float LastCalculatedTime = 0;
     private Vector3 lastPos;
     public Vector3 TrueAverageVelocity;
+
+    private Vector3 m_lastInput;
 
     internal void Awake()
     {
         m_physics = GetComponent<BasicPhysics>();
 
+        m_lastInput = new Vector2();
         m_aiCustomControl = GetComponent<ControlAI>();
         m_playerCustomControl = GetComponent<ControlPlayer>();
         m_orient = GetComponent<Orientation>();
+        m_eqp = GetComponent<InventoryContainer>();
         TrueAverageVelocity = new Vector3();
         lastPos = transform.position;
         if (CanJump)
@@ -94,11 +102,17 @@ public class MovementBase : MonoBehaviour
         if (!m_physics.CanMove)
         {
             m_inputMove = new Vector2(0f, 0f);
+            
         }
         if (m_FootStepInfo.PlayFootsteps)
             playStepSounds();
         moveSmoothly();
         currentPlayerControl();
+        if (m_inputMove != m_lastInput)
+        {
+            updateAverageVelocity();
+        }
+        m_lastInput = m_inputMove;
         resetJumps();
         updateAverageVelocity();
     }
@@ -122,6 +136,7 @@ public class MovementBase : MonoBehaviour
         m_jumpVector.y = (-m_physics.GravityForce * (20f * Mathf.Sqrt(jumpHeight))) + 25f;
         m_jumpHeight = jumpHeight;
     }
+
 
     private void updateCustomControl()
     {
@@ -180,6 +195,17 @@ public class MovementBase : MonoBehaviour
         m_jumpHold = ip.JumpHold;
         if (CanJump)
             JumpMovement();
+        if (m_eqp !=  null)
+        {
+            if (ip.equipmentSlotUsed != "None")
+            {
+                m_eqp.EquipmentUseUpdatePlayer(ip.equipmentSlotUsed, ip.InputMove);
+            }
+        }
+        if (ip.OpenInventory)
+        {
+            m_eqp.ToggleDisplay();
+        }
         m_inputMove = ip.InputMove;
     }
 

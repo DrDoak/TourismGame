@@ -15,7 +15,6 @@ public class CharacterBase : MonoBehaviour
     public string JumpAnimation = "air";
     public string LandAnimation = "land";
 
-    CharCustomControl m_customControl;
     CharacterController m_controller;
 
     private Dictionary<Attackable, HitInfo> m_hitTargets;
@@ -24,7 +23,7 @@ public class CharacterBase : MonoBehaviour
     private AnimatorSprite m_anim;
     private Attackable m_attackable;
     private Orientation m_orient;
-    private AttackInfo m_currentAction = null;
+    private ActionInfo m_currentAction = null;
   
 
     private float m_animationSpeed = 2f;
@@ -34,6 +33,8 @@ public class CharacterBase : MonoBehaviour
 
     private bool m_haveMovedOnGround = false;
     private bool m_hitStateIsGuard = false;
+
+    private string m_actionAnim = "";
 
     //private Dictionary<ProjectileInfo, float> m_queuedProjectiles = new Dictionary<ProjectileInfo, float>();
 
@@ -48,7 +49,6 @@ public class CharacterBase : MonoBehaviour
     void Start()
     {
         m_controller = GetComponent<CharacterController>();
-         m_customControl = GetComponent<CharCustomControl>();
         m_attackable = GetComponent<Attackable>();
         m_anim = GetComponent<AnimatorSprite>();
     }
@@ -60,17 +60,22 @@ public class CharacterBase : MonoBehaviour
         if (progressStun())
             return;
         updateQueueActions();
+        progressAnimation();
         if (progressAction())
             return;
-        if (!m_pauseAnim)
-            progressAnimation();
         if (canAct()) {
             
         }
     }
-
-  
     public void progressAnimation()
+    {
+        if (m_actionAnim != "")
+            m_anim.Play(m_actionAnim);
+        else if (!m_pauseAnim)
+            standardAnimation();
+
+    }
+    public void standardAnimation()
     {
         if (false) //!m_controller.isGrounded)
         {
@@ -86,14 +91,12 @@ public class CharacterBase : MonoBehaviour
         }
         else
         {
-            Debug.Log(GetComponent<MovementBase>().IsAttemptingMovement());
-            Debug.Log(GetComponent<MovementBase>().TrueAverageVelocity.magnitude);
-            if (GetComponent<MovementBase>().IsAttemptingMovement() || GetComponent<MovementBase>().TrueAverageVelocity.magnitude > 0.1f)
+            if (GetComponent<MovementBase>().IsAttemptingMovement() && GetComponent<MovementBase>().TrueAverageVelocity.magnitude > 0.025f)
             {
-                if (GetComponent<MovementBase>().TrueAverageVelocity.z > 0.1f)
+                if (GetComponent<MovementBase>().TrueAverageVelocity.z > 0f)
                 {
-                    m_anim.Play(WalkAnimation + "_back");
-                    //m_anim.Play(new string[] { WalkAnimation + "_back", WalkAnimation });
+                    //m_anim.Play(WalkAnimation + "_back");
+                    m_anim.Play(new string[] { WalkAnimation + "_back", WalkAnimation },false);
                 } else
                 {
                     m_anim.Play(WalkAnimation);
@@ -109,6 +112,7 @@ public class CharacterBase : MonoBehaviour
                 else
                 {
                     m_anim.Play(IdleAnimation);
+                    //m_anim.Play(new string[] { WalkAnimation + "_back", WalkAnimation }, false);
                 }
             }
         }
@@ -164,6 +168,10 @@ public class CharacterBase : MonoBehaviour
             StunTime = 0.0f;
         }
     }
+    public void SetPause(bool p)
+    {
+        m_pauseAnim = p;
+    }
     private void startStunState(float st, bool guard = false)
     {
         //Debug.Log ("Starting Hit State with Stun: "+ st);
@@ -178,7 +186,7 @@ public class CharacterBase : MonoBehaviour
     
     private bool progressAction()
     {
-        if (m_currentAction == default(AttackInfo))
+        if (m_currentAction == default(ActionInfo))
             return false;
         m_currentAction.Progress();
         return true;
@@ -204,13 +212,17 @@ public class CharacterBase : MonoBehaviour
     {
         /*if (m_currentAction.m_SoundInfo.AttackFX)
 			AddEffect(m_currentAction.m_SoundInfo.AttackFX, m_currentAction.m_AttackAnimInfo.RecoveryTime + 0.2f);*/
-        m_anim.Play(m_currentAction.m_AttackAnimInfo.StartUpAnimation, true);
+        //m_anim.Play(m_currentAction.m_AttackAnimInfo.StartUpAnimation, true);
+        m_actionAnim = m_currentAction.m_AttackAnimInfo.StartUpAnimation;
         m_anim.SetSpeed(m_currentAction.m_AttackAnimInfo.AnimSpeed * m_animationSpeed);
+        //Debug.Log("On action start");
     }
 
     private void OnActionRecover()
     {
-        m_anim.Play(m_currentAction.m_AttackAnimInfo.RecoveryAnimation, true);
+        //m_anim.Play(m_currentAction.m_AttackAnimInfo.RecoveryAnimation, true);
+        m_actionAnim = m_currentAction.m_AttackAnimInfo.RecoveryAnimation;
+        //Debug.Log("On action recover");
     }
 
     public void SkipActionToEnd()
@@ -225,8 +237,10 @@ public class CharacterBase : MonoBehaviour
     public void EndAction()
     {
         CanControl = true;
+        GetComponent<BasicPhysics>().CanMove = true;
         m_currentAction = null;
         m_anim.SetSpeed(1.0f);
+        m_actionAnim = "";
     }
 
     public void QueueHitbox(HitboxInfo hi, float delay)
@@ -238,7 +252,7 @@ public class CharacterBase : MonoBehaviour
         Dictionary<HitboxInfo, float> newQueue = new Dictionary<HitboxInfo, float>();
         foreach (HitboxInfo hi in m_queuedHitboxes.Keys)
         {
-            /* if (Time.timeSinceLevelLoad > m_queuedHitboxes[hi])
+            /*if (Time.timeSinceLevelLoad > m_queuedHitboxes[hi])
                  GetComponent<HitboxMaker>().CreateHitbox(hi);
              else
                  newQueue.Add(hi, m_queuedHitboxes[hi]); */
@@ -280,4 +294,17 @@ public class CharacterBase : MonoBehaviour
             m_currentAction.OnHitConfirm(otherObj, hi, hr);
     }
 
+    public void TryAction(ActionInfo ai)
+    {
+        if (!canAct())
+            return;
+        m_currentAction = ai;
+        GetComponent<BasicPhysics>().CanMove = false;
+        CanControl = false;
+        //ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnAttack(m_currentAttack));
+        if (m_currentAction != null)
+        {
+            m_currentAction.ResetAndProgress();
+        }
+    }
 }

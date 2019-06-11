@@ -18,10 +18,32 @@ public class ControlPlayer : CharCustomControl
         {
             m_inputMove.z -= 1f;
         }
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Interact"))
         {
             GetComponent<Interactor>().OnAttemptInteract();
         }
+        newPacket.equipmentSlotUsed = "None";
+        if (Input.GetButtonDown("Item1"))
+        {
+            newPacket.equipmentSlotUsed = "Item1";
+        }
+        if (Input.GetButtonDown("Item2"))
+        {
+            newPacket.equipmentSlotUsed = "Item2";
+        }
+        if (Input.GetButtonDown("Item3"))
+        {
+            newPacket.equipmentSlotUsed = "Item3";
+        }
+        if (Input.GetButtonDown("Item4"))
+        {
+            newPacket.equipmentSlotUsed = "Item4";
+        }
+        if (Input.GetButtonDown("Inventory"))
+        {
+            newPacket.OpenInventory = true;
+        } 
+
         newPacket.InputMove = m_inputMove;
         newPacket.JumpDown = Input.GetButtonDown("Jump");
         newPacket.JumpHold = Input.GetButton("Jump");

@@ -58,7 +58,6 @@ public class Interactor : MonoBehaviour
 
     public void OnAttemptInteract()
     {
-        Debug.Log("On Attempt Interact num overlap: " + OverlapInteractions.Count);
         float minDistance = 4000;
         int maxPriority = -1;
         Interactable bestInteractable = null;

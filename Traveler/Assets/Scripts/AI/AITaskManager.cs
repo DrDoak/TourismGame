@@ -18,11 +18,14 @@ public class AITaskManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (m_currentTask != null)
-			m_currentTask.OnUpdate ();
-        foreach (Transition t in GenericTransitions[m_currentTask.MyTaskType])
+        if (m_currentTask != null)
         {
-            t.OnUpdate();
+            m_currentTask.OnUpdate();
+
+            foreach (Transition t in GenericTransitions[m_currentTask.MyTaskType])
+            {
+                t.OnUpdate();
+            }
         }
     }
 

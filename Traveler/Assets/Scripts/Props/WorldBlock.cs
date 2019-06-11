@@ -11,7 +11,7 @@ public class WorldBlock : MonoBehaviour
     public GameObject PanelRight;
 
     BoxCollider m_box;
-
+    public bool DrawBox = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,7 +34,7 @@ public class WorldBlock : MonoBehaviour
         if (PanelTop != null)
         {
 
-            PanelTop.transform.localPosition = new Vector3(0.5f, m_box.center.y + m_box.size.y / 2f,0.5f);
+            PanelTop.transform.localPosition = new Vector3(0.5f, m_box.center.y + m_box.size.y / 2f,(m_box.size.z % 2 == 0) ? 0.0f : 0.5f);
         }
         if (PanelFront != null)
         {
@@ -42,19 +42,22 @@ public class WorldBlock : MonoBehaviour
         }
         if (PanelLeft != null)
         {
-            PanelLeft.transform.localPosition = new Vector3(-m_box.center.x - m_box.size.x / 2f, 0.5f, 0.5f);
-            PanelLeft.transform.localScale = m_box.size;
+            PanelLeft.transform.localPosition = new Vector3(-m_box.center.x - m_box.size.x / 2f, 0.5f, (m_box.size.z % 2 == 0) ? 0.0f : 0.5f);
+            //PanelLeft.transform.localScale = m_box.size;
         }
         if (PanelRight != null)
         {
-            PanelRight.transform.localPosition = new Vector3(-m_box.center.x - m_box.size.x / 2f, 0.5f, 0.5f);
-            PanelRight.transform.localScale = m_box.size;
+            PanelRight.transform.localPosition = new Vector3(m_box.center.x + m_box.size.x / 2f, 0.5f, (m_box.size.z % 2 == 0) ? 0.0f : 0.5f);
+            //PanelRight.transform.localScale = m_box.size;
         }
     }
     void OnDrawGizmos()
     {
-        Gizmos.color = new Color(1, 0, 0, 8f);
+        if (DrawBox)
+        {
+            Gizmos.color = new Color(1, 0, 1, 0.4f);
 
-        Gizmos.DrawCube(transform.position + m_box.center, m_box.size);
+            Gizmos.DrawCube(transform.position + m_box.center, m_box.size);
+        }
     }
 }

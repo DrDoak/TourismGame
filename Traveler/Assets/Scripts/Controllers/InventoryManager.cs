@@ -13,6 +13,7 @@ public class InventoryManager : MonoBehaviour
     public GameObject SlotPrefab;
 
     private InventorySlot m_highlightedSlot;
+    private ItemUIElement m_highlightedItem;
     private ItemUIElement m_currentItem;
     private Dictionary<InventoryContainer,GameObject> m_containerPrefabs;
     private Dictionary<InventoryHolder,int> m_openHolder;
@@ -45,7 +46,6 @@ public class InventoryManager : MonoBehaviour
     public static GameObject CreateInventoryGUI(InventoryContainer ic)
     {
         GameObject go = Instantiate(m_instance.InvPrefab,FindObjectOfType<Canvas>().transform);
-        Debug.Log("Creating Inventory GUI");
         m_instance.m_containerPrefabs.Add(ic, go);
         if (m_instance.m_openHolder.ContainsKey(ic.Holder))
             m_instance.m_openHolder[ic.Holder]++;
@@ -70,17 +70,24 @@ public class InventoryManager : MonoBehaviour
         {
             GameObject newSlot = Instantiate(m_instance.SlotPrefab, slotParent);
             newSlot.GetComponent<InventorySlot>().m_container = ic;
-            Vector2 coordinates = new Vector2(Mathf.FloorToInt(i / ic.size.x), i % ic.size.x);
-            newSlot.GetComponent<InventorySlot>().ItemOffsetPos = new Vector2(50 + (coordinates.y - 1) * 50f,
-                (-coordinates.x) * 50f);
+           
+            newSlot.GetComponent<InventorySlot>().m_container = ic;
+            Vector2 coordinates = new Vector2(i % ic.size.x,Mathf.FloorToInt(i / ic.size.x));
+            if (ic.eqpSlotInfo.ContainsKey(coordinates))
+            {
+                newSlot.GetComponent<InventorySlot>().SlotType = ic.eqpSlotInfo[coordinates].SlotType;
+                newSlot.GetComponent<InventorySlot>().SetSlotName(ic.eqpSlotInfo[coordinates].SlotName);
+            } else
+            {
+                newSlot.GetComponent<InventorySlot>().SlotType = InventorySlotType.NORMAL;
+            }
+            newSlot.GetComponent<InventorySlot>().ItemOffsetPos = new Vector2((coordinates.x) * 50f, (-coordinates.y) * 50f);
             newSlot.GetComponent<InventorySlot>().Coordinate = coordinates;
             slots.Add(coordinates, newSlot.GetComponent<InventorySlot>());
         }
         Transform itemParent = go.transform.Find("Inv").Find("Items");
-        Debug.Log("Number of items to draw: " + ic.items.Keys);
         foreach (Vector2 v in ic.items.Keys)
         {
-            Debug.Log("Adding item at location: " + v);
             m_instance.addItemIcon(ic.items[v],v,slots,itemParent,ic);
         }
         return go;
@@ -102,19 +109,48 @@ public class InventoryManager : MonoBehaviour
     {
         if (m_instance.m_highlightedSlot.CanFitItem(iue.ItemInfo))
         {
+            if (!iue.ItemInfo.CanEnterInventory(iue.ItemInfo.CurrentSlot.m_container, m_instance.m_highlightedSlot))
+                return false;
             iue.UpdateReturnPos(m_instance.m_highlightedSlot.ItemOffsetPos);
-            iue.transform.parent = m_instance.m_highlightedSlot.transform.parent.parent.Find("Items");
+            iue.transform.SetParent( m_instance.m_highlightedSlot.transform.parent.parent.Find("Items") );
             iue.ReturnPos();
             iue.ItemInfo.CurrentSlot.m_container.ClearItem(iue.ItemInfo.CurrentSlot.Coordinate);
-            m_instance.m_highlightedSlot.AddItem(iue.ItemInfo);
+            m_instance.m_highlightedSlot.AddItem(iue.ItemInfo, iue);
             iue.ItemInfo.CurrentSlot = m_instance.m_highlightedSlot;
             return true;
         }
+        iue.ReturnPos();
         return false;
     }
-    private void addItemIcon(InventoryItemData i, Vector2 loc, Dictionary<Vector2, InventorySlot> slots, Transform parent,InventoryContainer c)
+    public static bool AttemptSwap(ItemUIElement item1, ItemUIElement item2)
     {
-        Debug.Log("Attempting to load prefab: " + i.prefabName);
+        InventorySlot slot1 = item1.ItemInfo.CurrentSlot;
+        InventorySlot slot2 = item2.ItemInfo.CurrentSlot;
+        if (slot1.CanFitItem(item2.ItemInfo) && slot2.CanFitItem(item1.ItemInfo) &&
+            item1.ItemInfo.CanEnterInventory(slot2.m_container,slot2) &&
+            item2.ItemInfo.CanEnterInventory(slot1.m_container,slot1))
+        {
+            Debug.Log("Moving item 1");
+            m_instance.MoveItemTo(item1, slot2);
+            Debug.Log("Moving item 2");
+            m_instance.MoveItemTo(item2, slot1);
+            return true;
+        }
+        item1.ReturnPos();
+        item2.ReturnPos();
+        return false;
+    }
+    private void MoveItemTo(ItemUIElement iue, InventorySlot slot)
+    {
+        iue.UpdateReturnPos(slot.ItemOffsetPos);
+        iue.transform.SetParent( slot.transform.parent.parent.Find("Items") );
+        iue.ReturnPos();
+        iue.ItemInfo.CurrentSlot.m_container.ClearItem(iue.ItemInfo.CurrentSlot.Coordinate);
+        slot.AddItem(iue.ItemInfo,iue);
+        iue.ItemInfo.CurrentSlot = slot;
+    }
+    private void addItemIcon(InventoryItemData i, Vector2 loc, Dictionary<Vector2,InventorySlot> slots, Transform parent,InventoryContainer c)
+    {
         if ((GameObject)Resources.Load(i.prefabName) == null)
             return;
         GameObject go = Instantiate((GameObject)Resources.Load(i.prefabName), parent);
@@ -137,7 +173,15 @@ public class InventoryManager : MonoBehaviour
     {
         m_instance.m_highlightedSlot = slot;
     }
-
+    public static void SetHighlightedItem(ItemUIElement item)
+    {
+        m_instance.m_highlightedItem = item;
+    }
+    public static void ClearHighlightedItem(ItemUIElement item)
+    {
+        if (m_instance.m_highlightedItem == item)
+            m_instance.m_highlightedItem = null;
+    }
     public static void SetHeldItem(ItemUIElement item)
     {
         m_instance.m_currentItem = item;
@@ -155,5 +199,9 @@ public class InventoryManager : MonoBehaviour
     public static ItemUIElement GetCurrentItem()
     {
         return m_instance.m_currentItem;
+    }
+    public static ItemUIElement GetHighlightedItem()
+    {
+        return m_instance.m_highlightedItem;
     }
 }

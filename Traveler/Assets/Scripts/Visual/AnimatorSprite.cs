@@ -31,7 +31,7 @@ public class AnimatorSprite : MonoBehaviour
 		{
             m_autoAlign = autoAlign;
 
-            if (Play(s, autoAlign)) 
+            if (Play(s, autoAlign,false)) 
 				break;
 		}
 	}
@@ -56,7 +56,12 @@ public class AnimatorSprite : MonoBehaviour
         }
 		if (m_states.Contains(stateName))
 			return SetAndPlay(stateName);
-		
+		if (m_anim == null)
+        {
+            Debug.Log(m_anim);
+            Debug.Log("Destroyed: " + gameObject);
+            
+        }
 		if (m_anim.HasState(0, Animator.StringToHash(stateName))) {
 			m_states.Add(stateName);
 			return SetAndPlay(stateName);

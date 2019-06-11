@@ -17,7 +17,7 @@ public class HitInfo  {
 	public List<ElementType> Element = new List<ElementType>();
 	public Hitbox mHitbox;
 
-	public AttackInfo Attack;
+	public ActionInfo Attack;
 	public GameObject Creator;
 	public GameObject target;
 	public float LastTimeHit;

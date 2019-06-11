@@ -6,8 +6,8 @@ using UnityEngine;
 [RequireComponent (typeof (MovementBase))]
 public class OffenseAI : MonoBehaviour {
 
-	public List<AttackInfo> allAttacks;
-	AttackInfo currentAttack;
+	public List<ActionInfo> allAttacks;
+	ActionInfo currentAttack;
 	public MovementBase CurrentTarget;
 	private Vector3 m_targetOffset;
 	public Vector3 TargetPoint;
@@ -36,8 +36,8 @@ public class OffenseAI : MonoBehaviour {
 		//reactionSpeed = baseReactionSpeed;
 		//decisionMaking = baseDecisionMaking;
 		aggression = baseAggression;
-		allAttacks = new List<AttackInfo>();
-		foreach (AttackInfo ai in GetComponents<AttackInfo> ()) {
+		allAttacks = new List<ActionInfo>();
+		foreach (ActionInfo ai in GetComponents<ActionInfo> ()) {
 			if (ai.name != "sheath" && ai.name != "unsheath") {
 				allAttacks.Add (ai);
 			}
@@ -78,7 +78,7 @@ public class OffenseAI : MonoBehaviour {
 
 		if (Time.timeSinceLevelLoad > m_nextDetermination) {
 			if (Random.value < (aggression * 0.1f)) {
-				foreach (AttackInfo ainfo in allAttacks) {
+				foreach (ActionInfo ainfo in allAttacks) {
 					float xDiff = Mathf.Abs (transform.position.x + (dir * ainfo.m_AIInfo.AIPredictionOffset.x) - otherPos.x);
 					float yDiff = Mathf.Abs (transform.position.y + ainfo.m_AIInfo.AIPredictionOffset.y - otherPos.y);
 					float p = Random.value;

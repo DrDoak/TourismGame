@@ -14,9 +14,8 @@ public enum RoomDirection {
 
 public class SceneTrigger : Interactable {
 
-	public Scene TestScene;
 	public bool onContact = true;
-	public string sceneName;
+	public string NextSceneName;
 	public Vector3 newPos = Vector2.zero;
 	public string TriggerID = "none";
 	public string TargetTriggerID = "none";
@@ -58,15 +57,15 @@ public class SceneTrigger : Interactable {
 					}
 				}
 				if (interactor.GetComponent<PersistentItem>() != null)
-					SaveObjManager.MoveItem (interactor, sceneName, realTarget,realDir);
+					SaveObjManager.MoveItem (interactor, NextSceneName, realTarget,realDir);
 			} else if (Vector2.Equals(Vector2.zero,newPos) && (interactor.GetComponent<PersistentItem>() != null)){
-				SaveObjManager.MoveItem (interactor, sceneName, interactor.gameObject.transform.position);
+				SaveObjManager.MoveItem (interactor, NextSceneName, interactor.gameObject.transform.position);
 			} else if (interactor.GetComponent<PersistentItem>() != null) {
-				SaveObjManager.MoveItem (interactor, sceneName, newPos);
+				SaveObjManager.MoveItem (interactor, NextSceneName, newPos);
 			}
 			if (true) { //interactor.GetComponent<CharacterBase> ().IsCurrentPlayer) {
 				//GameManager.Instance.LoadRoom (sceneName);
-				Initiate.Fade (sceneName, Color.black, 5.0f);
+				Initiate.Fade (NextSceneName, Color.black, 5.0f);
 			}
 			Destroy (interactor);
 		}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class InventorySlot : MonoBehaviour, IPointerEnterHandler , IPointerExitHandler
 {
@@ -13,7 +14,9 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler , IPointerExitH
     public Item OccupyingItem;
     public Vector2 Coordinate;
     public Vector3 ItemOffsetPos;
-    
+    public InventorySlotType SlotType = InventorySlotType.NORMAL;
+    public string SlotName = "noname";
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,10 +61,31 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler , IPointerExitH
 
     public bool CanFitItem (Item i)
     {
-        return m_container.CanFit(Coordinate,i.baseSize);
+        bool canFit = m_container.CanFit(Coordinate, i.baseSize);
+        return canFit;
     }
-    public void AddItem(Item i)
+    public bool CanSwapItem (Item i)
+    {
+        Debug.Log("Testing swap item. Current item: " + OccupyingItem);
+        if (OccupyingItem != null)
+        {
+            Debug.Log("mSize: " + OccupyingItem.baseSize + " other item: " + i.baseSize);
+            return (OccupyingItem.baseSize == i.baseSize);
+        }
+        return false;
+    }
+    public void AddItem(Item i, ItemUIElement iue)
     {
         m_container.AddItem(i, Coordinate);
+    }
+
+    public void SetSlotName(string s)
+    {
+        Transform t = transform.Find("SlotName");
+        SlotName = s;
+        if (t != null)
+        {
+            t.gameObject.GetComponent<TextMeshProUGUI>().text = s;
+        }
     }
 }

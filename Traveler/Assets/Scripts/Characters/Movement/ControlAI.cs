@@ -7,6 +7,7 @@ public class ControlAI : CharCustomControl
 {
     private NavMeshAgent m_agent;
     private CharacterController m_charControl;
+    
     private GameObject m_followTarget;
     private bool m_isFollow = false;
 

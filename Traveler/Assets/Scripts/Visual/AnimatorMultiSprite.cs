@@ -28,12 +28,14 @@ public class AnimatorMultiSprite : AnimatorSprite
     private void initializeSubSprites()
     {
         AnimationPiece[] pList = transform.Find("SpritePieces").gameObject.GetComponentsInChildren<AnimationPiece>();
+        m_attachPoints.Clear();
         for (int i = 0; i < pList.Length; i++)
         {
             AnimationPiece ap = pList[i];
             for (int j = 0; j < ap.transform.childCount; j++ )
             {
-                m_attachPoints.Add(ap.transform.GetChild(j).name, ap.transform.GetChild(j).gameObject);
+                if (!m_attachPoints.ContainsKey(ap.transform.GetChild(j).name))
+                    m_attachPoints.Add(ap.transform.GetChild(j).name, ap.transform.GetChild(j).gameObject);
             }
             
             m_pieces[ap.PieceType] = ap;
@@ -59,10 +61,9 @@ public class AnimatorMultiSprite : AnimatorSprite
     {
         foreach (AnimationPiece ap in m_pieces.Values)
         {
-            Debug.Log("Attempting to play: " + ap.gameObject.name + " animation: " + stateName);
             ap.Play(stateName, autoAlign, forceReset);
         }
-        return base.Play(stateName, autoAlign, forceReset);
+        return true;
     }
     public override void SetDirection(Direction d)
     {
@@ -86,5 +87,29 @@ public class AnimatorMultiSprite : AnimatorSprite
     public void ReplacePiece(string piece, GameObject spritePiece)
     {
 
+    }
+
+    public void AddPiece(GameObject spritePiece)
+    {
+        initializeSubSprites();
+    }
+
+    public void RemovePiece(string pieceType)
+    {
+        //Debug.Log("Found piece: " + pieceType);
+        if (m_pieces.ContainsKey(pieceType))
+        {
+            //Debug.Log("Attempting to remove: " + pieceType);
+            GameObject go = m_pieces[pieceType].gameObject;
+            //Debug.Log("Removing attachpoints: " + go.transform.childCount);
+            for (int j = 0; j < go.transform.childCount; j++)
+            {
+                //Debug.Log("Removing item: " + go.transform.GetChild(j).name);
+                m_attachPoints.Remove(go.transform.GetChild(j).name);
+            }
+            //Debug.Log("Contains key: " + m_attachPoints.ContainsKey(go.transform.GetChild(0).name));
+            m_pieces.Remove(pieceType);
+            Destroy(go);
+        }
     }
 }

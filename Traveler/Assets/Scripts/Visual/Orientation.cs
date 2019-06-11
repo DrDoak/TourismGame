@@ -46,10 +46,16 @@ public class Orientation : MonoBehaviour
             GetComponent<AnimatorSprite>().SetDirection(d);
         }
     }
-
+    public void SetDirection (bool facingLeft)
+    {
+        if (facingLeft)
+            SetDirection(Direction.LEFT);
+        else
+            SetDirection(Direction.RIGHT);
+    }
     public Direction VectorToDirection(Vector3 v)
     {
-        if (Mathf.Abs(v.z) >= Mathf.Abs(v.x))
+        if (Mathf.Abs(v.z) > Mathf.Abs(v.x))
         {
             if (v.z > 0)
             {

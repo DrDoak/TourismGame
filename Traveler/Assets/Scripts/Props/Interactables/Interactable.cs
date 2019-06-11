@@ -15,6 +15,7 @@ public class Interactable : MonoBehaviour
     private float lastTimeTriggered = 0.0f;
 
     public bool oneTime = true;
+    [HideInInspector]
     public bool TriggerUsed = false;
 
     [HideInInspector]
@@ -67,7 +68,7 @@ public class Interactable : MonoBehaviour
     }
     protected virtual void onTrigger(GameObject interactor) { }
 
-    internal void OnTriggerEnter2D(Collider2D other)
+    internal void OnTriggerEnter(Collider other)
     {
         if (autoTrigger && other.gameObject.GetComponent<Interactor>())
         {
@@ -82,7 +83,7 @@ public class Interactable : MonoBehaviour
         }
     }
 
-    internal void OnTriggerExit2D(Collider2D other)
+    internal void OnTriggerExit(Collider other)
     {
         if (other.gameObject.GetComponent<Interactor>() != null &&
             Actor == other.gameObject.GetComponent<Interactor>())

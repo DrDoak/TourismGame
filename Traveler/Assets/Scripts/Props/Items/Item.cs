@@ -8,7 +8,7 @@ public class Item : Interactable
     public int MaxStack = 1;
     public bool Rotated = false;
     public InventorySlot CurrentSlot;
-    public Vector2 baseSize;
+    public Vector2 baseSize = new Vector2(1,1);
     public string UIPrefabName;
     public string displayname;
 
@@ -24,13 +24,13 @@ public class Item : Interactable
         
     }
 
-    public virtual void OnEquip() { }
+    public virtual void OnEnterInventory(InventoryContainer s, EquipmentSlot es) { }
 
-    public virtual void OnEnterInventory(InventoryContainer i) { }
+    public virtual void OnExitInventory(InventoryContainer s, EquipmentSlot es) { }
 
-    public virtual void OnExitInventory(InventoryContainer i) { }
-
-    public virtual bool CanEnterInventory(InventoryContainer i) { return true; }
+    public virtual bool CanEnterInventory(InventoryContainer i, InventorySlot s) {
+        return (s.SlotType == InventorySlotType.NORMAL);
+    }
 
     protected override void onTrigger(GameObject interactor) {
         Debug.Log("Item interacted by: " + interactor);

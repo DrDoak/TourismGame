@@ -8,6 +8,17 @@ public class InitialItemData
     public string itemName;
     public Vector2 inventoryLocation;
 }
+[System.Serializable]
+public class EquipmentSlot
+{
+    public string SlotName;
+    public InventorySlotType SlotType;
+    public Vector2 coordinate;
+}
+public enum InventorySlotType
+{
+    NORMAL, EQUIPMENT, CLOTHES
+}
 
 public class InventoryItemData
 {
@@ -17,14 +28,13 @@ public class InventoryItemData
     [HideInInspector]
     public Vector2 size;
     [HideInInspector]
-    public delegate void OnExitReturnFunc(InventoryContainer i);
+    public delegate void OnExitReturnFunc(InventoryContainer i, EquipmentSlot es);
     [HideInInspector]
     public OnExitReturnFunc exitFunc;
 
     public InventoryItemData(Item i) {
         itemName = i.displayname;
         size = i.baseSize;
-        Debug.Log("PRefab name set to: " + i.UIPrefabName);
         prefabName = i.UIPrefabName;
         exitFunc = i.OnExitInventory;
     }
@@ -39,6 +49,8 @@ public class InventoryContainer : MonoBehaviour
     public Vector2 size;
     public List<InitialItemData> initItemData;
     public Dictionary<Vector2, InventoryItemData> items;
+    public Dictionary<Vector2, EquipmentSlot> eqpSlotInfo;
+    public List<EquipmentSlot> slotData;
     public string InventoryName;
     public InventoryHolder Holder;
 
@@ -48,7 +60,13 @@ public class InventoryContainer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        eqpSlotInfo = new Dictionary<Vector2, EquipmentSlot>();
+        foreach (EquipmentSlot es in slotData)
+        {
+            eqpSlotInfo[es.coordinate] = es;
+        }
         items = new Dictionary<Vector2, InventoryItemData>();
+
         m_freeSlots = new List<Vector2>();
         for (int x = 0; x < size.x; x++)
         {
@@ -121,8 +139,14 @@ public class InventoryContainer : MonoBehaviour
     }
     public void AddItem(Item i , Vector2 pos)
     {
-        Debug.Log("Adding item: " + i + " to inventory: " + pos + " for:" + gameObject);
-        i.OnEnterInventory(this);
+        //Debug.Log("Adding item: " + i + " to inventory: " + pos + " for:" + gameObject);
+        if (eqpSlotInfo.ContainsKey(pos))
+        {
+            i.OnEnterInventory(this, eqpSlotInfo[pos]);
+        } else
+        {
+            i.OnEnterInventory(this, null);
+        }
         onItemAdded(i, pos);
         if (items.ContainsKey(pos))
             items.Remove(pos);
@@ -131,7 +155,15 @@ public class InventoryContainer : MonoBehaviour
     }
     public void ClearItem(Vector2 v)
     {
-        items[v].exitFunc(this);
+        if (!items.ContainsKey(v))
+            return;
+        if (eqpSlotInfo.ContainsKey(v))
+        {
+            items[v].exitFunc(this, eqpSlotInfo[v]);
+        } else {
+            items[v].exitFunc(this, null);
+        }
+            
         onItemRemoved(items[v], v);
         items.Remove(v);
         m_freeSlots.Add(v);
@@ -171,5 +203,25 @@ public class InventoryContainer : MonoBehaviour
     }
     public virtual void onItemRemoved(InventoryItemData i, Vector2 pos)
     {
+    }
+
+    public virtual void EquipmentUseUpdatePlayer(string slot, Vector2 input)
+    {
+        Transform t = transform.Find(slot);
+        if (t == null)
+        {
+            return;
+        }
+        Equipment e = t.gameObject.GetComponent<Equipment>();
+        bool secondaryUse = false;
+        if (input.magnitude > 0.1f)
+        {
+            e.OnSecondaryUse(input,gameObject);
+        }
+        else
+        {
+            e.OnPrimaryUse(input, gameObject);
+        }
+
     }
 }

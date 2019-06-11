@@ -52,10 +52,13 @@ public class ItemUIElement : MonoBehaviour, IDragHandler, IEndDragHandler,
             InventoryManager.AttemptMoveItem(this))
         {
             UpdateReturnPos(GetComponent<RectTransform>().localPosition);
+        } else if (InventoryManager.GetHighlightedItem() != null) {
+            InventoryManager.AttemptSwap(InventoryManager.GetHighlightedItem(), this);
         } else
         {
             ReturnPos();
         }
+        
         InventoryManager.SetHeldItem(null);
     }
 
@@ -73,6 +76,7 @@ public class ItemUIElement : MonoBehaviour, IDragHandler, IEndDragHandler,
     {
         if (CanMove)
         {
+            InventoryManager.SetHighlightedItem(this);
             m_image.color = Color.yellow;
         }
         else
@@ -82,6 +86,7 @@ public class ItemUIElement : MonoBehaviour, IDragHandler, IEndDragHandler,
     }
     public void OnPointerExit(PointerEventData eventData)
     {
+        InventoryManager.ClearHighlightedItem(this);
         m_image.color = Color.gray;
     }
 }
