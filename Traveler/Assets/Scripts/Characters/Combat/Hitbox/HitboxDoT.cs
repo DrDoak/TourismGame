@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections.Generic; //REMEMBER! In order to use lists! Make sure it is System.Collections.Generic instead of System.Collections
-// Example of an object that can affect the physics of another object.
+using System.Collections.Generic; 
+
 public class HitboxDoT : Hitbox {
 	// Use this for initialization
 	void Start () {
@@ -22,12 +22,12 @@ public class HitboxDoT : Hitbox {
 		}
 	}
 
-	new internal void OnTriggerEnter2D(Collider2D other) {
+	new internal void OnTriggerEnter(Collider other) {
 		if (other.gameObject.GetComponent<Attackable>() && !m_overlappingControl.Contains(other.gameObject.GetComponent<Attackable> ())) {
 			m_overlappingControl.Add (other.gameObject.GetComponent<Attackable> ()); 
 		}
 	} 
-	new internal void OnTriggerExit2D(Collider2D other) {
+	new internal void OnTriggerExit(Collider other) {
 		if (other.gameObject.GetComponent<Attackable> () && m_overlappingControl.Contains(other.gameObject.GetComponent<Attackable> ())) {
 			m_overlappingControl.Remove (other.gameObject.GetComponent<Attackable> ()); //Removes the object from the list
 		}

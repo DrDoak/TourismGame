@@ -14,6 +14,7 @@ public class BasicPhysics : MonoBehaviour
     public float TerminalVelocity = -1f;
     public float GravityForce = -1.0f;
     public bool CanMove = true;
+    public bool Floating = false;
 
     // Tracking movement
     private Vector3 m_accumulatedVelocity = Vector3.zero;
@@ -32,10 +33,13 @@ public class BasicPhysics : MonoBehaviour
 
     //Special Case Variables:
     private float m_gravityCancelTime = 0f;
-    
+    private float m_oldFloatingTime = 0f;
+    private bool m_oldFloating = false;
+
 
     internal void Awake()
     {
+        m_oldFloating = Floating;
         m_controller = GetComponent<CharacterController>();
         m_forces = new List<Force>();
         m_inputedForce = new Force();
@@ -54,7 +58,7 @@ public class BasicPhysics : MonoBehaviour
     {
         DecelerateAutomatically(VELOCITY_MINIMUM_THRESHOLD);
         ProcessMovement();
-        
+        UpdateFloating();
     }
     internal void Update()
     {
@@ -100,6 +104,8 @@ public class BasicPhysics : MonoBehaviour
         
         m_velocity.x = m_inputedForce.MyForce.x;
         m_velocity.z = m_inputedForce.MyForce.z;
+        if (Floating)
+            m_velocity.y = m_inputedForce.MyForce.y;
 
         List<Force> forcesToRemove = new List<Force>();
         bool noYForces = true;
@@ -118,7 +124,7 @@ public class BasicPhysics : MonoBehaviour
         foreach (Force force in forcesToRemove)
             m_forces.Remove(force);
 
-        if (m_velocity.y > TerminalVelocity)
+        if (m_velocity.y > TerminalVelocity && !Floating) 
         {
             if (!m_controller.isGrounded && m_gravityCancelTime <= 0f)
             {
@@ -144,6 +150,11 @@ public class BasicPhysics : MonoBehaviour
             m_artificialVelocity = new Vector3();
         }
     }
+    public void AddToVelocity(Vector2 veloc)
+    {
+        m_accumulatedVelocity.x += veloc.x;
+        AddSelfForce(new Vector2(0f, veloc.y), 0f);
+    }
     public void AddSelfForce(Vector3 force, float duration)
     {
         m_forces.Add(new Force(force, duration));
@@ -165,6 +176,44 @@ public class BasicPhysics : MonoBehaviour
     public Vector3 Velocity()
     {
         return m_trueVelocity;
+    }
+    public void CancelVerticalMomentum()
+    {
+        foreach (Force force in m_forces)
+        {
+            force.MyForce.y = 0f;
+        }
+        m_velocity.y = 0f;
+        m_artificialVelocity.y = 0f;
+    }
+    public void FreezeInAir(float time)
+    {
+        if (time > 0f)
+        {
+            m_oldFloating = Floating;
+            m_oldFloatingTime = time;
+            Floating = true;
+            CancelVerticalMomentum();
+            m_accumulatedVelocity = Vector2.zero;
+            m_artificialVelocity = Vector2.zero;
+        }
+        else
+        {
+            ContinueFromFreeze();
+        }
+    }
+    public void ContinueFromFreeze()
+    {
+        Floating = m_oldFloating;
+    }
+    private void UpdateFloating()
+    {
+        if (m_oldFloatingTime > 0f)
+        {
+            m_oldFloatingTime -= Time.fixedDeltaTime;
+            if (m_oldFloatingTime <= 0f)
+                ContinueFromFreeze();
+        }
     }
     /*
      private void ProcessWater() {

@@ -28,10 +28,10 @@ public class HitboxMulti : Hitbox {
 
 
 	private void OrientToCreator() {
-		/*if (Creator != null && Creator.GetComponent<PhysicsSS> ().FacingLeft != lastFacingLeft) {
+		if (Creator != null && Creator.GetComponent<Orientation> ().FacingLeft != lastFacingLeft) {
 			Knockback = new Vector2(Knockback.x * -1f, Knockback.y);
 			transform.localPosition = new Vector3( transform.localPosition.x * -1f, transform.localPosition.y);
-			lastFacingLeft = Creator.GetComponent<PhysicsSS> ().FacingLeft;
-		}*/
+			lastFacingLeft = Creator.GetComponent<Orientation> ().FacingLeft;
+		}
 	}
 }

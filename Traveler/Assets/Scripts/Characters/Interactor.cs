@@ -23,7 +23,8 @@ public class Interactor : MonoBehaviour
         m_col = gameObject.GetComponent<Collider2D>();
         //m_promptUI = GameObject.Find("Interaction_prompt").GetComponentInChildren<Text>();
         OverlapInteractions = new List<Interactable>();
-        m_interactionHitbox = Instantiate(ListHitboxes.Instance.InteractBox).GetComponent<InteractionTrigger>();
+        m_interactionHitbox = Instantiate(ListHitboxes.Instance.InteractBox,transform).GetComponent<InteractionTrigger>();
+        Debug.Log("hitbox: " + m_interactionHitbox);
         m_interactionHitbox.transform.parent = transform;
         m_interactionHitbox.MasterInteractor = this;
         m_orient = GetComponent<Orientation>();

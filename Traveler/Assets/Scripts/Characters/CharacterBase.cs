@@ -29,6 +29,7 @@ public class CharacterBase : MonoBehaviour
     private float m_animationSpeed = 2f;
 
     private Dictionary<HitboxInfo, float> m_queuedHitboxes = new Dictionary<HitboxInfo, float>();
+    private Dictionary<ProjectileInfo, float> m_queuedProjectiles = new Dictionary<ProjectileInfo, float>();
     private bool m_pauseAnim = false;
 
     private bool m_haveMovedOnGround = false;
@@ -91,9 +92,9 @@ public class CharacterBase : MonoBehaviour
         }
         else
         {
-            if (GetComponent<MovementBase>().IsAttemptingMovement() && GetComponent<MovementBase>().TrueAverageVelocity.magnitude > 0.025f)
+            if (GetComponent<MovementBase>().IsAttemptingMovement() && GetComponent<MovementBase>().TrueAverageVelocity.magnitude > 0.01f)
             {
-                if (GetComponent<MovementBase>().TrueAverageVelocity.z > 0f)
+                if (GetComponent<MovementBase>().TrueAverageVelocity.z > 0.1f)
                 {
                     //m_anim.Play(WalkAnimation + "_back");
                     m_anim.Play(new string[] { WalkAnimation + "_back", WalkAnimation },false);
@@ -252,27 +253,61 @@ public class CharacterBase : MonoBehaviour
         Dictionary<HitboxInfo, float> newQueue = new Dictionary<HitboxInfo, float>();
         foreach (HitboxInfo hi in m_queuedHitboxes.Keys)
         {
-            /*if (Time.timeSinceLevelLoad > m_queuedHitboxes[hi])
+            if (Time.timeSinceLevelLoad > m_queuedHitboxes[hi])
                  GetComponent<HitboxMaker>().CreateHitbox(hi);
              else
-                 newQueue.Add(hi, m_queuedHitboxes[hi]); */
+                 newQueue.Add(hi, m_queuedHitboxes[hi]);
         }
         m_queuedHitboxes = newQueue;
-        /* Dictionary<ProjectileInfo, float> newQueue2 = new Dictionary<ProjectileInfo, float>();
-         foreach (ProjectileInfo pi in m_queuedProjectiles.Keys)
-         {
-             /*if (Time.timeSinceLevelLoad > m_queuedProjectiles[pi])
+        Dictionary<ProjectileInfo, float> newQueue2 = new Dictionary<ProjectileInfo, float>();
+        foreach (ProjectileInfo pi in m_queuedProjectiles.Keys)
+        {
+             if (Time.timeSinceLevelLoad > m_queuedProjectiles[pi])
                  CreateProjectile(pi);
              else
                  newQueue2.Add(pi, m_queuedProjectiles[pi]);
-         }
-         m_queuedProjectiles = newQueue2; */
+        }
+         m_queuedProjectiles = newQueue2;
     }
 
-    /* public void QueueProjectile(ProjectileInfo pi, float delay)
-     {
-         m_queuedProjectiles.Add(pi, Time.timeSinceLevelLoad + delay);
-     }*/
+
+    public void CreateProjectile(ProjectileInfo pi)
+    {
+        Vector3 AimPoint = pi.ProjectileAimDirection;
+        if (pi.AimTowardsTarget)
+        {
+            Vector3 tp = pi.ProjectileAimDirection;
+            if (GetComponent<OffenseAI>() != null && GetComponent<OffenseAI>().CurrentTarget != null)
+            {
+                tp = GetComponent<OffenseAI>().CurrentTarget.transform.position;
+                Debug.Log("Targeting point: " + tp);
+            }
+           
+            Vector3 newAimPoint = Vector2.ClampMagnitude(new Vector3(tp.x - transform.position.x, tp.y - transform.position.y), 1.0f);
+            Debug.Log("Aim point: " + newAimPoint);
+            Vector3 ViewVec = new Vector2(1f, 0f);
+            if (GetComponent<Orientation>().FacingLeft)
+            {
+                ViewVec = new Vector3(-1f, 0f);
+            }
+            Debug.Log("Angle to point: " + Vector2.Angle(ViewVec, newAimPoint));
+            if (Vector2.Angle(ViewVec, newAimPoint) < pi.MaxAngle)
+            {
+                AimPoint = new Vector2(Mathf.Abs(newAimPoint.x), newAimPoint.y);
+            }
+        }
+        Projectile p = GetComponent<HitboxMaker>().CreateProjectile(pi.Projectile, pi.ProjectileCreatePos,
+            AimPoint, pi.ProjectileSpeed,
+            pi.Damage, pi.Stun, pi.HitboxDuration, pi.Knockback, true,
+            pi.Element);
+        p.PenetrativePower = pi.PenetrativePower;
+    }
+
+    public void QueueProjectile(ProjectileInfo pi, float delay)
+    {
+        m_queuedProjectiles.Add(pi, Time.timeSinceLevelLoad + delay);
+    }
+
     bool canAct()
     {
         return (StunTime <= 0 && CanControl);

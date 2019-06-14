@@ -18,6 +18,8 @@ public class Orientation : MonoBehaviour
     internal void Awake()
     {
         //m_sprite = GetComponent<SpriteRenderer>();
+        if (GetComponent<PersistentItem>() != null)
+            GetComponent<PersistentItem>().InitializeSaveLoadFuncs(storeData, loadData);
     }
 
     // Update is called once per frame
@@ -134,6 +136,17 @@ public class Orientation : MonoBehaviour
     public bool FacingPoint(Vector3 point, Direction d)
     {
         return DirectionToPoint(point) == CurrentDirection;
+    }
+    private void storeData(CharData d)
+    {
+        d.PersistentInt["Direction"] = (int)CurrentDirection;
+        d.PersistentBools["FacingLeft"] = FacingLeft;
+    }
+
+    private void loadData(CharData d)
+    {
+        SetDirection((Direction)d.PersistentInt["Direction"]);
+        FacingLeft = d.PersistentBools["FacingLeft"];
     }
 }
 

@@ -9,7 +9,7 @@ public class HitInfo  {
 	public float Damage = 10f;
 	public float FocusDamage = 10f;
 	public float Penetration = 0f;
-	public Vector2 Knockback = new Vector2();
+	public Vector3 Knockback = new Vector3();
 	public bool IsFixedKnockback = false;
 	public bool ResetKnockback = true;
 	public float Stun = 0f;
@@ -65,8 +65,8 @@ public class Hitbox : MonoBehaviour {
 	public bool IsResetKnockback { get { return m_resetKnockback; } set { m_resetKnockback = value; } }
 
 	[SerializeField]
-	private Vector2 m_knockback = new Vector2(0.0f,40.0f);
-	public Vector2 Knockback { get { return m_knockback; } set { m_knockback = value; } }
+	private Vector3 m_knockback = new Vector3(0.0f,40.0f,0f);
+	public Vector3 Knockback { get { return m_knockback; } set { m_knockback = value; } }
 
 	[SerializeField]
 	private float m_stun = 0.0f;
@@ -94,10 +94,10 @@ public class Hitbox : MonoBehaviour {
 	private GameObject m_followObj;
 
 	[SerializeField]
-	public Vector2 m_followOffset;
+	public Vector3 m_followOffset;
 
 	[SerializeField]
-	private List<Collider2D> m_upRightDownLeftColliders;
+	private List<Collider> m_upRightDownLeftColliders;
 
 	private CharacterBase m_charBase;
 	private Vector4 m_knockbackRanges;
@@ -106,18 +106,21 @@ public class Hitbox : MonoBehaviour {
 	public bool HitboxActive { get { return m_hitboxActive; } private set { m_hitboxActive = value; } }
 
 	private bool m_hitboxActive = true;
+    private BoxCollider m_box;
 
 	virtual public void Init()
 	{
         m_charBase = Creator.GetComponent<CharacterBase>();
-		if (m_focusDamage == -1f)
+        m_box = GetComponent<BoxCollider>();
+
+        if (m_focusDamage == -1f)
 			m_focusDamage = m_damage;
 		
 		if (m_isRandomKnockback)
 			RandomizeKnockback ();
 		m_hasDuration = m_duration > 0;
 		Tick();
-		//Debug.Log ("Hitbox initialized");
+		Debug.Log ("Hitbox initialized d "+ m_duration);
 		if (m_elementList.Count == 0)
 			m_elementList.Add (ElementType.PHYSICAL);
 	}
@@ -139,22 +142,22 @@ public class Hitbox : MonoBehaviour {
 			MaintainOrDestroyHitbox();
 	}
 
-	public void SetScale(Vector2 scale)
+	public void SetScale(Vector3 scale)
 	{
 		transform.localScale = scale;
 	}
 
-	public void SetFollow(GameObject obj, Vector2 offset)
+	public void SetFollow(GameObject obj, Vector3 offset)
 	{
-		/*m_followObj = obj;
+		m_followObj = obj;
 		m_followOffset = offset;
-		Vector3 newOffset = new Vector3 (offset.x, offset.y, 0f);
-		if (m_followObj.GetComponent<PhysicsSS> () != null &&
-		    m_followObj.GetComponent<PhysicsSS> ().FacingLeft) {
+		Vector3 newOffset = new Vector3 (offset.x, offset.y, offset.z);
+		if (m_followObj.GetComponent<BasicPhysics> () != null &&
+		    m_followObj.GetComponent<Orientation> ().FacingLeft) {
 			newOffset.x *= -1f;
 			//Debug.Log ("Reverse");
 		}
-		m_followOffset = newOffset;*/
+		m_followOffset = newOffset;
 	}
 
 	public void SetKnockbackRanges (float minX, float maxX,float minY, float maxY)
@@ -172,7 +175,7 @@ public class Hitbox : MonoBehaviour {
 	private void MaintainOrDestroyHitbox()
 	{
 		if (m_duration <= 0.0f) {
-			//Debug.Log ("Hitbox destroyed!" + m_duration);
+			Debug.Log ("Hitbox destroyed!" + m_duration);
 			GameObject.Destroy (gameObject);
 		}
 		Duration -= Time.deltaTime;
@@ -180,7 +183,7 @@ public class Hitbox : MonoBehaviour {
 
 	private void FollowObj()
 	{
-		transform.position = new Vector3(m_followObj.transform.position.x + m_followOffset.x, m_followObj.transform.position.y + m_followOffset.y,0);
+		transform.position = new Vector3(m_followObj.transform.position.x + m_followOffset.x, m_followObj.transform.position.y + m_followOffset.y, m_followObj.transform.position.z + m_followOffset.z);
 	}
 
 	private void RandomizeKnockback ()
@@ -197,7 +200,7 @@ public class Hitbox : MonoBehaviour {
 			RandomizeKnockback();
 		HitInfo newHI = ToHitInfo ();
 		newHI.LastTimeHit = Time.timeSinceLevelLoad;
-		newHI.Knockback = new Vector2 (Knockback.x, Knockback.y);
+		newHI.Knockback = new Vector3 (Knockback.x, Knockback.y,Knockback.z);
 		newHI.target = atkObj.gameObject;
 		HitResult r = atkObj.TakeHit(newHI);
 		m_collidedObjs.Add (atkObj);
@@ -233,16 +236,16 @@ public class Hitbox : MonoBehaviour {
 		return !(!atkObj || (atkObj.gameObject == Creator) || m_collidedObjs.Contains (atkObj) || !atkObj.CanAttack (Faction));
 	}
 		
-	internal HitResult OnTriggerEnter2D(Collider2D other)
+	internal HitResult OnTriggerEnter(Collider other)
 	{
 		if (!m_hitboxActive)
 			return HitResult.NONE;
 		OnHitObject (other);
 		return OnAttackable (other.gameObject.GetComponent<Attackable> ());
 	}
-	protected virtual void OnHitObject(Collider2D other) {
+	protected virtual void OnHitObject(Collider other) {
 	}
-	internal void OnTriggerExit2D(Collider2D other)
+	internal void OnTriggerExit(Collider other)
 	{
 		/*
 		 * TODO: Delay removal of collided object to avoid stuttered collisions 
@@ -279,10 +282,6 @@ public class Hitbox : MonoBehaviour {
 		return 1;
 	}
 
-	void OnDrawGizmos() {
-		Gizmos.color = new Color (1, 0, 0, .8f);
-		Gizmos.DrawCube (transform.position, transform.lossyScale);
-	}
 
 	public void AddElement(ElementType element) {
 		m_elementList.Add (element);
@@ -297,13 +296,13 @@ public class Hitbox : MonoBehaviour {
 	public void ClearElement() {
 		m_elementList.Clear ();
 	}
-	protected void CreateHitFX(GameObject hitObj, Vector2 knockback, HitResult hr) {
+	protected void CreateHitFX(GameObject hitObj, Vector3 knockback, HitResult hr) {
 		foreach (ElementType et in m_elementList) {
 			m_hitFX (et, hitObj, knockback, hr);
 			m_playerSound (et, hr);
 		}
 	}
-	private void m_hitFX(ElementType et, GameObject hitObj, Vector2 knockback, HitResult hr) {
+	private void m_hitFX(ElementType et, GameObject hitObj, Vector3 knockback, HitResult hr) {
 		/*GameObject fx = null;
 		if (hr == HitResult.BLOCKED || hr == HitResult.FOCUSHIT) {
 			fx = GameObject.Instantiate (FXHit.Instance.FXHitBlock, hitObj.transform.position, Quaternion.identity);
@@ -373,4 +372,9 @@ public class Hitbox : MonoBehaviour {
 		m_collidedObjs.Clear ();
 		m_overlappingControl.Clear ();
 	}
+    void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(1, 0, 0, .8f);
+        Gizmos.DrawCube(transform.position, m_box.size);
+    }
 }

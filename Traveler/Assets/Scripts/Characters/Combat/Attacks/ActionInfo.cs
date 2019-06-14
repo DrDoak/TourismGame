@@ -17,14 +17,14 @@ public class AttackAnimInfo {
 
 [System.Serializable]
 public class HitboxInfo {
-	public Vector2 HitboxScale = new Vector2 (1.0f, 1.0f);
-	public Vector2 HitboxOffset = new Vector2(0f,0f);
+	public Vector3 HitboxScale = new Vector3 (1.0f, 1.0f,1.0f);
+	public Vector3 HitboxOffset = new Vector3(0f,0f);
 	public float Damage = 10.0f;
 	public float FocusDamage = -1f;
 	public float Penetration = 0.0f;
 	public float Stun = 0.3f;
 	public float HitboxDuration = 0.5f;
-	public Vector2 Knockback = new Vector2(10.0f,10.0f);
+	public Vector3 Knockback = new Vector3(10.0f,10.0f,0f);
 	public bool FixedKnockback = true;
 	public bool ResetKnockback = true;
 	public ElementType Element = ElementType.PHYSICAL;
@@ -46,8 +46,8 @@ public class AIInfo {
 	public float Frequency = 0.5f;
 	public bool UniqueAIPrediction = false;
 	public bool AutoAttack = false;
-	public Vector2 AIPredictionHitbox = Vector2.zero;
-	public Vector2 AIPredictionOffset = Vector2.zero;
+	public Vector3 AIPredictionHitbox = Vector3.zero;
+	public Vector3 AIPredictionOffset = Vector3.zero;
 	public bool DrawPredictionHitbox = false;
 }
 
@@ -124,7 +124,11 @@ public class ActionInfo : MonoBehaviour
 			{ AttackState.INACTIVE, OnConclude }
 		};
 	}
-
+    public void SetOwner(GameObject go)
+    {
+        m_charBase = go.GetComponent<CharacterBase>();
+        m_hitboxMaker = go.GetComponent<HitboxMaker>();
+    }
 	public void AddListener(AttackProgress ap)
 	{
 		ProgressEvent += ap;
@@ -217,27 +221,23 @@ public class ActionInfo : MonoBehaviour
 
 	protected void createHitboxes()
 	{
-		//m_hitboxMaker.AddHitType(HitType);
 		foreach (HitboxInfo hi in m_HitboxInfo) {
-			/*if (hi.Delay <= 0f)
+			if (hi.Delay <= 0f)
 				m_hitboxMaker.CreateHitbox (hi);
 			else
-				GetComponent<CharacterBase> ().QueueHitbox (hi, hi.Delay);*/
+				GetComponent<CharacterBase> ().QueueHitbox (hi, hi.Delay);
 		}
-//		Vector2 offset = m_physics.OrientVectorToDirection(m_HitboxInfo.HitboxOffset);
-//		m_hitboxMaker.CreateHitbox(m_HitboxInfo.HitboxScale, offset, m_HitboxInfo.Damage,
-//			m_HitboxInfo.Stun, m_HitboxInfo.HitboxDuration, m_HitboxInfo.Knockback, true, true,m_HitboxInfo.Element,m_HitboxInfo.ApplyProps);
 	}
 
 	void OnDrawGizmos() {
 		if (m_AIInfo.DrawPredictionHitbox) {
 			Gizmos.color = new Color (0, 0, 1, .25f);
 			if (m_AIInfo.UniqueAIPrediction) {
-				//Vector2 off = GetComponent<Orientation> ().OrientVectorToDirection (m_AIInfo.AIPredictionOffset);
-				//Gizmos.DrawCube (transform.position + new Vector3(off.x,off.y,0f), new Vector3 (m_AIInfo.AIPredictionHitbox.x, m_AIInfo.AIPredictionHitbox.y, 0f));
+				Vector3 off = GetComponent<Orientation> ().OrientVectorToDirection (m_AIInfo.AIPredictionOffset);
+				Gizmos.DrawCube (transform.position + new Vector3(off.x,off.y,0f), new Vector3 (m_AIInfo.AIPredictionHitbox.x, m_AIInfo.AIPredictionHitbox.y, 0f));
 			} else {
-				//Vector2 off = GetComponent<Orientation> ().OrientVectorToDirection (m_HitboxInfo[0].HitboxOffset);
-				//Gizmos.DrawCube (transform.position + new Vector3(off.x,off.y,0f), new Vector3 (m_HitboxInfo[0].HitboxScale.x, m_HitboxInfo[0].HitboxScale.y, 0f));
+				Vector3 off = GetComponent<Orientation> ().OrientVectorToDirection (m_HitboxInfo[0].HitboxOffset);
+				Gizmos.DrawCube (transform.position + new Vector3(off.x,off.y,0f), new Vector3 (m_HitboxInfo[0].HitboxScale.x, m_HitboxInfo[0].HitboxScale.y, 0f));
 			}
 		}
 	}
@@ -261,15 +261,15 @@ public class ActionInfo : MonoBehaviour
 		return fx;
 	}*/
 
-	/*private void updateFXQueue() {
-		Dictionary<AttackFXInfo,float> newQueue = new Dictionary<AttackFXInfo, float>();
+	private void updateFXQueue() {
+        /*Dictionary<AttackFXInfo,float> newQueue = new Dictionary<AttackFXInfo, float>();
 		foreach (AttackFXInfo afi in m_queuedFX.Keys) {
 			if (m_queuedFX [afi] > Time.timeSinceLevelLoad)
 				CreateAttackFX (afi);
 			else
 				newQueue.Add (afi,m_queuedFX[afi]);
 		}
-		m_queuedFX = newQueue;
-	}*/
+		m_queuedFX = newQueue;*/
+    }
 }
 

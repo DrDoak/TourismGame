@@ -12,12 +12,18 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (AutoFindTarget && Target == null)
+        if (AutoFindTarget && Target == null && FindObjectOfType<ControlPlayer>() != null)
         {
             Target = FindObjectOfType<ControlPlayer>().gameObject;
         }
     }
-
+    private void Update()
+    {
+        if (AutoFindTarget && Target == null && FindObjectOfType<ControlPlayer>() != null)
+        {
+            Target = FindObjectOfType<ControlPlayer>().gameObject;
+        }
+    }
     // Update is called once per frame
     void LateUpdate()
     {
@@ -31,4 +37,5 @@ public class CameraController : MonoBehaviour
     {
         Target = go;
     }
+    
 }

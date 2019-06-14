@@ -61,6 +61,7 @@ public class Equipment : Item
             foreach (ActionInfo a in at1)
             {
                 a.AddListener(go.GetComponent<CharacterBase>().OnActionProgressed);
+                a.SetOwner(go);
             }
         }
     }

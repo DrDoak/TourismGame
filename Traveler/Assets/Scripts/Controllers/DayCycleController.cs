@@ -39,8 +39,14 @@ public class DayCycleController : MonoBehaviour
     public Color duskColor = new Color(0.8f, 0.6f, 0.0f, 1.0f);
     public Color nightColor = new Color(0.2f,0.2f,1.0f,1.0f);
     public Color amCol;
+
+    public GameObject SunPrefab;
+
+    [HideInInspector]
     public GameObject SunObject;
+    [HideInInspector]
     public GameObject MoonObject;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,7 +56,10 @@ public class DayCycleController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (SunObject == null)
+        {
+            SunObject = Instantiate(SunPrefab);
+        }
         AdjustedTimeElapsed += Time.deltaTime * Time.timeScale;
 
         float TimeMinutes = ((int)(AdjustedTimeElapsed)) % (60 * 24);

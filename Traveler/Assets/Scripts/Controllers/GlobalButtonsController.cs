@@ -15,19 +15,23 @@ public class GlobalButtonsController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (CanPause && Input.GetButton("Pause"))
+        if (CanPause && Input.GetButtonDown("Pause"))
         {
 
         }
         if (DebugSave)
         {
-            if (Input.GetButton("QuickSave"))
+            if (Input.GetButtonDown("QuickSave"))
             {
-
-            } else if (Input.GetButton("QuickLoad"))
-            {
-
-            }
+                SaveObjManager.Instance.SaveProfile("QuickSave");
+                TextboxManager.StartSequence("~QuickSave Successful");
+            } else if (Input.GetButtonDown("QuickLoad")) { 
+                bool result = SaveObjManager.Instance.LoadProfile("QuickSave");
+                if (result == false)
+                {
+                    SaveObjManager.Instance.LoadProfile("AutoSave");
+                }
+        }
         }
     }
 }

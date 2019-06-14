@@ -104,7 +104,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AttackName: default
-  m_HitboxInfo: []
+  m_HitboxInfo:
+  - HitboxScale: {x: 1, y: 1, z: 2}
+    HitboxOffset: {x: 1, y: 0, z: 0}
+    Damage: 0
+    FocusDamage: 0
+    Penetration: 0
+    Stun: 0
+    HitboxDuration: 0.5
+    Knockback: {x: 10, y: 0, z: 0}
+    FixedKnockback: 0
+    ResetKnockback: 0
+    Element: 0
+    ApplyProps: 0
+    FollowCharacter: 1
+    FreezeTime: 0
+    Delay: 0
   m_AttackAnimInfo:
     AnimSpeed: 1
     StartUpTime: 0.5
@@ -116,8 +131,8 @@ MonoBehaviour:
     Frequency: 0.5
     UniqueAIPrediction: 0
     AutoAttack: 0
-    AIPredictionHitbox: {x: 0, y: 0}
-    AIPredictionOffset: {x: 0, y: 0}
+    AIPredictionHitbox: {x: 0, y: 0, z: 0}
+    AIPredictionOffset: {x: 0, y: 0, z: 0}
     DrawPredictionHitbox: 0
   m_SoundInfo:
     StartupSoundFX: {fileID: 0}

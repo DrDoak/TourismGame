@@ -36,8 +36,9 @@ public class Attackable : MonoBehaviour
 	public List<Resistence> Resistences  = new List<Resistence>();
 	private Dictionary< ElementType, Resistence> m_fullResistences = new Dictionary< ElementType, Resistence>();
 	private CharacterBase m_charBase;
+    private BasicPhysics m_physics;
 
-	public bool DisplayHealth = true;
+    public bool DisplayHealth = true;
 	public bool CanTarget = true;
 	public GameObject Killer;
 	public GameObject DeathFX;
@@ -46,11 +47,12 @@ public class Attackable : MonoBehaviour
 	internal void Awake()
 	{
         m_charBase = GetComponent<CharacterBase>();
-		m_health = Mathf.Min (Health, MaxHealth);
+        m_physics = GetComponent<BasicPhysics>();
+        m_health = Mathf.Min (Health, MaxHealth);
 		m_currDeathTime = 0.0f;
 		InitResistences ();
-		/*if (GetComponent<PersistentItem> () != null)
-			GetComponent<PersistentItem> ().InitializeSaveLoadFuncs (storeData,loadData);*/
+		if (GetComponent<PersistentItem> () != null)
+			GetComponent<PersistentItem> ().InitializeSaveLoadFuncs (storeData,loadData);
 	}
 
 	internal void InitResistences() {
@@ -201,17 +203,17 @@ public class Attackable : MonoBehaviour
 
 	private void ApplyHitToPhysicsSS(HitInfo hi)
 	{
-		/*Resistence r = GetAverageResistences (hi.Element);
-		m_movementController.FreezeInAir (hi.FreezeTime);
+		Resistence r = GetAverageResistences (hi.Element);
+		m_physics.FreezeInAir (hi.FreezeTime);
 		
 		Vector2 kb = hi.Knockback - (hi.Knockback * Mathf.Min(1f,(r.KnockbackResist/100f)));
-		if (!m_movementController)
+		if (!m_physics)
 			return;
 		if (hi.IsFixedKnockback)
 		{
 			if (kb.y != 0f && hi.ResetKnockback)
-				m_movementController.CancelVerticalMomentum ();
-			m_movementController.AddToVelocity(kb);
+				m_physics.CancelVerticalMomentum ();
+			m_physics.AddToVelocity(kb);
 			return;
 		}
 
@@ -219,12 +221,12 @@ public class Attackable : MonoBehaviour
 		float angle = Mathf.Atan2(hitVector.y,hitVector.x); //*180.0f / Mathf.PI;
 		Vector2 force = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
 		force.Scale(new Vector2(kb.magnitude, kb.magnitude));
-		float counterF = m_movementController.Velocity.y * (1 / Time.deltaTime);
+		float counterF = m_physics.m_trueVelocity.y * (1 / Time.deltaTime);
 		if (counterF < 0)
 			force.y = force.y - counterF;
 		
-		m_movementController.AddToVelocity(force);
-		hi.Knockback = force; */
+		m_physics.AddToVelocity(force);
+		hi.Knockback = force;
 	}
 
 	void TakeDoT(HitboxDoT hbdot) {
@@ -236,8 +238,8 @@ public class Attackable : MonoBehaviour
 		}
 		if (hbdot.IsFixedKnockback) {
 			Vector2 kb = hbdot.Knockback  - (hbdot.Knockback * Mathf.Min(1f,(r.KnockbackResist/100f)));
-			/*if (GetComponent<PhysicsSS>() != null)
-				GetComponent<PhysicsSS>().AddToVelocity (kb * Time.deltaTime); */
+			if (GetComponent<BasicPhysics>() != null)
+				GetComponent<BasicPhysics>().AddToVelocity (kb * Time.deltaTime); 
 		} else {
 			Vector3 otherPos = gameObject.transform.position;
 			float angle = Mathf.Atan2 (transform.position.y - otherPos.y, transform.position.x - otherPos.x); //*180.0f / Mathf.PI;
@@ -245,8 +247,8 @@ public class Attackable : MonoBehaviour
 			float forceX = Mathf.Cos (angle) * magnitude;
 			float forceY = Mathf.Sin (angle) * magnitude;
 			Vector2 force = new Vector2 (-forceX, -forceY);
-			/*if (GetComponent<PhysicsSS>() != null)
-				GetComponent<PhysicsSS>().AddToVelocity (force*Time.deltaTime);*/
+			if (GetComponent<BasicPhysics>() != null)
+				GetComponent<BasicPhysics>().AddToVelocity (force*Time.deltaTime);
 		}
 	}
 	public HitResult TakeHit(Hitbox hb) {
@@ -344,7 +346,7 @@ public class Attackable : MonoBehaviour
 		return newR;
 	}
 
-	/*private void storeData(CharData d) {
+	private void storeData(CharData d) {
 		d.PersistentFloats["Health"] = Health;
 		d.PersistentFloats["MaxHealth"] = MaxHealth;
 		d.PersistentInt["Faction"] = (int)Faction;
@@ -354,5 +356,5 @@ public class Attackable : MonoBehaviour
 		MaxHealth = d.PersistentFloats["MaxHealth"];
 		SetHealth (d.PersistentFloats["Health"]);
 		Faction = (FactionType)d.PersistentInt["Faction"];
-	}*/
+	}
 }

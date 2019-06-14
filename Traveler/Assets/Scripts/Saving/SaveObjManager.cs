@@ -323,13 +323,13 @@ public class SaveObjManager : MonoBehaviour{
 				//Debug.Log ("COMPARE: " + rm.TriggerID + " : " + data.targetID);
 				if (rm.TriggerID == data.targetID) {
 					if (data.targetDir == RoomDirection.LEFT) {
-							nv = rm.transform.position - new Vector3 (rm.GetComponent<BoxCollider2D> ().size.x + 3f, 0f);
+							nv = rm.transform.position - new Vector3 (rm.GetComponent<BoxCollider> ().size.x + 1f, 0f);
 					} else if (data.targetDir == RoomDirection.RIGHT) {
-							nv = rm.transform.position + new Vector3 (rm.GetComponent<BoxCollider2D> ().size.x + 3f, 0f);
+							nv = rm.transform.position + new Vector3 (rm.GetComponent<BoxCollider> ().size.x + 1f, 0f);
 					} else if (data.targetDir == RoomDirection.UP) {
-							nv = rm.transform.position + new Vector3 (0f, rm.GetComponent<BoxCollider2D> ().size.y + 3f, 0f);
+							nv = rm.transform.position + new Vector3 (0f, rm.GetComponent<BoxCollider> ().size.z + 1f, 0f);
 					} else if (data.targetDir == RoomDirection.DOWN) {
-							nv = rm.transform.position - new Vector3 (0f, rm.GetComponent<BoxCollider2D> ().size.x + 3f, 0f);
+							nv = rm.transform.position - new Vector3 (0f, rm.GetComponent<BoxCollider> ().size.z + 1f, 0f);
 					}
 					found = true;
 					break;

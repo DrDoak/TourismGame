@@ -22,38 +22,37 @@ public class LineHitbox : Hitbox {
 	new void Update ()
 	{
 		base.Tick ();
-		RaycastHit2D [] hit_list;
-		hit_list = Physics2D.RaycastAll (transform.position, aimPoint, range);
+		RaycastHit [] hit_list;
+		hit_list = Physics.RaycastAll (transform.position, aimPoint, range);
 		if (foundPoint) {
 			line.SetPosition (0, transform.position);
 			line.SetPosition (1, endPoint);
 		} else {
 			line.SetPosition (0, transform.position);
 			line.SetPosition (1, transform.position + new Vector3 ((aimPoint * range).x, (aimPoint * range).y, 0f));
-			foreach (RaycastHit2D hit in hit_list) {
-				if (hit) {
-					Collider2D collider = hit.collider;
-					HitResult hitType = OnTriggerEnter2D (collider);
-					if (hitType != HitResult.NONE) {
-						if (hitType == HitResult.REFLECTED)
-							getReflected (hit.point);
-						line.SetPosition (0, transform.position);
-						line.SetPosition (1, hit.point);
-						foundPoint = true;
-						endPoint = new Vector3 (hit.point.x, hit.point.y, 0f);
-						return;
-					}
+			foreach (RaycastHit hit in hit_list) {
+				Collider collider = hit.collider;
+				HitResult hitType = OnTriggerEnter (collider);
+				if (hitType != HitResult.NONE) {
+					if (hitType == HitResult.REFLECTED)
+						getReflected (hit.point);
+					line.SetPosition (0, transform.position);
+					line.SetPosition (1, hit.point);
+					foundPoint = true;
+					endPoint = new Vector3 (hit.point.x, hit.point.y, 0f);
+					return;
 				}
 			}
 		}
 	}
 
-	public void getReflected(Vector2 hitPoint) {
+	public void getReflected(Vector3 hitPoint) {
 		float offsetX = Random.Range (-15, 15) / 100f;
 		float offsetY = Random.Range (-15, 15) / 100f;
-		Vector2 realD = new Vector2 (-aimPoint.x + offsetX, -aimPoint.y + offsetY);
-		Vector2 realKB = new Vector2 (-Knockback.x, Knockback.y);
-		realD = Vector2.ClampMagnitude (realD, 1.0f);
+        float offsetZ = Random.Range(-15, 15) / 100f;
+        Vector2 realD = new Vector3 (-aimPoint.x + offsetX, -aimPoint.y + offsetY,aimPoint.z + offsetZ);
+		Vector2 realKB = new Vector3 (-Knockback.x, Knockback.y, Knockback.z);
+		realD = Vector3.ClampMagnitude (realD, 1.0f);
 
 		Vector3 newPos = new Vector3(hitPoint.x - aimPoint.x, hitPoint.y - aimPoint.y, 0);
 		GameObject go = Instantiate(gameObject,newPos,Quaternion.identity) as GameObject; 
