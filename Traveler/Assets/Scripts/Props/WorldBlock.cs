@@ -9,6 +9,7 @@ public class WorldBlock : MonoBehaviour
     public GameObject PanelFront;
     public GameObject PanelLeft;
     public GameObject PanelRight;
+    public GameObject NavCube;
 
     BoxCollider m_box;
     public bool DrawBox = false;
@@ -17,6 +18,12 @@ public class WorldBlock : MonoBehaviour
     {
         m_box = GetComponent<BoxCollider>();
         GetGridEdges();
+    }
+
+    private void Awake()
+    {
+        if (NavCube != null)
+            NavCube.SetActive(false);
     }
 
     // Update is called once per frame
@@ -49,6 +56,11 @@ public class WorldBlock : MonoBehaviour
         {
             PanelRight.transform.localPosition = new Vector3(m_box.center.x + m_box.size.x / 2f, 0.5f, (m_box.size.z % 2 == 0) ? 0.0f : 0.5f);
             //PanelRight.transform.localScale = m_box.size;
+        }
+        if (NavCube != null)
+        {
+            NavCube.transform.localScale = m_box.size;
+            NavCube.transform.localPosition = m_box.center;
         }
     }
     void OnDrawGizmos()

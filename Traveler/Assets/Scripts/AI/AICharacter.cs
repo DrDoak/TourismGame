@@ -8,11 +8,41 @@ public class AICharacter : MonoBehaviour
     AITaskManager m_taskManager;
 
     public List<Goal> GoalList;
-    public Behaviour CurrentBehaviour;
+    public AIBehaviour CurrentBehaviour;
 
+    private List<string> m_GoalObjectNames;
+    private string m_currentBehaviour;
     void Awake()
     {
         m_taskManager =  GetComponent<AITaskManager>();
+        ReloadGoals();
+        if (GetComponent<PersistentItem>() != null)
+            GetComponent<PersistentItem>().InitializeSaveLoadFuncs(storeData, loadData);
+    }
+
+    private void storeData(CharData d)
+    {
+        d.PersistentStrings["CurrentBehaviour"] = m_currentBehaviour;
+        string goalList = "";
+        foreach (Goal g in GoalList)
+        {
+            goalList += g.PrefabName + "/n";
+        }
+        d.PersistentStrings["GoalList"] = goalList;
+    }
+
+    private void loadData(CharData d)
+    {
+        SetBehaviour(findBehaviour(d.PersistentStrings["CurrentBehaviour"]));
+        string savedItems = d.PersistentStrings["GoalList"];
+        var arr = savedItems.Split('\n');
+        foreach (string s in arr)
+        {
+            if (s.Length > 0)
+            {
+                Instantiate((GameObject)Resources.Load(s));
+            }
+        }
         ReloadGoals();
     }
 
@@ -33,18 +63,23 @@ public class AICharacter : MonoBehaviour
         OnStart();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
     public void SetBehaviour(GameObject behaviourTemplate)
     {
+
         m_taskManager.SetBehaviour(behaviourTemplate);
+        m_currentBehaviour = behaviourTemplate.name;
     }
 
+    private GameObject findBehaviour(string name)
+    {
+        foreach (Goal g in GoalList)
+        {
+            Transform t = g.gameObject.transform.Find(name);
+            if (t != null)
+                return t.gameObject;
+        }
+        return null;
+    }
     public void OnHit(HitInfo hb)
     {
         foreach (Goal g in GoalList)
@@ -97,7 +132,7 @@ public class AICharacter : MonoBehaviour
         }
         m_taskManager.OnExitZone(z);
     }
-    public void ProposeNewBehaviour(Behaviour b)
+    public void ProposeNewBehaviour(AIBehaviour b)
     {
         if (b.BehaviourPrefab == null)
             return;
@@ -116,14 +151,16 @@ public class AICharacter : MonoBehaviour
     }
 }
 
-
-public class Behaviour
+[System.Serializable]
+public class AIBehaviour
 {
     public string BehaviourName;
+    public string PrefabName;
     public GameObject BehaviourPrefab;
     public Goal ParentGoal;
     public float PriorityScore;
-    public Behaviour(string name, GameObject prefab, Goal parentGoal, float score = 1.0f)
+    public List<string> ExtraVars;
+    public AIBehaviour(string name, GameObject prefab, Goal parentGoal, float score = 1.0f)
     {
         BehaviourName = name;
         BehaviourPrefab = prefab;

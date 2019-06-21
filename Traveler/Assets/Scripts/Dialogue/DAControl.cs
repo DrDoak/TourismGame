@@ -14,7 +14,7 @@ public class DAControl : DialogueAction {
 			GameObject target = GameObject.Find (targetChar);
 			if (target != null && target.GetComponent<CharacterBase> () != null) {
 				originTextbox.FreezeCharacter (target.GetComponent<MovementBase> (),
-                   !target.GetComponent<CharacterBase>().CanControl);
+                   !target.GetComponent<CharacterBase>().IsAutonomous);
 			}	
 		}
 	}

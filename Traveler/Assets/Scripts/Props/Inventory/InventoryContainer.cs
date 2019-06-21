@@ -56,7 +56,13 @@ public class InventoryContainer : MonoBehaviour
 
     private bool m_displaying;
     private List<Vector2> m_freeSlots;
+    private bool m_inventoryInitialized = false;
 
+    internal void Awake()
+    {
+        if (GetComponent<PersistentItem>() != null)
+            GetComponent<PersistentItem>().InitializeSaveLoadFuncs(storeData, loadData);
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -75,14 +81,10 @@ public class InventoryContainer : MonoBehaviour
                 m_freeSlots.Add(new Vector2(x, y));
             }
         }
-        InitInventory();
+        if (!m_inventoryInitialized)
+            InitInventory();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public bool CanFit(Vector2 itemPos, Vector2 itemSize)
     {
         if (!hasSpace(itemPos, itemSize))
@@ -139,7 +141,7 @@ public class InventoryContainer : MonoBehaviour
     }
     public void AddItem(Item i , Vector2 pos)
     {
-        //Debug.Log("Adding item: " + i + " to inventory: " + pos + " for:" + gameObject);
+        Debug.Log("Adding item: " + i + " to inventory: " + pos + " for:" + gameObject);
         if (eqpSlotInfo.ContainsKey(pos))
         {
             i.OnEnterInventory(this, eqpSlotInfo[pos]);
@@ -182,15 +184,21 @@ public class InventoryContainer : MonoBehaviour
 
     private void InitInventory()
     {
+        List<Vector2> vList = new List<Vector2>();
+        foreach (Vector2 v in items.Keys){ vList.Add(v); }
+        foreach (Vector2 v in vList) { ClearItem(v); }
         items.Clear();
         foreach (InitialItemData iid in initItemData)
         {
+            Debug.Log("Attempting to load: " + iid);
             if ((GameObject)Resources.Load(iid.itemName) == null)
                 continue;
             GameObject go = Instantiate((GameObject)Resources.Load(iid.itemName));
             AddItem(go.GetComponent<Item>(), iid.inventoryLocation);
             Destroy(go);
         }
+        Debug.Log("InventoryInitialized");
+        m_inventoryInitialized = true;
     }
 
     public virtual bool canAcceptItem(Item i)
@@ -222,6 +230,42 @@ public class InventoryContainer : MonoBehaviour
         {
             e.OnPrimaryUse(input, gameObject);
         }
+    }
 
+    private string convertToSaveList(Dictionary<Vector2, InventoryItemData> saveItems)
+    {
+        string saveList = "";
+        foreach (Vector2 v in items.Keys)
+        {
+            InitialItemData newItem = new InitialItemData();
+            Debug.Log("Item location: : " + v);
+            newItem.inventoryLocation = v;
+            newItem.itemName = items[v].prefabName;
+
+            saveList += JsonUtility.ToJson(newItem) + "\n";
+        }
+        return saveList;
+    }
+    private void storeData(CharData d)
+    {
+        string s = convertToSaveList(items);
+        Debug.Log("Saving string");
+        Debug.Log(s);
+        d.PersistentStrings["initItemData"] = s;
+    }
+
+    private void loadData(CharData d)
+    {
+        string savedItems = d.PersistentStrings["initItemData"];
+        var arr = savedItems.Split('\n');
+        initItemData.Clear();
+        foreach (string s in arr)
+        {
+            if (s.Length > 0) {
+                InitialItemData newItem = JsonUtility.FromJson<InitialItemData>(s);
+                initItemData.Add(newItem);
+            }
+        }
+        InitInventory();
     }
 }

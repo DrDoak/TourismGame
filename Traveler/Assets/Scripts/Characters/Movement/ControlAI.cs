@@ -18,7 +18,7 @@ public class ControlAI : CharCustomControl
     {
         m_agent = gameObject.GetComponent<NavMeshAgent>();
         m_charControl = gameObject.GetComponent<CharacterController>();
-        m_agent.destination = transform.position;
+       
     }
     void Update()
     {

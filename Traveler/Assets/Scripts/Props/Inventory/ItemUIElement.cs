@@ -58,7 +58,6 @@ public class ItemUIElement : MonoBehaviour, IDragHandler, IEndDragHandler,
         {
             ReturnPos();
         }
-        
         InventoryManager.SetHeldItem(null);
     }
 

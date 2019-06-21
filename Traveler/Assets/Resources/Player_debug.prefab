@@ -28,6 +28,8 @@ GameObject:
   - component: {fileID: 1672053672067786532}
   - component: {fileID: 1672053672067786516}
   - component: {fileID: 5169421885405921464}
+  - component: {fileID: 1535769983}
+  - component: {fileID: 1535769984}
   m_Layer: 0
   m_Name: Player_debug
   m_TagString: Untagged
@@ -59,11 +61,11 @@ CapsuleCollider:
   m_GameObject: {fileID: 1672053672067786513}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 0
+  m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!143 &1672053672067786520
 CharacterController:
   m_ObjectHideFlags: 0
@@ -81,7 +83,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: -0.25, z: 0}
+  m_Center: {x: 0, y: 0.75, z: 0}
 --- !u!114 &1672053672067786525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,6 +100,7 @@ MonoBehaviour:
   TerminalVelocity: -1
   GravityForce: -0.5
   CanMove: 1
+  Floating: 0
   m_trueVelocity: {x: 0, y: 0, z: 0}
 --- !u!114 &1672053672067786524
 MonoBehaviour:
@@ -140,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a46140889991ee748895450d76f84e21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CanControl: 1
+  IsAutonomous: 1
   AutoOrientSprite: 1
   IdleAnimation: idle
   WalkAnimation: walk
@@ -269,7 +272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PromptedInteraction: {fileID: 0}
   InteractionKey: Interact
-  InteractionOffset: {x: 0.75, y: 0, z: 0}
+  InteractionOffset: {x: 0.75, y: 1, z: 0}
   OverlapInteractions: []
 --- !u!114 &1672053672067786531
 MonoBehaviour:
@@ -330,7 +333,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1672053672067786513}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4d2f3505d513a434787b170c07e0f27f, type: 3}
   m_Name: 
@@ -435,6 +438,41 @@ MonoBehaviour:
     targetID: 
   recreated: 0
   StartPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &1535769983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672053672067786513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2f176fa900675a449256a92aa0193c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Faction: 0
+--- !u!195 &1535769984
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672053672067786513}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &5678080820492919498
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,7 +675,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5678080820981348213}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5678080821286318529}

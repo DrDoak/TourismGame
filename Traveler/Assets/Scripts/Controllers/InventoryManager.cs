@@ -155,8 +155,8 @@ public class InventoryManager : MonoBehaviour
             return;
         GameObject go = Instantiate((GameObject)Resources.Load(i.prefabName), parent);
         
-        go.transform.localPosition = new Vector3(50 + (loc.y - 1) * 50f,
-                (-loc.x) * 50f, 3f);
+        go.transform.localPosition = new Vector3((loc.x) * 50f, -50 - (loc.y - 1) * 50f
+                , 3f);
         Debug.Log("instantiated at: " + go.transform.localPosition);
         go.GetComponent<Item>().CurrentSlot = slots[loc];
     }

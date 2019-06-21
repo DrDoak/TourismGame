@@ -23,6 +23,7 @@ public class Goal : MonoBehaviour
 
     public virtual void OnExitZone(Zone z) { }
 
+    public string PrefabName;
     public void SetGoalPriority(float newP)
     {
         m_goalPriority = newP;

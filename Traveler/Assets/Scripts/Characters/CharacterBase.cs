@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent (typeof (Orientation))]
 public class CharacterBase : MonoBehaviour
 {
-    public bool CanControl = true;
+    public bool IsAutonomous = true;
 
     public bool AutoOrientSprite = true;
     public string IdleAnimation = "idle";
@@ -47,11 +47,18 @@ public class CharacterBase : MonoBehaviour
 
     public Vector3 movement;
     // Start is called before the first frame update
+    internal void Awake()
+    {
+        if (GetComponent<PersistentItem>() != null)
+            GetComponent<PersistentItem>().InitializeSaveLoadFuncs(storeData, loadData);
+    }
+    
     void Start()
     {
         m_controller = GetComponent<CharacterController>();
         m_attackable = GetComponent<Attackable>();
         m_anim = GetComponent<AnimatorSprite>();
+        m_hitTargets = new Dictionary<Attackable, HitInfo>();
     }
 
     // Update is called once per frame
@@ -165,7 +172,7 @@ public class CharacterBase : MonoBehaviour
     {
         if (m_attackable.Alive)
         {
-            CanControl = true;
+            IsAutonomous = true;
             StunTime = 0.0f;
         }
     }
@@ -179,7 +186,7 @@ public class CharacterBase : MonoBehaviour
         EndAction();
         StunTime = st;
         m_hitStateIsGuard = guard;
-        CanControl = false;
+        IsAutonomous = false;
     }
 
     // --- ACTIONS
@@ -237,7 +244,7 @@ public class CharacterBase : MonoBehaviour
 
     public void EndAction()
     {
-        CanControl = true;
+        IsAutonomous = true;
         GetComponent<BasicPhysics>().CanMove = true;
         m_currentAction = null;
         m_anim.SetSpeed(1.0f);
@@ -310,7 +317,7 @@ public class CharacterBase : MonoBehaviour
 
     bool canAct()
     {
-        return (StunTime <= 0 && CanControl);
+        return (StunTime <= 0 && IsAutonomous);
     }
 
 
@@ -318,9 +325,9 @@ public class CharacterBase : MonoBehaviour
 
     public void RegisterHit(GameObject otherObj, HitInfo hi, HitResult hr)
     {
-        //Debug.Log ("Collision: " + this + " " + otherObj);
+        Debug.Log ("Collision: " + this + " " + otherObj);
         //ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnHitConfirm(hi, otherObj, hr));
-        //Debug.Log ("Registering hit with: " + otherObj);
+        Debug.Log ("Registering hit with: " + otherObj);
         if (otherObj.GetComponent<Attackable>() != null)
         {
             m_hitTargets[otherObj.GetComponent<Attackable>()] = hi;
@@ -335,11 +342,21 @@ public class CharacterBase : MonoBehaviour
             return;
         m_currentAction = ai;
         GetComponent<BasicPhysics>().CanMove = false;
-        CanControl = false;
+        IsAutonomous = false;
         //ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnAttack(m_currentAttack));
         if (m_currentAction != null)
         {
             m_currentAction.ResetAndProgress();
         }
+    }
+
+    private void storeData(CharData d)
+    {
+        d.PersistentBools["IsAutonomous"] = IsAutonomous;
+    }
+
+    private void loadData(CharData d)
+    {
+        IsAutonomous = d.PersistentBools["IsAutonomous"];
     }
 }

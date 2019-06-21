@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.AI;
 
 [System.Serializable]
 public class FootstepInfo
@@ -26,6 +26,9 @@ public class InputPacket
 
 public class MovementBase : MonoBehaviour
 {
+    public bool IsPlayerControl = false;
+    public bool CanJump = true;
+    public int MidAirJumps = 0;
 
     private BasicPhysics m_physics;
     private const float MIN_JUMP_INTERVAL = 0.2f;
@@ -33,12 +36,9 @@ public class MovementBase : MonoBehaviour
     ControlPlayer m_playerCustomControl;
     ControlAI m_aiCustomControl;
     CharCustomControl m_currentControl;
+    NavMeshAgent m_navMesh;
     InventoryContainer m_eqp;
 
-
-    public bool IsPlayerControl = false;
-    public bool CanJump = true;
-    public int MidAirJumps = 0;
     [SerializeField]
     private float m_moveSpeed = 8.0f;
     public float MoveSpeed { get { return m_moveSpeed; } private set { m_moveSpeed = value; } }
@@ -48,12 +48,14 @@ public class MovementBase : MonoBehaviour
     private bool VariableJumpHeight = false;
     public float JumpHeight { get { return m_jumpHeight; } private set { m_jumpHeight = value; } }
 
-    public int CurrentAirJumps = 0;
+    private int m_currentAirJumps = 0;
+    public int CurrentAirJumps { get { return m_currentAirJumps; } private set { m_currentAirJumps = value; } }
 
     // Movement tracking
     protected bool m_jumpHold;
     protected bool m_jumpDown;
-    public Vector3 m_inputMove;
+    private Vector3 m_inputMove;
+    public Vector3 InputMove { get { return m_inputMove; } private set { m_inputMove = value; } }
     public Vector3 m_jumpVector;
     private float m_jumpVelocity;
     private Vector3 m_velocity;
@@ -69,25 +71,28 @@ public class MovementBase : MonoBehaviour
     private const float VEL_CALC_INTERVAL = 0.1f;
     private float LastCalculatedTime = 0;
     private Vector3 lastPos;
-    public Vector3 TrueAverageVelocity;
+    private Vector3 m_trueAverageVelocity;
+    public Vector3 TrueAverageVelocity { get { return m_trueAverageVelocity; } private set { m_trueAverageVelocity = value; } }
 
     private Vector3 m_lastInput;
 
     internal void Awake()
     {
         m_physics = GetComponent<BasicPhysics>();
-
         m_lastInput = new Vector2();
         m_aiCustomControl = GetComponent<ControlAI>();
         m_playerCustomControl = GetComponent<ControlPlayer>();
         m_orient = GetComponent<Orientation>();
         m_eqp = GetComponent<InventoryContainer>();
-        TrueAverageVelocity = new Vector3();
+        m_navMesh = GetComponent<NavMeshAgent>();
+        m_trueAverageVelocity = new Vector3();
         lastPos = transform.position;
         if (CanJump)
             SetJumpHeight(JumpHeight);
         //m_savedCurrentPlayer = IsCurrentPlayer;
         updateCustomControl();
+        if (GetComponent<PersistentItem>() != null)
+            GetComponent<PersistentItem>().InitializeSaveLoadFuncs(storeData, loadData);
     }
 
     // Start is called before the first frame update
@@ -96,13 +101,16 @@ public class MovementBase : MonoBehaviour
         //ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnControllableChange(IsCurrentPlayer));
     }
 
+    
+
     internal void Update()
     {
-        updateCustomControl();
+        if (GetComponent<CharacterBase>() == null || 
+            GetComponent<CharacterBase>().IsAutonomous)
+            updateCustomControl();
         if (!m_physics.CanMove)
         {
             m_inputMove = new Vector2(0f, 0f);
-            
         }
         if (m_FootStepInfo.PlayFootsteps)
             playStepSounds();
@@ -122,7 +130,7 @@ public class MovementBase : MonoBehaviour
         if (Time.timeSinceLevelLoad - LastCalculatedTime > VEL_CALC_INTERVAL)
         {
             Vector3 diff = transform.position - lastPos;
-            TrueAverageVelocity = diff / (Time.timeSinceLevelLoad - LastCalculatedTime);
+            m_trueAverageVelocity = diff / (Time.timeSinceLevelLoad - LastCalculatedTime);
             lastPos = transform.position;
             LastCalculatedTime = Time.timeSinceLevelLoad;
         }
@@ -141,9 +149,15 @@ public class MovementBase : MonoBehaviour
     private void updateCustomControl()
     {
         if (IsPlayerControl)
+        {
             m_currentControl = m_playerCustomControl;
+            m_navMesh.enabled = false;
+        }
         else
+        {
             m_currentControl = m_aiCustomControl;
+            m_navMesh.enabled = true;
+        }
     }
     private void playStepSounds()
     {
@@ -167,7 +181,7 @@ public class MovementBase : MonoBehaviour
     private void resetJumps()
     {
         if (m_physics.OnGround())
-            CurrentAirJumps = MidAirJumps;
+            m_currentAirJumps = MidAirJumps;
     }
 
     private void moveSmoothly()
@@ -243,14 +257,14 @@ public class MovementBase : MonoBehaviour
 
         //m_physics.AddArtificialVelocity(new Vector3(0f, -0.75f * m_physics.Velocity().y,0f));
         if (!m_physics.OnGround())
-            CurrentAirJumps -= 1;
+            m_currentAirJumps -= 1;
     }
     public bool CanBasicJump()
     {
         if ((Time.timeSinceLevelLoad - m_lastJump) < MIN_JUMP_INTERVAL)
             return false;
 
-        if (!m_physics.OnGround() && CurrentAirJumps <= 0)
+        if (!m_physics.OnGround() && m_currentAirJumps <= 0)
             return false;
 
         return true;
@@ -266,5 +280,19 @@ public class MovementBase : MonoBehaviour
         jv.x *= scale.x;
         jv.y *= scale.y;
         m_physics.AddSelfForce(jv, 0f);
+    }
+
+    private void storeData(CharData d)
+    {
+        d.PersistentBools["IsPlayerControl"] = IsPlayerControl;
+        d.PersistentBools["CanJump"] = CanJump;
+        d.PersistentInt["MidAirJumps"] = MidAirJumps;
+    }
+
+    private void loadData(CharData d)
+    {
+        IsPlayerControl = d.PersistentBools["IsPlayerControl"];
+        CanJump = d.PersistentBools["CanJump"];
+        MidAirJumps = d.PersistentInt["MidAirJumps"];
     }
 }

@@ -163,7 +163,7 @@ public class SaveObjManager : MonoBehaviour{
 		DelCharData (item.data);
 		CharacterSaveContainer cc = LoadChars(savePath + newRoom);
 //		item.pos = newPos;
-		JsonUtility.ToJson(new CharacterSaveContainer());
+		//JsonUtility.ToJson(new CharacterSaveContainer());
 		cc.actors.Add (item.data);
 		Save (savePath + newRoom, cc);
 		ResaveRoom ();
@@ -362,9 +362,6 @@ public class SaveObjManager : MonoBehaviour{
 
 	private static void SaveActors(string path, CharacterSaveContainer actors) {
 		string json = JsonUtility.ToJson(actors);
-		//Debug.Log ("jsoN: " + json);
-		//Debug.Log ("save to path: " + path+ ".txt");
-		//Debug.Log("Saving: " + json.ToString() + " to path: " + path);
 		StreamWriter sw = File.CreateText(path + ".txt");
 		sw.Close();
 		File.WriteAllText(path+ ".txt", json);
