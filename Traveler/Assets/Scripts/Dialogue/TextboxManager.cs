@@ -196,4 +196,60 @@ public class TextboxManager : MonoBehaviour {
 	public static string GetKeyString(string action) {
         return "D"; // InputManager.GetAction ("Default", action).Bindings [0].Positive.ToString ();
 	}
+
+    public static void StartDialogueOptions(DialogueSelectionInitializer initializer)
+    {
+        GameObject go = GameObject.Instantiate(GameObject.FindObjectOfType<TextboxManager>().DialogueBoxPrefab);
+        go.GetComponent<DialogueOptionBox>().Prompt = initializer.prompt;
+        //go.GetComponent<DialogueOptionBox>().MasterSequence = originTextbox.MasterSequence;
+        Debug.Log("Add options: " + initializer.options.Count);
+        foreach (DialogueOptionInitializer dop in initializer.options)
+        {
+            go.GetComponent<DialogueOptionBox>().AddDialogueOption(dop);
+        }
+        //originTextbox.MasterSequence.closeSequence();
+    }
+}
+
+public class DialogueSelectionInitializer
+{
+    public string prompt;
+    public List<DialogueOptionInitializer> options = new List<DialogueOptionInitializer>();
+    public DialogueSelectionInitializer(string initialPrompt)
+    {
+        prompt = initialPrompt;
+    }
+    public void AddDialogueOption(DialogueOptionInitializer doption)
+    {
+        options.Add(doption);
+    }
+    public void AddDialogueOption(string promptText, DialogueOption.SelectFunction function)
+    {
+        DialogueOptionInitializer dop = new DialogueOptionInitializer();
+        dop.SelectionText = promptText;
+        dop.OnSelect = function;
+        options.Add(dop);
+    }
+    public void AddDialogueOption(string promptText, string remainingSequenceText)
+    {
+        DialogueOptionInitializer dop = new DialogueOptionInitializer();
+        dop.SelectionText = promptText;
+        dop.OnSelect = SelectionFunction;
+        dop.remainderText = remainingSequenceText;
+        options.Add(dop);
+    }
+    private void SelectionFunction(DialogueOption dop)
+    {
+        Debug.Log("Starting seqeunce: " + dop.remainderText);
+        TextboxManager.StartSequence(dop.remainderText);
+        GameObject.Destroy(dop.MasterBox.gameObject);
+    }
+}
+
+public class DialogueOptionInitializer
+{
+    public string SelectionText = "";
+    public string remainderText = "";
+    public DialogueOption.SelectFunction OnSelect;
+    public DialogueOptionBox MasterBox;
 }

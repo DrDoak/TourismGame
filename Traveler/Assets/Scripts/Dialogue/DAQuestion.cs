@@ -5,7 +5,6 @@ using UnityEngine;
 public class DAQuestion : DialogueAction {
 
 	public override bool IsExecutionString(string actionString) {
-		Debug.Log ("Recognized?");
 		return MatchStart (actionString, "?");
 	}
 
@@ -35,7 +34,7 @@ public class DAQuestion : DialogueAction {
 		go.GetComponent<DialogueOptionBox> ().MasterSequence = originTextbox.MasterSequence;
 		Debug.Log ("length of rawoptions; " + rawOptions.Count);
 		foreach (string s in rawOptions) {
-			DialogueOption dop = new DialogueOption ();
+            DialogueOptionInitializer dop = new DialogueOptionInitializer();
 			dop.SelectionText = s;
 			dop.OnSelect = SelectionFunction;
 			dop.remainderText = s + originTextbox.MasterSequence.RawText;

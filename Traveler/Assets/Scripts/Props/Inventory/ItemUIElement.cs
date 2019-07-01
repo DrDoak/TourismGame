@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ItemUIElement : MonoBehaviour, IDragHandler, IEndDragHandler, 
-    IPointerEnterHandler, IPointerExitHandler
+    IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     private Vector3 mouseoffset = new Vector3();
     private float maxY;
@@ -24,41 +24,69 @@ public class ItemUIElement : MonoBehaviour, IDragHandler, IEndDragHandler,
     
     public void UpdateReturnPos(Vector3 pos)
     {
-
         m_returnPos = pos;
     }
+    public void OnPointerClick(PointerEventData pointerEventData)
+    {
+        if (pointerEventData.button.ToString() == "Right")
+        {
+            DialogueSelectionInitializer doi = new DialogueSelectionInitializer("Item");
+            doi.AddDialogueOption("Text1", "you selected option 1");
+            doi.AddDialogueOption("Text2", "you selection something else");
+            doi.AddDialogueOption("Last 3", "Final item selected");
+            TextboxManager.StartDialogueOptions(doi);
+        }
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
+        /*Debug.Log("On begin drag");
+        Debug.Log("Button: " + eventData.button);
         mouseoffset = Input.mousePosition - transform.position;
         maxY = transform.GetComponent<RectTransform>().rect.height / 2f;
         m_image.color = Color.yellow;
         m_image.raycastTarget = false;
-        InventoryManager.SetHeldItem(this);
+        InventoryManager.SetHeldItem(this);*/
     }
+    
     public void OnDrag(PointerEventData eventData)
     {
-        Vector2 newPos = Input.mousePosition - mouseoffset;
-        float newX = Mathf.Min(Mathf.Max(0f, newPos.x), Screen.width);
-        float newY = Mathf.Min(Mathf.Max(0f, newPos.y), Screen.height - maxY);
-        transform.position = new Vector3(newX, newY, 0f);
-        m_image.raycastTarget = false;
+        //Debug.Log("button down: " + eventData.button);
+        if (eventData.button.ToString() == "Right")
+        {
+            
+        } else
+        {
+            Vector2 newPos = Input.mousePosition - mouseoffset;
+            float newX = Mathf.Min(Mathf.Max(0f, newPos.x), Screen.width);
+            float newY = Mathf.Min(Mathf.Max(0f, newPos.y), Screen.height - maxY);
+            transform.position = new Vector3(newX, newY, 0f);
+            m_image.raycastTarget = false;
+        }
+        
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        m_image.color = Color.gray;
-        m_image.raycastTarget = true;
-        if (InventoryManager.GetCurrentCell() != null && 
-            InventoryManager.AttemptMoveItem(this))
+        if (eventData.button.ToString() == "Left")
         {
-            UpdateReturnPos(GetComponent<RectTransform>().localPosition);
-        } else if (InventoryManager.GetHighlightedItem() != null) {
-            InventoryManager.AttemptSwap(InventoryManager.GetHighlightedItem(), this);
-        } else
-        {
-            ReturnPos();
-        }
-        InventoryManager.SetHeldItem(null);
+            m_image.color = Color.gray;
+            m_image.raycastTarget = true;
+            if (InventoryManager.GetCurrentCell() != null &&
+                InventoryManager.AttemptMoveItem(this))
+            {
+                UpdateReturnPos(GetComponent<RectTransform>().localPosition);
+            }
+            else if (InventoryManager.GetHighlightedItem() != null)
+            {
+                InventoryManager.AttemptSwap(InventoryManager.GetHighlightedItem(), this);
+            }
+            else
+            {
+                ReturnPos();
+            }
+            InventoryManager.SetHeldItem(null);
+        }        
     }
 
     public void MatchItemProperties(Item i)

@@ -14,7 +14,7 @@ public class DialogueOptionBox : Textbox {
 		transform.Find("text").GetComponent<TextMeshProUGUI> ().text = Prompt;
 	}
 
-	public void AddDialogueOption(DialogueOption dop) {
+	public void AddDialogueOption(DialogueOptionInitializer dop) {
 		GameObject newOption = Instantiate (FindObjectOfType<TextboxManager> ().DialogueOptionPrefab,transform.Find("Options"));
 		newOption.GetComponent<DialogueOption> ().SelectionText = dop.SelectionText;
 		newOption.GetComponent<DialogueOption> ().OnSelect = dop.OnSelect;
