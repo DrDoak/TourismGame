@@ -48,7 +48,7 @@ public class Equipment : Item
             Destroy(ItemInstance);
             if (EquipmentPiecePrefab != null && s.GetComponent<AnimatorMultiSprite>() != null)
             {
-                Debug.Log("Removing Piece");
+//                Debug.Log("Removing Piece");
                 s.GetComponent<AnimatorMultiSprite>().RemovePiece(m_equipmentPieceType);
             }
         }

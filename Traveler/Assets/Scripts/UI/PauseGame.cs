@@ -32,7 +32,6 @@ public class PauseGame : MonoBehaviour
             return;
         }
         mMenu = transform.Find("PauseMenu").gameObject;
-        Debug.Log(mMenu);
         mMenu.SetActive(false);
     }
 

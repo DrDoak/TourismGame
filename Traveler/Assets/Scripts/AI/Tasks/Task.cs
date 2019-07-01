@@ -16,6 +16,7 @@ public class Task : MonoBehaviour {
 	public List<Transition> TransitionsFrom;
 
 	public GameObject Target;
+    public Goal ParentGoal;
     public Dictionary<string, GameObject> TargetDict;
 	public AITaskManager ParentAI;
 

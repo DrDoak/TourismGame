@@ -167,6 +167,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5386132830172196315}
   - component: {fileID: 5386132830172196312}
+  - component: {fileID: 8005382184649114425}
   m_Layer: 0
   m_Name: Lists
   m_TagString: Untagged
@@ -208,6 +209,20 @@ MonoBehaviour:
   HitboxMulti: {fileID: 0}
   HitboxDoT: {fileID: 0}
   StandardProjectile: {fileID: 0}
+--- !u!114 &8005382184649114425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5386132830172196314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b4ec3029c900a343bcee16f51a97344, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GenericGoal: {fileID: 1993681057793638773, guid: 528aec347f06a7d4490257cbeabd13c7,
+    type: 3}
 --- !u!1 &5386132830991850520
 GameObject:
   m_ObjectHideFlags: 0

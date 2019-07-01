@@ -31,10 +31,10 @@ public class TKWanderZone : Task
         {
             nextSpot = RandomPointFromPoint(MasterAI.transform.position,
                 Random.Range(WanderDistanceRange.x, WanderDistanceRange.y));
-            Debug.Log("In zone?: " + Target.GetComponent<Zone>().IsInZone(nextSpot));
+            //Debug.Log("In zone?: " + Target.GetComponent<Zone>().IsInZone(nextSpot));
             if (Target.GetComponent<Zone>().IsInZone(nextSpot))
             {
-                Debug.Log("Next Point: " + nextSpot );
+                //Debug.Log("Next Point: " + nextSpot );
                 MasterAI.GetComponent<ControlAI>().SetTarget(nextSpot);
                 break;
             }
@@ -46,9 +46,9 @@ public class TKWanderZone : Task
     private Vector3 RandomPointFromPoint(Vector3 start, float dist)
     {
         float angle = Random.Range(0f, 2f * Mathf.PI);
-        Debug.Log("Transform?: " + start);
+        //Debug.Log("Transform?: " + start);
         Vector3 newPoint = start + new Vector3(Mathf.Cos(angle) * dist, 0f, Mathf.Sin(angle) * dist);
-        Debug.Log("Next Point: " + newPoint + " angle: " + angle + " dist: " + dist + " ds: " + Mathf.Sin(angle) * dist);
+        //Debug.Log("Next Point: " + newPoint + " angle: " + angle + " dist: " + dist + " ds: " + Mathf.Sin(angle) * dist);
         return newPoint;
     }
 }

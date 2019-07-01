@@ -36,6 +36,8 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IS
 	}
 }
 
+[Serializable]
+public class StringDictionary : SerializableDictionary<string, string> { }
 
 [Serializable]
 public class CharData {

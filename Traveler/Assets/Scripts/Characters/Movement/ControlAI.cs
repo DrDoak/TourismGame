@@ -51,7 +51,7 @@ public class ControlAI : CharCustomControl
 
     public override void SetTarget(Vector3 t)
     {
-        Debug.Log("Setting destination to : " + t);
+        //Debug.Log("Setting destination to : " + t);
         m_agent.SetDestination(t);
     }
     public void SetFollowGameObject(GameObject follow, bool keepFollowing = true)

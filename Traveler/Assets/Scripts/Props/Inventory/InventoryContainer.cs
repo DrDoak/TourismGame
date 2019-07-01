@@ -141,7 +141,7 @@ public class InventoryContainer : MonoBehaviour
     }
     public void AddItem(Item i , Vector2 pos)
     {
-        Debug.Log("Adding item: " + i + " to inventory: " + pos + " for:" + gameObject);
+        //Debug.Log("Adding item: " + i + " to inventory: " + pos + " for:" + gameObject);
         if (eqpSlotInfo.ContainsKey(pos))
         {
             i.OnEnterInventory(this, eqpSlotInfo[pos]);
@@ -190,14 +190,14 @@ public class InventoryContainer : MonoBehaviour
         items.Clear();
         foreach (InitialItemData iid in initItemData)
         {
-            Debug.Log("Attempting to load: " + iid);
+            //Debug.Log("Attempting to load: " + iid);
             if ((GameObject)Resources.Load(iid.itemName) == null)
                 continue;
             GameObject go = Instantiate((GameObject)Resources.Load(iid.itemName));
             AddItem(go.GetComponent<Item>(), iid.inventoryLocation);
             Destroy(go);
         }
-        Debug.Log("InventoryInitialized");
+        //Debug.Log("InventoryInitialized");
         m_inventoryInitialized = true;
     }
 
@@ -238,7 +238,7 @@ public class InventoryContainer : MonoBehaviour
         foreach (Vector2 v in items.Keys)
         {
             InitialItemData newItem = new InitialItemData();
-            Debug.Log("Item location: : " + v);
+            //Debug.Log("Item location: : " + v);
             newItem.inventoryLocation = v;
             newItem.itemName = items[v].prefabName;
 
@@ -249,8 +249,6 @@ public class InventoryContainer : MonoBehaviour
     private void storeData(CharData d)
     {
         string s = convertToSaveList(items);
-        Debug.Log("Saving string");
-        Debug.Log(s);
         d.PersistentStrings["initItemData"] = s;
     }
 

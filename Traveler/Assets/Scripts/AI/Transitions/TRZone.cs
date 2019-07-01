@@ -26,13 +26,21 @@ public class TRZone : Transition
 
             if (inZone && TriggerWhenInZone)
             {
-                TargetTask.Target = ZoneManager.GetZone(ZoneName).gameObject;
-                TriggerTransition();
+                Zone z = ZoneManager.GetZone(ZoneName);
+                if (z != null)
+                {
+                    TargetTask.Target = z.gameObject;
+                    TriggerTransition();
+                }
             }
             if (!inZone && !TriggerWhenInZone)
             {
-                TargetTask.Target = ZoneManager.GetZone(ZoneName).gameObject;
-                TriggerTransition();
+                Zone z = ZoneManager.GetZone(ZoneName);
+                if (z != null)
+                {
+                    TargetTask.Target = z.gameObject;
+                    TriggerTransition();
+                }
             }
             m_nextCheck += CHECK_INTERVAL;
         }

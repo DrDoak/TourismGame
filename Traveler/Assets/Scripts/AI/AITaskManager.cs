@@ -40,14 +40,17 @@ public class AITaskManager : MonoBehaviour {
 		}
 	}
 
-    public void SetBehaviour( GameObject o)
+    public void SetBehaviour(GameObject g, Goal originGoal)
     {
-        GameObject newG = Instantiate(o);
+        
+        GameObject newG = Instantiate(g);
         Task[] tList = newG.GetComponentsInChildren<Task>();
         foreach (Task t in tList)
         {
+            t.ParentGoal = originGoal;
             t.transform.parent = transform;
         }
+//        newG.GetComponent<Animation>().GetClip("hwierowh");
         ReloadTasks();
         Destroy(newG);
     }

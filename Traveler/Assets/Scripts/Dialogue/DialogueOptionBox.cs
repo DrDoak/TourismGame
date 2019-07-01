@@ -13,11 +13,6 @@ public class DialogueOptionBox : Textbox {
 	void Start () {
 		transform.Find("text").GetComponent<TextMeshProUGUI> ().text = Prompt;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 	public void AddDialogueOption(DialogueOption dop) {
 		GameObject newOption = Instantiate (FindObjectOfType<TextboxManager> ().DialogueOptionPrefab,transform.Find("Options"));

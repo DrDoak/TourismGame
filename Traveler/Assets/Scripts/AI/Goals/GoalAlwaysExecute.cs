@@ -4,19 +4,37 @@ using UnityEngine;
 
 public class GoalAlwaysExecute : Goal
 {
-    public GameObject BehaviourPrefab;
-    Behaviour b;
-    private void Awake()
+    AIBehaviour b;
+    void Start()
     {
-        b = new Behaviour("AutoSet", BehaviourPrefab,this,10000.0f);
+        init();
+    }
+
+    protected override void init()
+    {
+        base.init();
+        GameObject g = (GameObject)Resources.Load(GoalVariables["ExecutePrefab"]);
+        if (g != null)
+        {
+            b = new AIBehaviour("AutoSet", g, this, 10000.0f);
+        }
     }
     public override void OnStart()
     {
-        //Debug.Log("ON start, proposed behaviour");
-        m_masterAI.ProposeNewBehaviour(b);
+        if (b != null)
+        {
+            m_masterAI.ProposeNewBehaviour(b);
+        }
     }
     public override void OnEnterZone(Zone z)
     {
         //Debug.Log("On enter zone: " + z.Label);
+    }
+    protected override void initVariableDictionary() {
+        if (!GoalVariables.ContainsKey("ExecutePrefab"))
+        {
+            GoalVariables["ExecutePrefab"] = "ExecuteThisBehaviour";
+        }
+
     }
 }

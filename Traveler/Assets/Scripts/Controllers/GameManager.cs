@@ -25,7 +25,6 @@ public class GameManager : MonoBehaviour
         }
         else if (m_instance != this)
         {
-            Debug.Log("Destroying GM");
             Destroy(gameObject);
             return;
         }
@@ -53,12 +52,10 @@ public class GameManager : MonoBehaviour
     }
     public void InitCanvasOnSceneLoad(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("Init canvas on scene load");
         InitializeCanvas();
     }
     public void InitializeCanvas()
     {
-        Debug.Log("INit canvas");
         Instantiate(Canvas);
         //Instantiate(PauseCanvas);
     }
