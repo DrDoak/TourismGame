@@ -34,7 +34,7 @@ public class HitboxMaker : MonoBehaviour
 		line.setAimPoint (aimPoint);
 		line.Duration = hitboxDuration;
 		if (m_charBase != null)
-			line.Knockback = m_orient.OrientVectorToDirection(knockback);
+			line.Knockback = m_orient.OrientVectorToDirection2D(knockback);
 		line.IsFixedKnockback = true;
 		line.Creator = gameObject;
 		line.Faction = Faction;
@@ -42,29 +42,29 @@ public class HitboxMaker : MonoBehaviour
 		line.Stun = stun;
 		line.Init();
 
-		//ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnHitboxCreate(line));
+		ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnHitboxCreate(line));
 		return line;
 	}
 
     public Hitbox CreateHitbox(HitboxInfo hbi) {
-        Vector3 cOff = (m_charBase == null) ? hbi.HitboxOffset : m_orient.OrientVectorToDirection(hbi.HitboxOffset);
-        Debug.Log("Initial offset is: " + cOff);
+        Vector3 cOff = (m_charBase == null) ? hbi.HitboxOffset : m_orient.OrientVectorToDirection2D(hbi.HitboxOffset);
+        //Debug.Log("Initial offset is: " + cOff);
 		Vector3 newPos = transform.position + (Vector3)cOff;
-        Debug.Log("Instantiated at: " + newPos);
+        //Debug.Log("Instantiated at: " + newPos);
         var go = GameObject.Instantiate(ListHitboxes.Instance.Hitbox, newPos, Quaternion.identity);
 
 		Hitbox newBox = go.GetComponent<Hitbox>();
         if (hbi.FollowCharacter) {
 			go.transform.SetParent (gameObject.transform);
-			newBox.transform.localScale = m_orient.OrientVectorToDirection(new Vector3 (hbi.HitboxScale.x / transform.localScale.x, hbi.HitboxScale.y / transform.localScale.y, hbi.HitboxScale.z / transform.localScale.z), false);
+			newBox.transform.localScale = new Vector3 (hbi.HitboxScale.x / transform.localScale.x, hbi.HitboxScale.y / transform.localScale.y, hbi.HitboxScale.z / transform.localScale.z);
 		} else {
-			newBox.SetScale ((m_charBase == null) ? hbi.HitboxScale : m_orient.OrientVectorToDirection(hbi.HitboxScale,false));
+			newBox.SetScale ((m_charBase == null) ? hbi.HitboxScale : m_orient.OrientVectorToDirection2D(hbi.HitboxScale,false));
 		}
 		newBox.Damage = hbi.Damage;
 		newBox.FocusDamage = hbi.FocusDamage;
 		newBox.Penetration = hbi.Penetration;
 		newBox.Duration = hbi.HitboxDuration;
-		newBox.Knockback = (m_charBase == null) ? hbi.Knockback : m_orient.OrientVectorToDirection(hbi.Knockback);
+		newBox.Knockback = (m_charBase == null) ? hbi.Knockback : m_orient.OrientVectorToDirection2D(hbi.Knockback);
 		newBox.IsFixedKnockback = hbi.FixedKnockback;
 		newBox.Stun = hbi.Stun;
 		newBox.FreezeTime = hbi.FreezeTime;
@@ -74,8 +74,8 @@ public class HitboxMaker : MonoBehaviour
 		newBox.IsResetKnockback = hbi.ResetKnockback;
 		if (hbi.FollowCharacter)
 			newBox.SetFollow (gameObject,hbi.HitboxOffset);
-		/*if (hbi.ApplyProps)
-			ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnHitboxCreate(newBox));*/
+		if (hbi.ApplyProps)
+			ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnHitboxCreate(newBox));
 		newBox.Init();
 		return newBox;
 	}
@@ -90,13 +90,13 @@ public class HitboxMaker : MonoBehaviour
         Hitbox newBox = go.GetComponent<Hitbox>();
         if (followObj) {
             go.transform.SetParent (gameObject.transform);
-            newBox.transform.localScale = m_orient.OrientVectorToDirection(new Vector3(hitboxScale.x / transform.localScale.x, hitboxScale.y / transform.localScale.y, hitboxScale.z / transform.localScale.z), false);
+            newBox.transform.localScale = m_orient.OrientVectorToDirection2D(new Vector3(hitboxScale.x / transform.localScale.x, hitboxScale.y / transform.localScale.y, hitboxScale.z / transform.localScale.z), false);
         } else {
-            newBox.SetScale ((m_charBase == null) ? hitboxScale : m_orient.OrientVectorToDirection(hitboxScale,false));
+            newBox.SetScale ((m_charBase == null) ? hitboxScale : m_orient.OrientVectorToDirection2D(hitboxScale,false));
         }
         newBox.Damage = damage;
         newBox.Duration = hitboxDuration;
-        newBox.Knockback = (m_charBase == null) ? knockback : m_orient.OrientVectorToDirection(knockback);
+        newBox.Knockback = (m_charBase == null) ? knockback : m_orient.OrientVectorToDirection2D(knockback);
         newBox.IsFixedKnockback = fixedKnockback;
         newBox.Stun = stun;
         newBox.AddElement(element);
@@ -104,8 +104,8 @@ public class HitboxMaker : MonoBehaviour
         newBox.Faction = Faction;
         if (followObj)
             newBox.SetFollow (gameObject,offset);
-        /*if (applyProps)
-            ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnHitboxCreate(newBox)); */
+        if (applyProps)
+            ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnHitboxCreate(newBox));
         newBox.Init();
         return newBox;
     }
@@ -121,20 +121,20 @@ public class HitboxMaker : MonoBehaviour
         if (followObj) {
             go.transform.SetParent (gameObject.transform);
             Vector3 ls = new Vector3(hitboxScale.x / transform.localScale.x, hitboxScale.y / transform.localScale.y, hitboxScale.z / transform.localScale.z);
-            newBox.transform.localScale = (m_charBase == null) ?  ls : m_orient.OrientVectorToDirection(ls , false);
+            newBox.transform.localScale = (m_charBase == null) ?  ls : m_orient.OrientVectorToDirection2D(ls , false);
         } else {
-            newBox.SetScale ((m_charBase == null) ? hitboxScale : m_orient.OrientVectorToDirection(hitboxScale,false));
+            newBox.SetScale ((m_charBase == null) ? hitboxScale : m_orient.OrientVectorToDirection2D(hitboxScale,false));
         }
         newBox.Damage = damage;
         newBox.Duration = hitboxDuration;
-        newBox.Knockback = (m_charBase == null) ? knockback : m_orient.OrientVectorToDirection(knockback);
+        newBox.Knockback = (m_charBase == null) ? knockback : m_orient.OrientVectorToDirection2D(knockback);
         newBox.IsFixedKnockback = fixedKnockback;
         newBox.Stun = stun;
         newBox.AddElement(element);
         newBox.Creator = gameObject;
         newBox.Faction = Faction;
 
-        //ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnHitboxCreate(newBox)); 
+        ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnHitboxCreate(newBox)); 
         newBox.Init();
         return newBox;
     }
@@ -150,13 +150,13 @@ public class HitboxMaker : MonoBehaviour
         if (followObj) {
             go.transform.SetParent (gameObject.transform);
             Vector3 ls = new Vector3(hitboxScale.x / transform.localScale.x, hitboxScale.y / transform.localScale.y, hitboxScale.z / transform.localScale.z);
-            newBox.transform.localScale = (m_charBase == null) ?  ls : m_orient.OrientVectorToDirection(ls , false);
+            newBox.transform.localScale = (m_charBase == null) ?  ls : m_orient.OrientVectorToDirection2D(ls , false);
         } else {
-            newBox.SetScale ((m_charBase == null) ? hitboxScale : m_orient.OrientVectorToDirection(hitboxScale,false));
+            newBox.SetScale ((m_charBase == null) ? hitboxScale : m_orient.OrientVectorToDirection2D(hitboxScale,false));
         }
         newBox.Damage = damage;
         newBox.Duration = hitboxDuration;
-        newBox.Knockback = (m_charBase == null) ? knockback : m_orient.OrientVectorToDirection(knockback);
+        newBox.Knockback = (m_charBase == null) ? knockback : m_orient.OrientVectorToDirection2D(knockback);
         newBox.IsFixedKnockback = fixedKnockback;
         newBox.Stun = stun;
         newBox.AddElement(element);
@@ -164,7 +164,7 @@ public class HitboxMaker : MonoBehaviour
         newBox.Faction = Faction;
         newBox.refreshTime = refreshTime;
 
-        //ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnHitboxCreate(newBox));
+        ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnHitboxCreate(newBox));
         newBox.Init();
         return newBox;
     }
@@ -205,7 +205,7 @@ public class HitboxMaker : MonoBehaviour
         newProjectile.AimPoint = (m_charBase == null) ? targetPoint : m_orient.OrientVectorToDirection(targetPoint);
         newProjectile.ProjectileSpeed = projectileSpeed;
 
-        //ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnHitboxCreate(newProjectile));
+        ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnHitboxCreate(newProjectile));
         newProjectile.Init();
         return newProjectile;
     }

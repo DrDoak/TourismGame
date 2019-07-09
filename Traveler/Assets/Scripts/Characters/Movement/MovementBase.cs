@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 [System.Serializable]
 public class FootstepInfo
@@ -98,7 +99,7 @@ public class MovementBase : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnControllableChange(IsCurrentPlayer));
+        ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnControllableChange(IsPlayerControl));
     }
 
     
@@ -141,7 +142,7 @@ public class MovementBase : MonoBehaviour
     }
     public void SetJumpHeight(float jumpHeight)
     {
-        m_jumpVector.y = (-m_physics.GravityForce * (20f * Mathf.Sqrt(jumpHeight))) + 25f;
+        m_jumpVector.y = (-m_physics.GravityForce * (12f * Mathf.Sqrt(jumpHeight))) + 52f;
         m_jumpHeight = jumpHeight;
     }
 
@@ -238,7 +239,7 @@ public class MovementBase : MonoBehaviour
     }
     private void AttemptJump()
     {
-        //ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnJump());
+        ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnJump());
         if (!CanBasicJump())
             return;
         

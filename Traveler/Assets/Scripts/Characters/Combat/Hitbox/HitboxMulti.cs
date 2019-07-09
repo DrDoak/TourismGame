@@ -13,7 +13,7 @@ public class HitboxMulti : Hitbox {
 		//lastFacingLeft = Creator.GetComponent<PhysicsSS> ().FacingLeft;
 		Init ();
 	}
-	void Update () {
+    new void Update () {
 		timeSinceLast += Time.deltaTime;
 		if (timeSinceLast > refreshTime) {
 			timeSinceLast = 0.0f;

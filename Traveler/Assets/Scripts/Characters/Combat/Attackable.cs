@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public enum FactionType { NONE, ALLIES, ENEMIES, HOSTILE };
+public enum FactionType { IMMUNE, ALLIES, ENEMIES, NEUTRAL };
 
 [System.Serializable]
 public class Resistence {
@@ -31,7 +31,7 @@ public class Attackable : MonoBehaviour
 	public bool Alive = true;
 	public float DeathTime = 0.0f;
 	private float m_currDeathTime;
-	public FactionType Faction = FactionType.HOSTILE;
+	public FactionType Faction = FactionType.NEUTRAL;
 
 	public List<Resistence> Resistences  = new List<Resistence>();
 	private Dictionary< ElementType, Resistence> m_fullResistences = new Dictionary< ElementType, Resistence>();
@@ -97,7 +97,7 @@ public class Attackable : MonoBehaviour
 		if (Alive)
 			return;
 		if (m_currDeathTime > DeathTime) {
-			//ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnDeath ());
+			ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnDeath ());
 			/*if (GetComponent<BasicMovement> () && GetComponent<BasicMovement> ().IsCurrentPlayer)
 				PauseGame.OnPlayerDeath ();
 			if (DeathFX != null) {
@@ -201,18 +201,20 @@ public class Attackable : MonoBehaviour
 		return m_fullResistences [element];
 	}
 
-	private void ApplyHitToPhysicsSS(HitInfo hi)
+	private void ApplyHitToPhysics(HitInfo hi)
 	{
 		Resistence r = GetAverageResistences (hi.Element);
 		m_physics.FreezeInAir (hi.FreezeTime);
 		
-		Vector2 kb = hi.Knockback - (hi.Knockback * Mathf.Min(1f,(r.KnockbackResist/100f)));
+		Vector3 kb = hi.Knockback - (hi.Knockback * Mathf.Min(1f,(r.KnockbackResist/100f)));
 		if (!m_physics)
 			return;
 		if (hi.IsFixedKnockback)
 		{
 			if (kb.y != 0f && hi.ResetKnockback)
 				m_physics.CancelVerticalMomentum ();
+            Debug.Log("Applying knockback: " + kb);
+            kb.y += 100f;
 			m_physics.AddToVelocity(kb);
 			return;
 		}
@@ -256,7 +258,7 @@ public class Attackable : MonoBehaviour
 	}
 	public HitResult TakeHit(HitInfo hi)
 	{
-		//ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnHit (hi, hi.Creator));
+		ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnHit (hi, hi.Creator));
 		HitboxDoT hd = hi.mHitbox as HitboxDoT;
 		if (hd != null) {
 			TakeDoT (hd);
@@ -272,7 +274,7 @@ public class Attackable : MonoBehaviour
 		float fD = hi.FocusDamage;
 		d = DamageObj (d);
 
-		ApplyHitToPhysicsSS(hi);
+		ApplyHitToPhysics(hi);
 		float s = hi.Stun - (hi.Stun * Mathf.Min(1f,(r.StunResist/100f)));
 		if (hi.Stun > 0f && m_charBase) {
 			if (s <= 0f)
@@ -315,7 +317,7 @@ public class Attackable : MonoBehaviour
 	}
 
 	public bool CanAttack(FactionType otherFaction) {
-		return (otherFaction == FactionType.HOSTILE || Faction == FactionType.HOSTILE || otherFaction != Faction);
+		return (otherFaction == FactionType.NEUTRAL || Faction == FactionType.NEUTRAL || otherFaction != Faction);
 	}
 
 	public void SetFaction(FactionType f) {

@@ -221,7 +221,6 @@ public class InventoryContainer : MonoBehaviour
             return;
         }
         Equipment e = t.gameObject.GetComponent<Equipment>();
-        bool secondaryUse = false;
         if (input.magnitude > 0.1f)
         {
             e.OnSecondaryUse(input,gameObject);

@@ -122,6 +122,11 @@ public class InventoryManager : MonoBehaviour
         iue.ReturnPos();
         return false;
     }
+    public static void DropItem(ItemUIElement item)
+    {
+        item.ItemInfo.CurrentSlot.m_container.ClearItem(item.ItemInfo.CurrentSlot.Coordinate);
+        
+    }
     public static bool AttemptSwap(ItemUIElement item1, ItemUIElement item2)
     {
         InventorySlot slot1 = item1.ItemInfo.CurrentSlot;

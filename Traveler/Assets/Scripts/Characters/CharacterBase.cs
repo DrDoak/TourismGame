@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent (typeof (Orientation))]
 public class CharacterBase : MonoBehaviour
@@ -85,16 +86,16 @@ public class CharacterBase : MonoBehaviour
     }
     public void standardAnimation()
     {
-        if (false) //!m_controller.isGrounded)
+        if (!m_controller.isGrounded)
         {
             m_haveMovedOnGround = false;
             if (GetComponent<MovementBase>().TrueAverageVelocity.y > 0f)
             {
-                m_anim.Play(new string[] { JumpAnimation, AirAnimation });
+                m_anim.Play(new string[] { JumpAnimation, AirAnimation ,IdleAnimation});
             }
             else
             {
-                m_anim.Play(AirAnimation);
+                m_anim.Play(new string[] { AirAnimation, IdleAnimation });
             }
         }
         else
@@ -326,7 +327,7 @@ public class CharacterBase : MonoBehaviour
     public void RegisterHit(GameObject otherObj, HitInfo hi, HitResult hr)
     {
         Debug.Log ("Collision: " + this + " " + otherObj);
-        //ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnHitConfirm(hi, otherObj, hr));
+        ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnHitConfirm(hi, otherObj, hr));
         Debug.Log ("Registering hit with: " + otherObj);
         if (otherObj.GetComponent<Attackable>() != null)
         {
@@ -343,7 +344,7 @@ public class CharacterBase : MonoBehaviour
         m_currentAction = ai;
         GetComponent<BasicPhysics>().CanMove = false;
         IsAutonomous = false;
-        //ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnAttack(m_currentAttack));
+        ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnAttack(m_currentAction));
         if (m_currentAction != null)
         {
             m_currentAction.ResetAndProgress();

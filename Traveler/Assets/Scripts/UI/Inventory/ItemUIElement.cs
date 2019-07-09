@@ -31,13 +31,22 @@ public class ItemUIElement : MonoBehaviour, IDragHandler, IEndDragHandler,
         if (pointerEventData.button.ToString() == "Right")
         {
             DialogueSelectionInitializer doi = new DialogueSelectionInitializer("Item");
-            doi.AddDialogueOption("Text1", "you selected option 1");
+            doi.AddDialogueOption("Drop Item", dropItem);
             doi.AddDialogueOption("Text2", "you selection something else");
             doi.AddDialogueOption("Last 3", "Final item selected");
             TextboxManager.StartDialogueOptions(doi);
         }
     }
 
+    private void dropItem(DialogueOption dop)
+    {
+        Debug.Log("Attempting drop to: " + ItemInfo.CurrentSlot.m_container.gameObject.transform.position );
+        GameObject go = Instantiate(gameObject, ItemInfo.CurrentSlot.m_container.gameObject.transform.position + new Vector3(0f, 0.25f, 0f), Quaternion.identity);
+        ItemInfo.CurrentSlot.m_container.ClearItem(ItemInfo.CurrentSlot.Coordinate);
+        //go.GetComponent<BasicPhysics>().Floating = false;
+        GameObject.Destroy(dop.MasterBox.gameObject);
+        
+    }
     public void OnBeginDrag(PointerEventData eventData)
     {
         /*Debug.Log("On begin drag");

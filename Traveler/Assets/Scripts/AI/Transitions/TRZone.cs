@@ -12,7 +12,7 @@ public class TRZone : Transition
 
     private void Start()
     {
-        m_nextCheck = Random.RandomRange(Time.timeSinceLevelLoad, Time.timeSinceLevelLoad + CHECK_INTERVAL);
+        m_nextCheck = Random.Range(Time.timeSinceLevelLoad, Time.timeSinceLevelLoad + CHECK_INTERVAL);
     }
     public override void OnUpdate()
     {

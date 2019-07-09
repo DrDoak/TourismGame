@@ -47,7 +47,7 @@ public class UIBar : MonoBehaviour {
 	void Update () {
 	}
 
-	public void Initialize(UIBarInfo ubi, int Num) {
+	public void Initialize(UIBarInfo ubi, int n) {
 		SetColor (ubi.FillColor);
 		if (ubi.DisplayLabel)
 			SetLabel (ubi.UILabel);
@@ -56,9 +56,9 @@ public class UIBar : MonoBehaviour {
 		SetUseScale (ubi.useScale);
 		SetScale (ubi.scale);
 		SetDisplayMode (ubi.DisplayMode);
-		Vector2 v = new Vector2 (StartingX, BarHeight * Num + StartingHeight);
+		Vector2 v = new Vector2 (StartingX, BarHeight * n + StartingHeight);
 		GetComponent<RectTransform> ().anchoredPosition = v;
-		Num = Num;
+		Num = n;
 	}
 	public void OnRemove(int n) {
 		if (n < Num)

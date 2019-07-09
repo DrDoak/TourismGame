@@ -65,7 +65,6 @@ public class TextboxManager : MonoBehaviour {
 		string lastText = "";
 		string lastAnim = "none";
 		int i = startingChar;
-		int currIndent = 0;
 		bool full = false;
 		int specialSequenceDepth = 0;
 		while (i < text.Length) {
@@ -91,7 +90,6 @@ public class TextboxManager : MonoBehaviour {
 					}
 					full = false;
 				}
-				currIndent = 0;
 				lastText = "";
 			} else {
 				lastText += lastC;

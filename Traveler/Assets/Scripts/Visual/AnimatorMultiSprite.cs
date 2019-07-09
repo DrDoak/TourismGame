@@ -7,7 +7,7 @@ public class AnimatorMultiSprite : AnimatorSprite
     Dictionary<string,AnimationPiece> m_pieces;
     Dictionary<string, GameObject> m_attachPoints;
     // Start is called before the first frame update
-    void Awake()
+    new void Awake()
     {
         base.Awake();
         init();

@@ -80,12 +80,11 @@ public class Hitbox : MonoBehaviour {
 	private float m_FreezeTime = 0f;
 	public float FreezeTime { get { return m_FreezeTime; } set { m_FreezeTime = value; } }
 
-	//private ElementType m_element = ElementType.PHYSICAL;
 	[SerializeField]
 	private List<ElementType> m_elementList = new List<ElementType> ();
 	public List<ElementType> Element { get { return m_elementList; } set { m_elementList = value; } }
 
-	public FactionType Faction = FactionType.HOSTILE;
+	public FactionType Faction = FactionType.NEUTRAL;
 
 	[HideInInspector]
 	public GameObject Creator { get; set; }
@@ -120,12 +119,11 @@ public class Hitbox : MonoBehaviour {
 			RandomizeKnockback ();
 		m_hasDuration = m_duration > 0;
 		Tick();
-		Debug.Log ("Hitbox initialized d "+ m_duration);
 		if (m_elementList.Count == 0)
 			m_elementList.Add (ElementType.PHYSICAL);
 	}
 
-	virtual internal void Update()
+	internal void Update()
 	{
 		Tick();
 	}
@@ -375,6 +373,6 @@ public class Hitbox : MonoBehaviour {
     void OnDrawGizmos()
     {
         Gizmos.color = new Color(1, 0, 0, .8f);
-        Gizmos.DrawCube(transform.position, m_box.size);
+        Gizmos.DrawCube(transform.position, transform.localScale);
     }
 }

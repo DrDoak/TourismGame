@@ -112,6 +112,7 @@ public class BasicPhysics : MonoBehaviour
         foreach (Force force in m_forces)
         {
             m_velocity += force.MyForce * Time.fixedDeltaTime;
+            Debug.Log("Added force, " + force.MyForce + " now is: " + m_velocity);
             force.Duration -= Time.fixedDeltaTime;
             if (force.MyForce.y != 0f)
                 noYForces = false;
@@ -150,14 +151,15 @@ public class BasicPhysics : MonoBehaviour
             m_artificialVelocity = new Vector3();
         }
     }
-    public void AddToVelocity(Vector2 veloc)
+    public void AddToVelocity(Vector3 veloc)
     {
         m_accumulatedVelocity.x += veloc.x;
-        AddSelfForce(new Vector2(0f, veloc.y), 0f);
+        m_accumulatedVelocity.z += veloc.z;
+        AddSelfForce(new Vector3(0f, veloc.y,0f), 0f);
     }
-    public void AddSelfForce(Vector3 force, float duration)
+    public void AddSelfForce(Vector3 speed, float duration)
     {
-        m_forces.Add(new Force(force, duration));
+        m_forces.Add(new Force(speed, duration));
     }
     private void storeData(CharData d)
     {

@@ -11,7 +11,7 @@ public class DebugMultiSprite : AnimatorMultiSprite
     private float nextLoop = 0.0f;
     private const float LOOP_INTERVAL = 4.0f;
     // Start is called before the first frame update
-    void Awake()
+    new void Awake()
     {
         base.Awake();
         init();
