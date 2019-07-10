@@ -47,6 +47,7 @@ public class InventoryManager : MonoBehaviour
     public static GameObject CreateInventoryGUI(InventoryContainer ic)
     {
         GameObject go = Instantiate(m_instance.InvPrefab,FindObjectOfType<Canvas>().transform);
+        go.GetComponent<InventoryUIMenu>().Container = ic;
         m_instance.m_containerPrefabs.Add(ic, go);
         if (m_instance.m_openHolder.ContainsKey(ic.Holder))
             m_instance.m_openHolder[ic.Holder]++;
