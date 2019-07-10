@@ -28,10 +28,11 @@ public class Equipment : Item
             ItemInstance.name = es.SlotName;
 
             ItemInstance.GetComponent<Equipment>().AddActionListeners(s.gameObject);
+            
             if (ItemInstance.GetComponent<BasicPhysics>())
             {
                 ItemInstance.GetComponent<BasicPhysics>().GravityForce = 0f;
-                ItemInstance.gameObject.transform.localPosition = new Vector3(-100f, -100f,-100F);
+                ItemInstance.GetComponent<SpriteRenderer>().enabled = false;
             }
             OnEquip(s, es);
 

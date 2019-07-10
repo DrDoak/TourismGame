@@ -167,7 +167,6 @@ public class InventoryManager : MonoBehaviour
         go.transform.localPosition = new Vector3((loc.x) * 50f, -50 - (loc.y - 1) * 50f
                 , 3f);
 
-        Debug.Log("instantiated at: " + go.transform.localPosition);
         go.GetComponent<ItemUIElement>().ItemInfo = tempItem.GetComponent<Item>();
         go.GetComponent<ItemUIElement>().ItemInfo.CurrentSlot = slots[loc];
         if (tempItem.GetComponent<Item>() != null)
