@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Item : Interactable
 {
@@ -9,8 +10,9 @@ public class Item : Interactable
     public bool Rotated = false;
     public InventorySlot CurrentSlot;
     public Vector2 baseSize = new Vector2(1,1);
-    public string UIPrefabName;
+    public string PrefabName;
     public string displayname;
+    public Sprite InventoryIcon;
 
     // Start is called before the first frame update
     void Start()

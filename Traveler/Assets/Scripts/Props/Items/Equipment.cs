@@ -23,11 +23,16 @@ public class Equipment : Item
         base.OnEnterInventory(s, es);
         if (es != null && es.SlotType == InventorySlotType.EQUIPMENT)
         {
-            ItemInstance = Instantiate((GameObject)Resources.Load(UIPrefabName), s.gameObject.transform);
+            ItemInstance = Instantiate((GameObject)Resources.Load(PrefabName), s.gameObject.transform);
             
             ItemInstance.name = es.SlotName;
 
             ItemInstance.GetComponent<Equipment>().AddActionListeners(s.gameObject);
+            if (ItemInstance.GetComponent<BasicPhysics>())
+            {
+                ItemInstance.GetComponent<BasicPhysics>().GravityForce = 0f;
+                ItemInstance.gameObject.transform.localPosition = new Vector3(-100f, -100f,-100F);
+            }
             OnEquip(s, es);
 
             if (EquipmentPiecePrefab != null && s.GetComponent<AnimatorMultiSprite>() != null)

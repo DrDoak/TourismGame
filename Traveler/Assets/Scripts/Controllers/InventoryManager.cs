@@ -11,6 +11,7 @@ public class InventoryManager : MonoBehaviour
 
     public GameObject InvPrefab;
     public GameObject SlotPrefab;
+    public GameObject ItemIconPrefab;
 
     private InventorySlot m_highlightedSlot;
     private ItemUIElement m_highlightedItem;
@@ -117,6 +118,7 @@ public class InventoryManager : MonoBehaviour
             iue.ItemInfo.CurrentSlot.m_container.ClearItem(iue.ItemInfo.CurrentSlot.Coordinate);
             m_instance.m_highlightedSlot.AddItem(iue.ItemInfo, iue);
             iue.ItemInfo.CurrentSlot = m_instance.m_highlightedSlot;
+            iue.ItemInfo.CurrentSlot = m_instance.m_highlightedSlot;
             return true;
         }
         iue.ReturnPos();
@@ -158,12 +160,18 @@ public class InventoryManager : MonoBehaviour
     {
         if ((GameObject)Resources.Load(i.prefabName) == null)
             return;
-        GameObject go = Instantiate((GameObject)Resources.Load(i.prefabName), parent);
+        GameObject tempItem = Instantiate((GameObject)Resources.Load(i.prefabName)); 
+        GameObject go = Instantiate(ItemIconPrefab, parent);
         
         go.transform.localPosition = new Vector3((loc.x) * 50f, -50 - (loc.y - 1) * 50f
                 , 3f);
+
         Debug.Log("instantiated at: " + go.transform.localPosition);
-        go.GetComponent<Item>().CurrentSlot = slots[loc];
+        go.GetComponent<ItemUIElement>().ItemInfo = tempItem.GetComponent<Item>();
+        go.GetComponent<ItemUIElement>().ItemInfo.CurrentSlot = slots[loc];
+        if (tempItem.GetComponent<Item>() != null)
+            go.GetComponent<Image>().sprite = tempItem.GetComponent<Item>().InventoryIcon;
+        Destroy(tempItem);
     }
 
     public static List<Vector2> GetOccupiedSlots(Item i)

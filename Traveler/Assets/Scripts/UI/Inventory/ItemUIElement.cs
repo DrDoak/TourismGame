@@ -12,13 +12,14 @@ public class ItemUIElement : MonoBehaviour, IDragHandler, IEndDragHandler,
     private Image m_image;
     public Item ItemInfo;
     public bool CanMove = true;
+    //public InventorySlot CurrentSlot;
 
     private Vector3 m_returnPos;
     public void Start()
     {
         UpdateReturnPos(GetComponent<RectTransform>().localPosition);
         m_image = GetComponent<Image>();
-        ItemInfo = GetComponent<Item>();
+        //ItemInfo = GetComponent<Item>();
         m_image.color = Color.gray;
     }
     

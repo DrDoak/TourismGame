@@ -35,7 +35,7 @@ public class InventoryItemData
     public InventoryItemData(Item i) {
         itemName = i.displayname;
         size = i.baseSize;
-        prefabName = i.UIPrefabName;
+        prefabName = i.PrefabName;
         exitFunc = i.OnExitInventory;
     }
 
