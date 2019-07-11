@@ -23,18 +23,18 @@ public class AICharacter : MonoBehaviour
 
     private void storeData(CharData d)
     {
-        d.PersistentStrings["CurrentBehaviour"] = m_currentBehaviourName;
+        d.SetString("CurrentBehaviour", m_currentBehaviourName);
         if (m_currentGoal != null)
-            d.PersistentStrings["CurrentGoal"] = m_currentGoal.gameObject.name;
+            d.SetString("CurrentGoal", m_currentGoal.gameObject.name);
         else
-            d.PersistentStrings["CurrentGoal"] = "none";
-        d.PersistentFloats["CurrentBehaviourPriority"] = m_currentPriority;
+           d.SetString("CurrentGoal", "none");
+        d.SetFloat("CurrentBehaviourPriority",  m_currentPriority);
         string goalList = "";
         foreach (Goal g in GoalList)
         {
             goalList += g.ExportString();
         }
-        d.PersistentStrings["GoalList"] = goalList;
+        d.SetString("GoalList", goalList);
         //Debug.Log("Saving item: " + d.PersistentStrings["GoalList"]);
     }
 
@@ -43,7 +43,7 @@ public class AICharacter : MonoBehaviour
         
         
         //Debug.Log("Loading a new Character: last goal: " + d.PersistentStrings["CurrentGoal"]);
-        string savedItems = d.PersistentStrings["GoalList"];
+        string savedItems = d.GetString("GoalList");
         var arr = savedItems.Split('\n');
         foreach (string s in arr)
         {
@@ -59,12 +59,12 @@ public class AICharacter : MonoBehaviour
                 }
             }
         }
-        if (d.PersistentStrings["CurrentGoal"] != "none")
+        if (d.GetString("CurrentGoal") != "none")
         {
-            GameObject g = (GameObject)Resources.Load(d.PersistentStrings["CurrentBehaviour"]);
-            Transform t = transform.Find(d.PersistentStrings["CurrentGoal"]);
+            GameObject g = (GameObject)Resources.Load(d.GetString("CurrentBehaviour"));
+            Transform t = transform.Find(d.GetString("CurrentGoal"));
             if (g != null && t != null)
-                SetBehaviour(g, t.gameObject.GetComponent<Goal>(), d.PersistentFloats["CurrentBehaviourPriority"]);
+                SetBehaviour(g, t.gameObject.GetComponent<Goal>(), d.GetFloat("CurrentBehaviourPriority"));
         }
         ReloadGoals();
         OnStart();

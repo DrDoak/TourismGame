@@ -111,7 +111,6 @@ public class Interactable : MonoBehaviour
 
     public virtual void onPress(GameObject interactor)
     {
-        Debug.Log("Default On Press Interact");
         if (IsInteractable(interactor))
             TriggerWithCoolDown(interactor);
     }

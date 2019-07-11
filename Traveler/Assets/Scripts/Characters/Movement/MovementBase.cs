@@ -285,15 +285,15 @@ public class MovementBase : MonoBehaviour
 
     private void storeData(CharData d)
     {
-        d.PersistentBools["IsPlayerControl"] = IsPlayerControl;
-        d.PersistentBools["CanJump"] = CanJump;
-        d.PersistentInt["MidAirJumps"] = MidAirJumps;
+        d.SetBool("IsPlayerControl", IsPlayerControl);
+        d.SetBool("CanJump", CanJump);
+        d.SetInt("MidAirJumps", MidAirJumps);
     }
 
     private void loadData(CharData d)
     {
-        IsPlayerControl = d.PersistentBools["IsPlayerControl"];
-        CanJump = d.PersistentBools["CanJump"];
-        MidAirJumps = d.PersistentInt["MidAirJumps"];
+        IsPlayerControl = d.GetBool("IsPlayerControl");
+        CanJump = d.GetBool("CanJump");
+        MidAirJumps = d.GetInt("MidAirJumps");
     }
 }

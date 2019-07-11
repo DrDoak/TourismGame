@@ -149,6 +149,7 @@ public class InventoryContainer : MonoBehaviour
         {
             i.OnEnterInventory(this, null);
         }
+        i.GetComponent<PersistentItem>().StoreData();
         onItemAdded(i, pos);
         if (items.ContainsKey(pos))
             items.Remove(pos);
@@ -157,6 +158,7 @@ public class InventoryContainer : MonoBehaviour
     }
     public void ClearItem(Vector2 v)
     {
+        Debug.Log("Attempting to clear item");
         if (!items.ContainsKey(v))
             return;
         if (eqpSlotInfo.ContainsKey(v))
@@ -248,12 +250,12 @@ public class InventoryContainer : MonoBehaviour
     private void storeData(CharData d)
     {
         string s = convertToSaveList(items);
-        d.PersistentStrings["initItemData"] = s;
+        d.SetString("initItemData", s);
     }
 
     private void loadData(CharData d)
     {
-        string savedItems = d.PersistentStrings["initItemData"];
+        string savedItems = d.GetString("initItemData");
         var arr = savedItems.Split('\n');
         initItemData.Clear();
         foreach (string s in arr)

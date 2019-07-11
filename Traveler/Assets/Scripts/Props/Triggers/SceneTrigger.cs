@@ -64,7 +64,8 @@ public class SceneTrigger : Interactable {
 				SaveObjManager.MoveItem (interactor, NextSceneName, newPos);
 			}
 			if (true) { //interactor.GetComponent<CharacterBase> ().IsCurrentPlayer) {
-				//GameManager.Instance.LoadRoom (sceneName);
+                        //GameManager.Instance.LoadRoom (sceneName);
+                
 				Initiate.Fade (NextSceneName, Color.black, 5.0f);
 			}
 			Destroy (interactor);

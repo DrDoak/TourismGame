@@ -203,7 +203,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InteractBox: {fileID: 8440787589307678622, guid: c2bd2e7b46f732e49b0e18819e3a04fd,
     type: 3}
-  Hitbox: {fileID: 0}
+  Hitbox: {fileID: 1000014045791988, guid: fe2b3e2d27b9cbe498fc049e74fb9ecf, type: 3}
   HitboxLine: {fileID: 8440787589307678622, guid: c2bd2e7b46f732e49b0e18819e3a04fd,
     type: 3}
   HitboxMulti: {fileID: 0}
@@ -274,7 +274,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5386132830991850520}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
@@ -341,6 +341,7 @@ MonoBehaviour:
   Target: {fileID: 0}
   Offset: {x: 0, y: 5, z: -10}
   CamAngle: 0
+  TimeNoPlayer: 0
 --- !u!81 &5386132830991850521
 AudioListener:
   m_ObjectHideFlags: 0
@@ -378,6 +379,8 @@ MonoBehaviour:
   InvPrefab: {fileID: 1441378368751047956, guid: 2282a649cc3ed5e4a930a237594f450f,
     type: 3}
   SlotPrefab: {fileID: 4988441968770332630, guid: 7e3b1c0c941325c46b7485658ce28f78,
+    type: 3}
+  ItemIconPrefab: {fileID: 8155221105840429236, guid: e67fbc9fd3739a945bd6771b39b62652,
     type: 3}
 --- !u!114 &1361451920
 MonoBehaviour:

@@ -14,8 +14,7 @@ public class DAVarSet : DialogueAction {
 			Debug.Log ("INVALID SET VARIABLE COMMAND, Need 2 Args got: " + args.Count);
 			return;
 		}
-		if (SaveObjManager.PublicVars ().PersistentStrings.ContainsKey (args [0]))
-			SaveObjManager.PublicVars ().PersistentStrings.Remove (args [0]);
-		SaveObjManager.PublicVars ().PersistentStrings.Add (args [0], args [1]);
+        SaveObjManager.PublicVars().ClearString(args[0]);
+		SaveObjManager.PublicVars ().SetString (args [0], args [1]);
 	}
 }

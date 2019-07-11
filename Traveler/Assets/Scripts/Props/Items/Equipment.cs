@@ -24,7 +24,7 @@ public class Equipment : Item
         if (es != null && es.SlotType == InventorySlotType.EQUIPMENT)
         {
             ItemInstance = Instantiate((GameObject)Resources.Load(PrefabName), s.gameObject.transform);
-            
+            Destroy(ItemInstance.GetComponent<PersistentItem>());
             ItemInstance.name = es.SlotName;
 
             ItemInstance.GetComponent<Equipment>().AddActionListeners(s.gameObject);
@@ -33,6 +33,7 @@ public class Equipment : Item
             {
                 ItemInstance.GetComponent<BasicPhysics>().GravityForce = 0f;
                 ItemInstance.GetComponent<SpriteRenderer>().enabled = false;
+                //Debug.Log("Removing spriterenderer");
             }
             OnEquip(s, es);
 

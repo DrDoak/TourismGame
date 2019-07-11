@@ -147,14 +147,14 @@ public class Orientation : MonoBehaviour
     }
     private void storeData(CharData d)
     {
-        d.PersistentInt["Direction"] = (int)CurrentDirection;
-        d.PersistentBools["FacingLeft"] = FacingLeft;
+        d.SetInt("Direction", (int)CurrentDirection);
+        d.SetBool("FacingLeft", FacingLeft);
     }
 
     private void loadData(CharData d)
     {
-        SetDirection((Direction)d.PersistentInt["Direction"]);
-        FacingLeft = d.PersistentBools["FacingLeft"];
+        SetDirection((Direction)d.GetInt("Direction"));
+        FacingLeft = d.GetBool("FacingLeft");
     }
 }
 

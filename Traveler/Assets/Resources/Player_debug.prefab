@@ -30,7 +30,8 @@ GameObject:
   - component: {fileID: 5169421885405921464}
   - component: {fileID: 1535769983}
   - component: {fileID: 1535769984}
-  m_Layer: 0
+  - component: {fileID: 1225506017}
+  m_Layer: 10
   m_Name: Player_debug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,6 +188,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -235,7 +237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FacingLeft: 0
-  CurrentDirection: 2
+  CurrentDirection: 1
 --- !u!95 &1672053672067786521
 Animator:
   serializedVersion: 3
@@ -372,9 +374,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: {x: 4, y: 3}
-  initItemData:
-  - itemName: DebugEquipment
-    inventoryLocation: {x: 0, y: 0}
+  initItemData: []
   slotData:
   - SlotName: Item1
     SlotType: 1
@@ -471,6 +471,56 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1225506017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672053672067786513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92108ad08feac9e4796bf10cf0c5fe4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AttackName: default
+  m_HitboxInfo: []
+  m_AttackAnimInfo:
+    AnimSpeed: 1
+    StartUpTime: 0.5
+    AttackTime: 0
+    RecoveryTime: 0.5
+    StartUpAnimation: none
+    RecoveryAnimation: none
+  m_AIInfo:
+    Frequency: 0.5
+    UniqueAIPrediction: 0
+    AutoAttack: 0
+    AIPredictionHitbox: {x: 0, y: 0, z: 0}
+    AIPredictionOffset: {x: 0, y: 0, z: 0}
+    DrawPredictionHitbox: 0
+  m_SoundInfo:
+    StartupSoundFX: {fileID: 0}
+    AttackSoundFX: {fileID: 0}
+  m_SentimentInfo:
+    RequiredMinSentiment: 0
+    ConsumedSentiment: 0
+    DrainOnWhiff: 1
+    TransferSentiment: 0
+  m_ProjectileData:
+  - Delay: 0
+    Projectile: {fileID: 0}
+    ProjectileCreatePos: {x: 0, y: 0}
+    AimTowardsTarget: 0
+    MaxAngle: 0
+    ProjectileAimDirection: {x: 0, y: 0}
+    ProjectileSpeed: 0
+    PenetrativePower: 0
+    Damage: 0
+    Stun: 0
+    HitboxDuration: 0
+    Knockback: {x: 0, y: 0}
+    Element: 0
 --- !u!1 &5678080820492919498
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,7 +530,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5678080820492919499}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: waist
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -513,7 +563,7 @@ GameObject:
   - component: {fileID: 5678080820626851556}
   - component: {fileID: 5678080820626851579}
   - component: {fileID: 5678080820626851578}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -549,6 +599,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -628,7 +679,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5678080820714170948}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: waist_torso
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -658,7 +709,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5678080820981348214}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SpritePieces
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -691,7 +742,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5678080821085580934}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: hand_right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -721,7 +772,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5678080821176035433}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -754,7 +805,7 @@ GameObject:
   - component: {fileID: 5678080821286318540}
   - component: {fileID: 5678080821286318531}
   - component: {fileID: 5678080821286318530}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -809,6 +860,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -869,7 +921,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5678080821589942897}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: head_neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -899,7 +951,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5678080821595825098}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: hand_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -932,7 +984,7 @@ GameObject:
   - component: {fileID: 5678080821663039056}
   - component: {fileID: 5678080821663039063}
   - component: {fileID: 5678080821663039062}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: torso_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -971,6 +1023,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

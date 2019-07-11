@@ -35,12 +35,12 @@ public class TextboxTrigger : Interactable {
 	}
 
 	private void storeData(CharData d) {
-		d.PersistentBools["TriggerUsed"] = TriggerUsed;
-		d.PersistentStrings ["TextboxString"] = TextboxString;
+		d.SetBool("TriggerUsed", TriggerUsed);
+		d.SetString( "TextboxString", TextboxString);
 	}
 
 	private void loadData(CharData d) {
-		TriggerUsed = d.PersistentBools ["TriggerUsed"];
-		TextboxString = d.PersistentStrings ["TextboxString"];
+		TriggerUsed = d.GetBool("TriggerUsed");
+		TextboxString = d.GetString("TextboxString");
 	}
 }

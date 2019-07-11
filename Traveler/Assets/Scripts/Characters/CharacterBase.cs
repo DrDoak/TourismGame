@@ -353,11 +353,11 @@ public class CharacterBase : MonoBehaviour
 
     private void storeData(CharData d)
     {
-        d.PersistentBools["IsAutonomous"] = IsAutonomous;
+        d.SetBool("IsAutonomous",IsAutonomous);
     }
 
     private void loadData(CharData d)
     {
-        IsAutonomous = d.PersistentBools["IsAutonomous"];
+        IsAutonomous = d.GetBool("IsAutonomous",true);
     }
 }

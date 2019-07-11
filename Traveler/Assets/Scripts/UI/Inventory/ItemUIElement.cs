@@ -41,11 +41,15 @@ public class ItemUIElement : MonoBehaviour, IDragHandler, IEndDragHandler,
 
     private void dropItem(DialogueOption dop)
     {
-        Debug.Log("Attempting drop to: " + ItemInfo.CurrentSlot.m_container.gameObject.transform.position );
-        GameObject go = Instantiate(gameObject, ItemInfo.CurrentSlot.m_container.gameObject.transform.position + new Vector3(0f, 0.25f, 0f), Quaternion.identity);
+        //Debug.Log("Attempting drop to: " + ItemInfo.CurrentSlot.m_container.gameObject.transform.position );
+        GameObject go = Instantiate((GameObject)Resources.Load(ItemInfo.PrefabName), ItemInfo.CurrentSlot.m_container.gameObject.transform.position + new Vector3(0f, 0.25f, 0f), Quaternion.identity);
         ItemInfo.CurrentSlot.m_container.ClearItem(ItemInfo.CurrentSlot.Coordinate);
-        //go.GetComponent<BasicPhysics>().Floating = false;
+        go.GetComponent<PersistentItem>().recreated = true;
+
+        go.GetComponent<BasicPhysics>().Floating = false;
         GameObject.Destroy(dop.MasterBox.gameObject);
+        //Debug.Assert(false);
+        GameObject.Destroy(gameObject);
         
     }
     public void OnBeginDrag(PointerEventData eventData)

@@ -185,22 +185,22 @@ public class PropertyHolder : MonoBehaviour {
 			allPs += pL [i].GetType ().ToString ();
 			allPs += ",";
 		}
-		d.PersistentStrings["Properties"] = allPs;
-		d.PersistentInt["NumTransfers"] = NumTransfers;
-		d.PersistentInt["MaxSlots"] = MaxSlots;
+		d.SetString("Properties", allPs);
+		d.SetInt("NumTransfers", NumTransfers);
+		d.SetInt("MaxSlots", MaxSlots);
 		//Debug.Log ("Saving: "); //d.PersistentStrings["Properties"]);
 	}
 
 	private void loadData(CharData d) {
 		//Debug.Log ("Loading: " + d.PersistentStrings["Properties"]);
 
-		NumTransfers = d.PersistentInt["NumTransfers"];
+		NumTransfers = d.GetInt("NumTransfers");
 
-		MaxSlots = d.PersistentInt["MaxSlots"];
+		MaxSlots = d.GetInt("MaxSlots");
 		GetComponent<PropertyHolder> ().ClearProperties ();
 		string lastProp = "";
-		for (int i = 0; i < d.PersistentStrings["Properties"].Length; i++) {
-			char l = d.PersistentStrings ["Properties"].ToCharArray () [i];
+		for (int i = 0; i < d.GetString("Properties").Length; i++) {
+			char l = d.GetString("Properties").ToCharArray () [i];
 			if (l == ',') {
 				Type t = Type.GetType (lastProp);
 				AddProperty (lastProp);

@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 public class PersistentItem : MonoBehaviour {
-	public CharData data = new CharData();
+    public CharData data; // = new CharData();
 
 	public bool recreated = false;
 	public Vector3 StartPosition;
@@ -27,9 +27,9 @@ public class PersistentItem : MonoBehaviour {
 		if (data.regID == "") {
 			data.regID = "Not Assigned";
 		}
-		if (recreated)
+		if (data != null && recreated)
 			LoadData ();
-		if (SaveObjManager.CheckRegistered(gameObject)) {
+		if (data != null && SaveObjManager.CheckRegistered(gameObject)) {
 			//Debug.Log (gameObject + " Already registered, deleting duplicate ID: " + data.regID);
 			Destroy(gameObject);
 		}

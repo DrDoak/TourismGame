@@ -15,8 +15,8 @@ public class DAVarCheck : DialogueAction {
 			Debug.Log ("INVALID SET VARIABLE COMMAND, Need 3 Args got: " + args.Count);
 			return;
 		}
-		string s = SaveObjManager.PublicVars ().PersistentStrings [args [0]];
-		if (s == null || s != args[1])
+		string s = SaveObjManager.PublicVars ().GetString (args [0]);
+		if (s.Length > 0 || s != args[1])
 			return;
 		originTextbox.PerformSpecialAction (args [2]);
 	}

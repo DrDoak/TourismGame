@@ -349,14 +349,14 @@ public class Attackable : MonoBehaviour
 	}
 
 	private void storeData(CharData d) {
-		d.PersistentFloats["Health"] = Health;
-		d.PersistentFloats["MaxHealth"] = MaxHealth;
-		d.PersistentInt["Faction"] = (int)Faction;
+		d.SetFloat("Health", Health);
+		d.SetFloat("MaxHealth", MaxHealth);
+		d.SetInt("Faction", (int)Faction);
 	}
 
 	private void loadData(CharData d) {
-		MaxHealth = d.PersistentFloats["MaxHealth"];
-		SetHealth (d.PersistentFloats["Health"]);
-		Faction = (FactionType)d.PersistentInt["Faction"];
+		MaxHealth = d.GetFloat("MaxHealth");
+        Health = d.GetFloat("Health");
+		Faction = (FactionType)d.GetInt("Faction");
 	}
 }

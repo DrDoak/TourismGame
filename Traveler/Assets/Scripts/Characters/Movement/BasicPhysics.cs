@@ -163,12 +163,12 @@ public class BasicPhysics : MonoBehaviour
     }
     private void storeData(CharData d)
     {
-        d.PersistentFloats["TerminalVelocity"] = TerminalVelocity;
+        d.SetFloat("TerminalVelocity", TerminalVelocity);
     }
 
     private void loadData(CharData d)
     {
-        TerminalVelocity = d.PersistentFloats["TerminalVelocity"];
+        TerminalVelocity = d.GetFloat("TerminalVelocity",TerminalVelocity);
     }
 
     public bool OnGround()
