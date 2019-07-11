@@ -23,6 +23,7 @@ public class InputPacket
     public bool JumpHold;
     public string equipmentSlotUsed = "None";
     public bool OpenInventory;
+    public bool Interact = false;
 }
 
 public class MovementBase : MonoBehaviour
@@ -220,6 +221,10 @@ public class MovementBase : MonoBehaviour
         if (ip.OpenInventory)
         {
             m_eqp.ToggleDisplay();
+        }
+        if (ip.Interact) {
+            m_eqp.CloseContainer();
+            GetComponent<Interactor>().OnAttemptInteract();
         }
         m_inputMove = ip.InputMove;
     }

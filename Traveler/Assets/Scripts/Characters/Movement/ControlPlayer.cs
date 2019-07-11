@@ -20,7 +20,7 @@ public class ControlPlayer : CharCustomControl
         }
         if (Input.GetButtonDown("Interact"))
         {
-            GetComponent<Interactor>().OnAttemptInteract();
+            newPacket.Interact = true;
         }
         newPacket.equipmentSlotUsed = "None";
         if (Input.GetButtonDown("Item1"))

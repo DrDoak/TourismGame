@@ -23,6 +23,7 @@ public class CameraController : MonoBehaviour
             transform.position = Target.transform.position + Offset;
             GetComponent<Camera>().enabled = true;
         }
+        TimeNoPlayer = 0f;
         SceneManager.sceneLoaded += onRoomLoad;
     }
     private void Update()
