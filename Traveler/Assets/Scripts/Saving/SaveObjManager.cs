@@ -331,6 +331,7 @@ public class SaveObjManager : MonoBehaviour{
 					} else if (data.targetDir == RoomDirection.DOWN) {
 							nv = rm.transform.position - new Vector3 (0f, rm.GetComponent<BoxCollider> ().size.z + 1f, 0f);
 					}
+                    nv -= new Vector3(0f, rm.transform.localScale.y / 2f,0f);
 					found = true;
 					break;
 				}
