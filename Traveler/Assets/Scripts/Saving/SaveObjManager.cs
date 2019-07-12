@@ -63,9 +63,12 @@ public class SaveObjManager : MonoBehaviour{
 		string json = File.ReadAllText(savePath+ "base.txt");
 		CurrentSaveInfo = JsonUtility.FromJson<SaveProfileContainer> (json);
 		registeredPermItems.Clear ();
-		registeredPermItems = CurrentSaveInfo.RegisteredIDs;			
-		SceneManager.LoadScene (CurrentSaveInfo.LastRoomName, LoadSceneMode.Single);
-		return true;
+		registeredPermItems = CurrentSaveInfo.RegisteredIDs;
+        
+        SceneManager.LoadScene (CurrentSaveInfo.LastRoomName, LoadSceneMode.Single);
+        
+
+        return true;
 	}
 	public bool SaveProfile(string profileName) {
 		string f = profileName + "/";
@@ -281,6 +284,7 @@ public class SaveObjManager : MonoBehaviour{
 			//PersistentItem pi = RecreatePersistentItem
 			//pi.registryCheck ();
 		}
+        FindObjectOfType<CameraController>().ResetCamera();
 		//OnLoaded();
 		//ClearActorList();
 	}

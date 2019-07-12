@@ -12,33 +12,49 @@ public class CameraController : MonoBehaviour
     public float CamAngle;
     public float TimeNoPlayer = 0f;
 
-    private float SEARCHFORPLAYER = 1f;
+    private float SEARCHFORPLAYER = 0.2f;
+    private float aggressiveSearchEnd;
+    private const float AGGRESSIVE_SEARCH_TIME = 0.5f;
     // Start is called before the first frame update
     void Awake()
     {
 
         if (AutoFindTarget && Target == null && FindObjectOfType<ControlPlayer>() != null)
         {
-            Target = FindObjectOfType<ControlPlayer>().gameObject;
+            SetCameraTarget();
             transform.position = Target.transform.position + Offset;
-            GetComponent<Camera>().enabled = true;
         }
-        TimeNoPlayer = 0f;
+        //TimeNoPlayer = 0f;
         SceneManager.sceneLoaded += onRoomLoad;
     }
     private void Update()
     {
         if (AutoFindTarget && Target == null && FindObjectOfType<ControlPlayer>() != null)
         {
-            if (TimeNoPlayer < SEARCHFORPLAYER)
+            if (TimeNoPlayer < SEARCHFORPLAYER && Time.timeSinceLevelLoad > aggressiveSearchEnd)
             {
                 TimeNoPlayer += Time.deltaTime;
             } else
             {
-                TimeNoPlayer = 0f;
-                Target = FindObjectOfType<ControlPlayer>().gameObject;
+                
+                SetCameraTarget();
             }
         }
+    }
+    private void SetCameraTarget()
+    {
+        ControlPlayer[] players = FindObjectsOfType<ControlPlayer>();
+        foreach (ControlPlayer pl in players)
+        {
+            if (pl.GetComponent<MovementBase>().IsPlayerControl)
+            {
+                GetComponent<Camera>().enabled = true;
+                TimeNoPlayer = 0f;
+                Target = pl.gameObject;
+            }
+                
+        }
+        
     }
     // Update is called once per frame
     void LateUpdate()
@@ -56,6 +72,15 @@ public class CameraController : MonoBehaviour
 
     private void onRoomLoad(Scene scene, LoadSceneMode mode)
     {
+        ResetCamera();
+        Debug.Log("On room load");
         TimeNoPlayer = 10f;
+        aggressiveSearchEnd = Time.timeSinceLevelLoad + AGGRESSIVE_SEARCH_TIME;
+
+    }
+    public void ResetCamera()
+    {
+        TimeNoPlayer = 10f;
+        aggressiveSearchEnd = Time.timeSinceLevelLoad + AGGRESSIVE_SEARCH_TIME;
     }
 }
