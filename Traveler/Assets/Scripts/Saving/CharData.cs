@@ -46,7 +46,6 @@ public class CharData {
 	public string prefabPath;
 	public string name;
 	public Vector3 pos;
-	public float zRot;
 
 	[Serializable] public class DictionaryOfStringAndInt : SerializableDictionary<string, int> {}
 	public DictionaryOfStringAndInt PersistentInt;

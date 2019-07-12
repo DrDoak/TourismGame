@@ -5,25 +5,30 @@ using UnityEngine;
 public class Equipment : Item
 {
     public GameObject EquipmentPiecePrefab;
-    public GameObject ItemInstance;
-
+    
     public virtual void OnEquip(InventoryContainer i, EquipmentSlot es) { }
     public virtual void OnDeequip(InventoryContainer i, EquipmentSlot es) { }
+    public virtual void OnPrimaryUse(Vector2 input, GameObject user) { }
+    public virtual void OnSecondaryUse(Vector2 input, GameObject user) { OnPrimaryUse(input, user); }
     public override bool CanEnterInventory(InventoryContainer i, InventorySlot s)
     {
         return (s.SlotType != InventorySlotType.CLOTHES);
     }
-    public virtual void OnPrimaryUse(Vector2 input,GameObject user) { }
-    public virtual void OnSecondaryUse(Vector2 input, GameObject user) { OnPrimaryUse(input,user); }
+
 
     private string m_equipmentPieceType = "";
+    private GameObject ItemInstance;
 
     public override void OnEnterInventory(InventoryContainer s, EquipmentSlot es)
     {
         base.OnEnterInventory(s, es);
         if (es != null && es.SlotType == InventorySlotType.EQUIPMENT)
         {
-            ItemInstance = Instantiate((GameObject)Resources.Load(PrefabName), s.gameObject.transform);
+            ItemInstance = Instantiate((GameObject)Resources.Load(ItemProperties.prefabPath), s.gameObject.transform);
+            ItemInstance.GetComponent<Item>().ItemProperties = ItemProperties;
+            ItemInstance.GetComponent<Item>().LoadItems();
+            m_onSave = ItemInstance.GetComponent<Item>().onItemSave;
+
             Destroy(ItemInstance.GetComponent<PersistentItem>());
             ItemInstance.name = es.SlotName;
 
@@ -72,26 +77,4 @@ public class Equipment : Item
             }
         }
     }
-    /*
-internal void Start()
-	{
-		AttackInfo[] at1 = GetComponentsInChildren<AttackInfo> ();
-		AttackInfo[] at2 =  GetComponents<AttackInfo>();
-		var at = new AttackInfo[at1.Length + at2.Length];
-		at1.CopyTo(at, 0);
-		at2.CopyTo(at, at1.Length); 
-		foreach (AttackInfo a in at)
-		{
-			if (!Attacks.ContainsKey(a.AttackName))
-			{
-				Attacks.Add(a.AttackName, a);
-				a.AddListener(OnAttackProgressed);
-			}
-		}
-		string[] defaultAttacks = new string[]{ "neutral", "up", "down", "side", "air", "air_up", "air_down", "air_side",
-			"sneutral", "sup", "sdown", "sside", "sair", "sair_up", "sair_down", "sair_side" };
-		foreach (string s in defaultAttacks) {
-			Aliases ["i_" + s] = s;
-		}
-	}*/
 }

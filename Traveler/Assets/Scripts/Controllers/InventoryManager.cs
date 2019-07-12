@@ -159,19 +159,23 @@ public class InventoryManager : MonoBehaviour
     }
     private void addItemIcon(InventoryItemData i, Vector2 loc, Dictionary<Vector2,InventorySlot> slots, Transform parent,InventoryContainer c)
     {
-        if ((GameObject)Resources.Load(i.prefabName) == null)
-            return;
-        GameObject tempItem = Instantiate((GameObject)Resources.Load(i.prefabName)); 
+        //if ((GameObject)Resources.Load(i.ItemInstance.ItemProperties.prefabPath) == null)
+        //    return;
+        //GameObject tempItem = Instantiate((GameObject)Resources.Load(i.ItemInstance.ItemProperties.prefabPath)); 
         GameObject go = Instantiate(ItemIconPrefab, parent);
         
         go.transform.localPosition = new Vector3((loc.x) * 50f, -50 - (loc.y - 1) * 50f
                 , 3f);
 
-        go.GetComponent<ItemUIElement>().ItemInfo = tempItem.GetComponent<Item>();
+        go.GetComponent<ItemUIElement>().ItemInfo = i.ItemInstance;
+        
         go.GetComponent<ItemUIElement>().ItemInfo.CurrentSlot = slots[loc];
-        if (tempItem.GetComponent<Item>() != null)
-            go.GetComponent<Image>().sprite = tempItem.GetComponent<Item>().InventoryIcon;
-        Destroy(tempItem);
+        if (i.InvIcon != null)
+        {
+            go.GetComponent<Image>().sprite = i.InvIcon;
+        }
+            
+        //Destroy(tempItem);
     }
 
     public static List<Vector2> GetOccupiedSlots(Item i)

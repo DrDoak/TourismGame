@@ -43,7 +43,6 @@ public class PersistentItem : MonoBehaviour {
 	private void saveBasic(CharData d) {
 		d.name = gameObject.name;
 		d.pos = transform.position;
-		d.zRot = transform.rotation.eulerAngles.z;
 		if (d.prefabPath == "")
 			d.prefabPath = getProperName ();
 	}
@@ -71,8 +70,6 @@ public class PersistentItem : MonoBehaviour {
 	}
 
 	private void loadBasic(CharData d) {
-		Quaternion q = Quaternion.Euler(new Vector3 (0f, 0f, d.zRot));
-		transform.localRotation = q;
 		gameObject.name = d.name;
 		gameObject.name = getProperName ();
 	}
@@ -119,4 +116,16 @@ public class PersistentItem : MonoBehaviour {
 		SaveObjManager.OnLoaded -= LoadData;
 		SaveObjManager.OnBeforeSave -= StoreData;
 	}
+
+    public string GetSaveString()
+    {
+        StoreData();
+        return JsonUtility.ToJson(data);
+    }
+
+    public void UpdateFromString(string serializedData)
+    {
+        data = JsonUtility.FromJson<CharData>(serializedData);
+        LoadData();
+    }
 }

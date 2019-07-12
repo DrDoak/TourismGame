@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class InitialItemData
 {
-    public string itemName;
     public Vector2 inventoryLocation;
+    public CharData ItemProperties;
 }
 [System.Serializable]
 public class EquipmentSlot
@@ -22,7 +23,6 @@ public enum InventorySlotType
 
 public class InventoryItemData
 {
-    public string prefabName;
     [HideInInspector]
     public string itemName;
     [HideInInspector]
@@ -31,18 +31,16 @@ public class InventoryItemData
     public delegate void OnExitReturnFunc(InventoryContainer i, EquipmentSlot es);
     [HideInInspector]
     public OnExitReturnFunc exitFunc;
+    public Item ItemInstance;
+    public Sprite InvIcon;
 
-    public InventoryItemData(Item i) {
+    public InventoryItemData(Item i, CharData itemData = null) {
         itemName = i.displayname;
         size = i.baseSize;
-        prefabName = i.PrefabName;
         exitFunc = i.OnExitInventory;
+        ItemInstance = i;
+        InvIcon = i.InventoryIcon;
     }
-
-    /*public Item ToItem()
-    {
-
-    }*/
 }
 public class InventoryContainer : MonoBehaviour
 {
@@ -63,7 +61,7 @@ public class InventoryContainer : MonoBehaviour
         if (GetComponent<PersistentItem>() != null)
             GetComponent<PersistentItem>().InitializeSaveLoadFuncs(storeData, loadData);
     }
-    // Start is called before the first frame update
+
     void Start()
     {
         eqpSlotInfo = new Dictionary<Vector2, EquipmentSlot>();
@@ -71,6 +69,7 @@ public class InventoryContainer : MonoBehaviour
         {
             eqpSlotInfo[es.coordinate] = es;
         }
+
         items = new Dictionary<Vector2, InventoryItemData>();
 
         m_freeSlots = new List<Vector2>();
@@ -149,7 +148,6 @@ public class InventoryContainer : MonoBehaviour
         {
             i.OnEnterInventory(this, null);
         }
-        i.GetComponent<PersistentItem>().StoreData();
         onItemAdded(i, pos);
         if (items.ContainsKey(pos))
             items.Remove(pos);
@@ -158,7 +156,7 @@ public class InventoryContainer : MonoBehaviour
     }
     public void ClearItem(Vector2 v)
     {
-        Debug.Log("Attempting to clear item");
+        Debug.Log("Attempting to clear item at position: " + v);
         if (!items.ContainsKey(v))
             return;
         if (eqpSlotInfo.ContainsKey(v))
@@ -170,7 +168,9 @@ public class InventoryContainer : MonoBehaviour
             
         onItemRemoved(items[v], v);
         items.Remove(v);
+        Debug.Log("Adding free slot: " + v);
         m_freeSlots.Add(v);
+        m_freeSlots.Sort((a, b) => a.y.CompareTo(b.y));
     }
     public Vector2 findFreeSlot(Item i)
     {
@@ -193,9 +193,11 @@ public class InventoryContainer : MonoBehaviour
         foreach (InitialItemData iid in initItemData)
         {
             //Debug.Log("Attempting to load: " + iid);
-            if ((GameObject)Resources.Load(iid.itemName) == null)
+            if ((GameObject)Resources.Load(iid.ItemProperties.prefabPath) == null)
                 continue;
-            GameObject go = Instantiate((GameObject)Resources.Load(iid.itemName));
+            GameObject go = Instantiate((GameObject)Resources.Load(iid.ItemProperties.prefabPath));
+            go.GetComponent<Item>().ItemProperties = iid.ItemProperties;
+            go.GetComponent<Item>().LoadItems();
             AddItem(go.GetComponent<Item>(), iid.inventoryLocation);
             Destroy(go);
         }
@@ -239,9 +241,10 @@ public class InventoryContainer : MonoBehaviour
         foreach (Vector2 v in items.Keys)
         {
             InitialItemData newItem = new InitialItemData();
-            //Debug.Log("Item location: : " + v);
             newItem.inventoryLocation = v;
-            newItem.itemName = items[v].prefabName;
+            newItem.ItemProperties = new CharData();
+            items[v].ItemInstance.SaveItems();
+            newItem.ItemProperties = items[v].ItemInstance.ItemProperties;
 
             saveList += JsonUtility.ToJson(newItem) + "\n";
         }

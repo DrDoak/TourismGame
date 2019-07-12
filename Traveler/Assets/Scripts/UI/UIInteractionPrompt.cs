@@ -26,7 +26,7 @@ public class UIInteractionPrompt : MonoBehaviour
                 if (io.OverlapInteractions.Count > 0)
                 {
                     Interactable i = io.OverlapInteractions[io.OverlapInteractions.Count - 1];
-                    m_promptUI.text = "Press ' Interact ' " + i.InteractionPrompt;
+                    m_promptUI.text = "Press ' Interact ' " + i.interactableObjectInfo.InteractionPrompt;
                 } else
                 {
                     m_promptUI.text = "";

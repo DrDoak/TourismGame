@@ -2,19 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class InteractionInfo
+{
+    public string InteractionPrompt = "to Interact";
+    public int Priority = 1;
+    public bool autoTrigger = true;
+    public float TriggerRefresh = 2.0f;
+    public bool oneTime = true;
+}
+
 public class Interactable : MonoBehaviour
 {
     [HideInInspector]
     public Interactor Actor;
 
-    public string InteractionPrompt = "to Interact";
+    public InteractionInfo interactableObjectInfo;
 
-    public int Priority = 1;
-    public bool autoTrigger = true;
-    public float TriggerRefresh = 2.0f;
     private float lastTimeTriggered = 0.0f;
 
-    public bool oneTime = true;
+    
     [HideInInspector]
     public bool TriggerUsed = false;
 
@@ -32,7 +39,7 @@ public class Interactable : MonoBehaviour
 
     protected void init()
     {
-        lastTimeTriggered = -TriggerRefresh;
+        lastTimeTriggered = -interactableObjectInfo.TriggerRefresh;
         Actor = null;
         //Will become true if the interactor presses/holds the interaction key while in this interactable's area
         HoldTrigger = false;
@@ -53,13 +60,13 @@ public class Interactable : MonoBehaviour
     }
     protected void destroyAfterUse()
     {
-        if (oneTime && TriggerUsed)
+        if (interactableObjectInfo.oneTime && TriggerUsed)
             Destroy(gameObject);
     }
 
     protected void TriggerWithCoolDown(GameObject Interactor)
     {
-        if (Time.timeSinceLevelLoad - lastTimeTriggered >= TriggerRefresh)
+        if (Time.timeSinceLevelLoad - lastTimeTriggered >= interactableObjectInfo.TriggerRefresh)
         {
             lastTimeTriggered = Time.timeSinceLevelLoad;
             TriggerUsed = true;
@@ -70,7 +77,7 @@ public class Interactable : MonoBehaviour
 
     internal void OnTriggerEnter(Collider other)
     {
-        if (autoTrigger && other.gameObject.GetComponent<Interactor>())
+        if (interactableObjectInfo.autoTrigger && other.gameObject.GetComponent<Interactor>())
         {
             TriggerWithCoolDown(other.gameObject);
         }

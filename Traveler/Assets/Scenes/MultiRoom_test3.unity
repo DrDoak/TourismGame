@@ -593,33 +593,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1361451919, guid: 274fac4c133641047b34f6c88e3262ef, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5386132830172196312, guid: 274fac4c133641047b34f6c88e3262ef,
-        type: 3}
-      propertyPath: Hitbox
-      value: 
-      objectReference: {fileID: 1000014045791988, guid: fe2b3e2d27b9cbe498fc049e74fb9ecf,
-        type: 3}
-    - target: {fileID: 3007610042131153962, guid: 274fac4c133641047b34f6c88e3262ef,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1338732972, guid: 274fac4c133641047b34f6c88e3262ef, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5386132830991850499, guid: 274fac4c133641047b34f6c88e3262ef,
-        type: 3}
-      propertyPath: ItemIconPrefab
-      value: 
-      objectReference: {fileID: 8155221105840429236, guid: e67fbc9fd3739a945bd6771b39b62652,
-        type: 3}
-    m_RemovedComponents:
-    - {fileID: 1361451919, guid: 274fac4c133641047b34f6c88e3262ef, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274fac4c133641047b34f6c88e3262ef, type: 3}
 --- !u!1001 &716983127
 PrefabInstance:

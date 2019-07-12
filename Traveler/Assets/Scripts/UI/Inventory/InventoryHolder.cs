@@ -67,7 +67,6 @@ public class InventoryHolder : Interactable
         foreach (InventoryContainer m_container in m_containers.Values)
         {
             Vector2 v = m_container.findFreeSlot(i);
-            Debug.Log("investigating container: " + m_container + " : vector: " + v);
             if (v != badV)
             {
                 m_container.AddItem(i, v);

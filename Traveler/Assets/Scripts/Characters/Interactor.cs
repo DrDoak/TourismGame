@@ -65,12 +65,12 @@ public class Interactor : MonoBehaviour
         {
             if (i == null)
                 continue;
-            if (i.Priority > maxPriority || 
-                ( i.Priority == maxPriority && 
+            if (i.interactableObjectInfo.Priority > maxPriority || 
+                ( i.interactableObjectInfo.Priority == maxPriority && 
                 Vector3.Distance(i.gameObject.transform.position,transform.position) < minDistance))
             {
                 minDistance = Vector3.Distance(i.gameObject.transform.position, transform.position);
-                maxPriority = i.Priority;
+                maxPriority = i.interactableObjectInfo.Priority;
                 bestInteractable = i;
             }
         }

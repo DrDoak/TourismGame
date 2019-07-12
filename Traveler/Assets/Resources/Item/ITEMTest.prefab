@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 8095627233711443186}
   - component: {fileID: 8095627233711443189}
   - component: {fileID: 8095627233711443190}
-  - component: {fileID: 8095627233711443176}
   - component: {fileID: 6742281933180776549}
   - component: {fileID: -4023153718459905314}
+  - component: {fileID: 8095627233711443176}
   m_Layer: 9
   m_Name: ITEMTest
   m_TagString: Untagged
@@ -136,40 +136,6 @@ MonoBehaviour:
   CanMove: 1
   Floating: 0
   m_trueVelocity: {x: 0, y: 0, z: 0}
---- !u!114 &8095627233711443176
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8095627233711443185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92acc23af4626be4fa32c868acac10d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data:
-    regID: Not Assigned
-    prefabPath: Item/ITEMTest
-    name: 
-    pos: {x: 0, y: 0, z: 0}
-    zRot: 0
-    PersistentInt:
-      keys: []
-      values: 
-    PersistentFloats:
-      keys: []
-      values: []
-    PersistentStrings:
-      keys: []
-      values: []
-    PersistentBools:
-      keys: []
-      values: 
-    targetDir: 0
-    targetID: 
-  recreated: 0
-  StartPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &6742281933180776549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,11 +198,62 @@ MonoBehaviour:
   Rotated: 0
   CurrentSlot: {fileID: 0}
   baseSize: {x: 1, y: 1}
-  PrefabName: item/ITEMTest
   displayname: 
   InventoryIcon: {fileID: 21300000, guid: 8c96a66f3aa03cc4195f12ec3149ae9f, type: 3}
+  ItemProperties:
+    regID: Not Assigned
+    prefabPath: 
+    name: 
+    pos: {x: 0, y: 0, z: 0}
+    PersistentInt:
+      keys: []
+      values: 
+    PersistentFloats:
+      keys: []
+      values: []
+    PersistentStrings:
+      keys: []
+      values: []
+    PersistentBools:
+      keys: []
+      values: 
+    targetDir: 0
+    targetID: 
   EquipmentPiecePrefab: {fileID: 2842298981686436731, guid: 04ef7a023f9b8384987939ae639f8daa,
     type: 3}
   ItemInstance: {fileID: 0}
   PrimaryAction: {fileID: 6742281933180776549}
   SecondaryAction: {fileID: 0}
+--- !u!114 &8095627233711443176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8095627233711443185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92acc23af4626be4fa32c868acac10d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    regID: Not Assigned
+    prefabPath: Item/ITEMTest
+    name: 
+    pos: {x: 0, y: 0, z: 0}
+    PersistentInt:
+      keys: []
+      values: 
+    PersistentFloats:
+      keys: []
+      values: []
+    PersistentStrings:
+      keys: []
+      values: []
+    PersistentBools:
+      keys: []
+      values: 
+    targetDir: 0
+    targetID: 
+  recreated: 0
+  StartPosition: {x: 0, y: 0, z: 0}

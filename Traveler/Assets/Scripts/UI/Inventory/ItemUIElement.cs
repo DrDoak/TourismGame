@@ -35,6 +35,7 @@ public class ItemUIElement : MonoBehaviour, IDragHandler, IEndDragHandler,
             doi.AddDialogueOption("Drop Item", dropItem);
             doi.AddDialogueOption("Text2", "you selection something else");
             doi.AddDialogueOption("Last 3", "Final item selected");
+            Debug.Log("open menu item: " + ItemInfo);
             TextboxManager.StartDialogueOptions(doi);
         }
     }
@@ -42,8 +43,13 @@ public class ItemUIElement : MonoBehaviour, IDragHandler, IEndDragHandler,
     private void dropItem(DialogueOption dop)
     {
         //Debug.Log("Attempting drop to: " + ItemInfo.CurrentSlot.m_container.gameObject.transform.position );
-        GameObject go = Instantiate((GameObject)Resources.Load(ItemInfo.PrefabName), ItemInfo.CurrentSlot.m_container.gameObject.transform.position + new Vector3(0f, 0.25f, 0f), Quaternion.identity);
+        GameObject go = Instantiate((GameObject)Resources.Load(ItemInfo.ItemProperties.prefabPath), 
+            ItemInfo.CurrentSlot.m_container.gameObject.transform.position + new Vector3(0f, 0.25f, 0f), Quaternion.identity);
+
         ItemInfo.CurrentSlot.m_container.ClearItem(ItemInfo.CurrentSlot.Coordinate);
+        Debug.Log("Saving item: " + ItemInfo);
+        ItemInfo.SaveItems();
+        go.GetComponent<Item>().ItemProperties = ItemInfo.ItemProperties;
         go.GetComponent<PersistentItem>().recreated = true;
 
         go.GetComponent<BasicPhysics>().Floating = false;
