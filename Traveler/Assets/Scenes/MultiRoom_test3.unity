@@ -6699,6 +6699,66 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6742281933180776549, guid: 68a77631789e73f4c9564b9027049e52,
+        type: 3}
+      propertyPath: m_HitboxInfo.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742281933180776549, guid: 68a77631789e73f4c9564b9027049e52,
+        type: 3}
+      propertyPath: m_HitboxInfo.Array.data[0].HitboxScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742281933180776549, guid: 68a77631789e73f4c9564b9027049e52,
+        type: 3}
+      propertyPath: m_HitboxInfo.Array.data[0].HitboxScale.y
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742281933180776549, guid: 68a77631789e73f4c9564b9027049e52,
+        type: 3}
+      propertyPath: m_HitboxInfo.Array.data[0].HitboxScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742281933180776549, guid: 68a77631789e73f4c9564b9027049e52,
+        type: 3}
+      propertyPath: m_HitboxInfo.Array.data[0].HitboxOffset.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742281933180776549, guid: 68a77631789e73f4c9564b9027049e52,
+        type: 3}
+      propertyPath: m_HitboxInfo.Array.data[0].Damage
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742281933180776549, guid: 68a77631789e73f4c9564b9027049e52,
+        type: 3}
+      propertyPath: m_HitboxInfo.Array.data[0].Knockback.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742281933180776549, guid: 68a77631789e73f4c9564b9027049e52,
+        type: 3}
+      propertyPath: m_HitboxInfo.Array.data[0].Knockback.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742281933180776549, guid: 68a77631789e73f4c9564b9027049e52,
+        type: 3}
+      propertyPath: m_HitboxInfo.Array.data[0].Knockback.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742281933180776549, guid: 68a77631789e73f4c9564b9027049e52,
+        type: 3}
+      propertyPath: m_HitboxInfo.Array.data[0].FixedKnockback
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742281933180776549, guid: 68a77631789e73f4c9564b9027049e52,
+        type: 3}
+      propertyPath: m_HitboxInfo.Array.data[0].Stun
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742281933180776549, guid: 68a77631789e73f4c9564b9027049e52,
+        type: 3}
+      propertyPath: m_HitboxInfo.Array.data[0].HitboxDuration
+      value: 0.25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68a77631789e73f4c9564b9027049e52, type: 3}
 --- !u!1 &2021095158 stripped
@@ -12556,7 +12616,7 @@ PrefabInstance:
     - target: {fileID: 1672053672067786532, guid: b4fd1d69786f2704fb8fb981d798c34f,
         type: 3}
       propertyPath: initItemData.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b4fd1d69786f2704fb8fb981d798c34f, type: 3}

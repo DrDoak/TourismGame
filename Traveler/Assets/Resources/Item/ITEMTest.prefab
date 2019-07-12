@@ -149,7 +149,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AttackName: default
-  m_HitboxInfo: []
+  m_HitboxInfo:
+  - HitboxScale: {x: 1, y: 1, z: 1}
+    HitboxOffset: {x: 0.5, y: 0.5, z: 0}
+    Damage: 25
+    FocusDamage: 0
+    Penetration: 0
+    Stun: 0.5
+    HitboxDuration: 0.1
+    Knockback: {x: 5, y: 10, z: 2}
+    FixedKnockback: 1
+    ResetKnockback: 0
+    Element: 0
+    ApplyProps: 0
+    FollowCharacter: 0
+    FreezeTime: 0
+    Delay: 0
   m_AttackAnimInfo:
     AnimSpeed: 1
     StartUpTime: 0.5
@@ -185,18 +200,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Actor: {fileID: 0}
-  InteractionPrompt: to Interact
-  Priority: 1
-  autoTrigger: 0
-  TriggerRefresh: 2
-  oneTime: 0
+  interactableObjectInfo:
+    InteractionPrompt: to Interact
+    Priority: 1
+    autoTrigger: 1
+    TriggerRefresh: 2
+    oneTime: 1
   TriggerUsed: 0
   HoldTrigger: 0
   PressTrigger: 0
   Equipabble: 0
   MaxStack: 1
   Rotated: 0
-  CurrentSlot: {fileID: 0}
   baseSize: {x: 1, y: 1}
   displayname: 
   InventoryIcon: {fileID: 21300000, guid: 8c96a66f3aa03cc4195f12ec3149ae9f, type: 3}
@@ -219,9 +234,10 @@ MonoBehaviour:
       values: 
     targetDir: 0
     targetID: 
+  CurrentSlot: {fileID: 0}
+  prefabName: 
   EquipmentPiecePrefab: {fileID: 2842298981686436731, guid: 04ef7a023f9b8384987939ae639f8daa,
     type: 3}
-  ItemInstance: {fileID: 0}
   PrimaryAction: {fileID: 6742281933180776549}
   SecondaryAction: {fileID: 0}
 --- !u!114 &8095627233711443176
