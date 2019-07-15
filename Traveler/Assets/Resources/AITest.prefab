@@ -145,6 +145,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -397,11 +398,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Actor: {fileID: 0}
-  InteractionPrompt: to Interact
-  Priority: 1
-  autoTrigger: 0
-  TriggerRefresh: 2
-  oneTime: 1
+  interactableObjectInfo:
+    InteractionPrompt: to Interact
+    Priority: 1
+    autoTrigger: 0
+    TriggerRefresh: 2
+    oneTime: 1
   TriggerUsed: 0
   HoldTrigger: 0
   PressTrigger: 0
@@ -420,8 +422,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: {x: 4, y: 3}
   initItemData:
-  - itemName: DebugEquipment
-    inventoryLocation: {x: 1, y: 0}
+  - inventoryLocation: {x: 1, y: 0}
+    ItemProperties:
+      regID: Not Assigned
+      prefabPath: 
+      name: 
+      pos: {x: 0, y: 0, z: 0}
+      PersistentInt:
+        keys: []
+        values: 
+      PersistentFloats:
+        keys: []
+        values: []
+      PersistentStrings:
+        keys: []
+        values: []
+      PersistentBools:
+        keys: []
+        values: 
+      targetDir: 0
+      targetID: 
   slotData:
   - SlotName: Item1
     SlotType: 1
@@ -454,7 +474,6 @@ MonoBehaviour:
     prefabPath: AITest
     name: Player
     pos: {x: 0, y: 0, z: 0}
-    zRot: 0
     PersistentInt:
       keys: []
       values: 
@@ -549,6 +568,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -700,6 +720,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -960,6 +981,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

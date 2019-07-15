@@ -61,6 +61,8 @@ public class AnimationPiece : AnimatorSprite
     }
     private void findAttachmentPoint()
     {
+        if (transform.parent == null || transform.parent.parent == null)
+            return;
         MyAttachObject = transform.Find(AttachPointMe).gameObject;
         OtherAttachObject = transform.parent.parent.GetComponent<AnimatorMultiSprite>().GetAttachPoint(AttachPointOther);
         if (MyAttachObject != null && OtherAttachObject != null)

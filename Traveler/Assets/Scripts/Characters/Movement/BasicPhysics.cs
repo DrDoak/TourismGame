@@ -133,7 +133,7 @@ public class BasicPhysics : MonoBehaviour
             }
             else if (m_controller.isGrounded)
             {
-                m_velocity.y += GravityForce;// * Time.fixedDeltaTime * 6f;
+                m_velocity.y += GravityForce * Time.fixedDeltaTime;// * Time.fixedDeltaTime * 6f;
             }
         }
         m_velocity += m_accumulatedVelocity * Time.fixedDeltaTime;

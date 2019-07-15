@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8095627233711443185
+--- !u!1 &5645666120687039277
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,42 +8,42 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8095627233711443188}
-  - component: {fileID: 8095627233711443187}
-  - component: {fileID: 8095627233711443186}
-  - component: {fileID: 8095627233711443189}
-  - component: {fileID: 8095627233711443190}
-  - component: {fileID: 6742281933180776549}
-  - component: {fileID: -4023153718459905314}
-  - component: {fileID: 8095627233711443176}
+  - component: {fileID: 5645666120687039272}
+  - component: {fileID: 5645666120687039279}
+  - component: {fileID: 5645666120687039278}
+  - component: {fileID: 5645666120687039273}
+  - component: {fileID: 5645666120687039274}
+  - component: {fileID: 8514897858610902274}
+  - component: {fileID: 5645666120687039284}
+  - component: {fileID: -4682585177060770485}
   m_Layer: 9
-  m_Name: ITEMTest
+  m_Name: ITEMPistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8095627233711443188
+--- !u!4 &5645666120687039272
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8095627233711443185}
+  m_GameObject: {fileID: 5645666120687039277}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.59, y: 3.81, z: -2.88}
+  m_LocalPosition: {x: -8.315186, y: 3.34, z: -2.2793746}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &8095627233711443187
+--- !u!212 &5645666120687039279
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8095627233711443185}
+  m_GameObject: {fileID: 5645666120687039277}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4a889cff7fb5ab442981f588ae4bcfa9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 49f0e7c78e277814ca8b30cb35b4a4dc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -87,26 +87,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!65 &8095627233711443186
+--- !u!65 &5645666120687039278
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8095627233711443185}
+  m_GameObject: {fileID: 5645666120687039277}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 0.25, z: 0.25}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!143 &8095627233711443189
+--- !u!143 &5645666120687039273
 CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8095627233711443185}
+  m_GameObject: {fileID: 5645666120687039277}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
@@ -118,13 +118,13 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8095627233711443190
+--- !u!114 &5645666120687039274
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8095627233711443185}
+  m_GameObject: {fileID: 5645666120687039277}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d9224d68d5f990468b4df6bbc82e677, type: 3}
@@ -136,35 +136,106 @@ MonoBehaviour:
   CanMove: 1
   Floating: 0
   m_trueVelocity: {x: 0, y: 0, z: 0}
---- !u!114 &6742281933180776549
+--- !u!114 &8514897858610902274
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8095627233711443185}
+  m_GameObject: {fileID: 5645666120687039277}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a149c2d7c3a0444e92bac7a1c729bdc, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c3876eb69b5ab9468af3beaa992e675, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Actor: {fileID: 0}
+  interactableObjectInfo:
+    InteractionPrompt: to Interact
+    Priority: 1
+    autoTrigger: 1
+    TriggerRefresh: 2
+    oneTime: 1
+  TriggerUsed: 0
+  HoldTrigger: 0
+  PressTrigger: 0
+  Equipabble: 0
+  MaxStack: 1
+  Rotated: 0
+  baseSize: {x: 1, y: 1}
+  displayname: 
+  InventoryIcon: {fileID: 21300000, guid: eff985b0bcc4eef439d27e259a0e4351, type: 3}
+  ItemProperties:
+    regID: Not Assigned
+    prefabPath: 
+    name: 
+    pos: {x: 0, y: 0, z: 0}
+    PersistentInt:
+      keys: []
+      values: 
+    PersistentFloats:
+      keys: []
+      values: []
+    PersistentStrings:
+      keys: []
+      values: []
+    PersistentBools:
+      keys: []
+      values: 
+    targetDir: 0
+    targetID: 
+  CurrentSlot: {fileID: 0}
+  prefabName: 
+  EquipmentPiecePrefab: {fileID: 5997349909625128854, guid: e496205b088677b46a62f4a2d02b1207,
+    type: 3}
+  PrimaryAction: {fileID: -4682585177060770485}
+  SecondaryAction: {fileID: 0}
+--- !u!114 &5645666120687039284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5645666120687039277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92acc23af4626be4fa32c868acac10d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    regID: Not Assigned
+    prefabPath: Item/ITEMPistol
+    name: 
+    pos: {x: 0, y: 0, z: 0}
+    PersistentInt:
+      keys: []
+      values: 
+    PersistentFloats:
+      keys: []
+      values: []
+    PersistentStrings:
+      keys: []
+      values: []
+    PersistentBools:
+      keys: []
+      values: 
+    targetDir: 0
+    targetID: 
+  recreated: 0
+  StartPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &-4682585177060770485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5645666120687039277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92108ad08feac9e4796bf10cf0c5fe4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AttackName: default
-  m_HitboxInfo:
-  - HitboxScale: {x: 1, y: 1, z: 1}
-    HitboxOffset: {x: 0.5, y: 0.5, z: 0}
-    Damage: 25
-    FocusDamage: 0
-    Penetration: 0
-    Stun: 0.5
-    HitboxDuration: 0.1
-    Knockback: {x: 5, y: 10, z: 2}
-    FixedKnockback: 1
-    ResetKnockback: 0
-    Element: 0
-    ApplyProps: 0
-    FollowCharacter: 0
-    FreezeTime: 0
-    Delay: 0
+  m_HitboxInfo: []
   m_AttackAnimInfo:
     AnimSpeed: 1
     StartUpTime: 0.5
@@ -187,89 +258,18 @@ MonoBehaviour:
     ConsumedSentiment: 0
     DrainOnWhiff: 1
     TransferSentiment: 0
---- !u!114 &-4023153718459905314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8095627233711443185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c3876eb69b5ab9468af3beaa992e675, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Actor: {fileID: 0}
-  interactableObjectInfo:
-    InteractionPrompt: to Interact
-    Priority: 1
-    autoTrigger: 1
-    TriggerRefresh: 2
-    oneTime: 1
-  TriggerUsed: 0
-  HoldTrigger: 0
-  PressTrigger: 0
-  Equipabble: 0
-  MaxStack: 1
-  Rotated: 0
-  baseSize: {x: 1, y: 1}
-  displayname: 
-  InventoryIcon: {fileID: 21300000, guid: 02b32763d3b2bd548acf918569965aa7, type: 3}
-  ItemProperties:
-    regID: Not Assigned
-    prefabPath: 
-    name: 
-    pos: {x: 0, y: 0, z: 0}
-    PersistentInt:
-      keys: []
-      values: 
-    PersistentFloats:
-      keys: []
-      values: []
-    PersistentStrings:
-      keys: []
-      values: []
-    PersistentBools:
-      keys: []
-      values: 
-    targetDir: 0
-    targetID: 
-  CurrentSlot: {fileID: 0}
-  prefabName: 
-  EquipmentPiecePrefab: {fileID: 2842298981686436731, guid: 04ef7a023f9b8384987939ae639f8daa,
-    type: 3}
-  PrimaryAction: {fileID: 6742281933180776549}
-  SecondaryAction: {fileID: 0}
---- !u!114 &8095627233711443176
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8095627233711443185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92acc23af4626be4fa32c868acac10d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data:
-    regID: Not Assigned
-    prefabPath: Item/ITEMTest
-    name: 
-    pos: {x: 0, y: 0, z: 0}
-    PersistentInt:
-      keys: []
-      values: 
-    PersistentFloats:
-      keys: []
-      values: []
-    PersistentStrings:
-      keys: []
-      values: []
-    PersistentBools:
-      keys: []
-      values: 
-    targetDir: 0
-    targetID: 
-  recreated: 0
-  StartPosition: {x: 0, y: 0, z: 0}
+  m_ProjectileData:
+  - Delay: 0
+    Projectile: {fileID: 8748291229628336837, guid: fa5f6c5ffce3d0241a39b6e4b7118311,
+      type: 3}
+    ProjectileCreatePos: {x: 0, y: 0}
+    AimTowardsTarget: 0
+    MaxAngle: 0
+    ProjectileAimDirection: {x: 1, y: 0}
+    ProjectileSpeed: 0
+    PenetrativePower: 0
+    Damage: 0
+    Stun: 0
+    HitboxDuration: 0
+    Knockback: {x: 0, y: 0}
+    Element: 0

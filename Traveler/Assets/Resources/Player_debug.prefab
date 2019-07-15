@@ -352,11 +352,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Actor: {fileID: 0}
-  InteractionPrompt: to Interact
-  Priority: 1
-  autoTrigger: 0
-  TriggerRefresh: 2
-  oneTime: 1
+  interactableObjectInfo:
+    InteractionPrompt: to Interact
+    Priority: 1
+    autoTrigger: 0
+    TriggerRefresh: 2
+    oneTime: 1
   TriggerUsed: 0
   HoldTrigger: 0
   PressTrigger: 0
@@ -419,7 +420,6 @@ MonoBehaviour:
     prefabPath: Player_debug
     name: Player
     pos: {x: 0, y: 0, z: 0}
-    zRot: 0
     PersistentInt:
       keys: []
       values: 

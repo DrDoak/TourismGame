@@ -143,7 +143,7 @@ public class MovementBase : MonoBehaviour
     }
     public void SetJumpHeight(float jumpHeight)
     {
-        m_jumpVector.y = (-m_physics.GravityForce * (12f * Mathf.Sqrt(jumpHeight))) + 52f;
+        m_jumpVector.y = (-m_physics.GravityForce * (12f * Mathf.Sqrt(jumpHeight))) + 3f;
         m_jumpHeight = jumpHeight;
     }
 

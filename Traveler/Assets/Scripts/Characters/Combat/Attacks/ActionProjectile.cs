@@ -20,7 +20,7 @@ public class ProjectileInfo {
 }
 
 
-public class AtkProjectile : ActionInfo {
+public class ActionProjectile : ActionInfo {
 	
 	[SerializeField]
 	private List<ProjectileInfo> m_ProjectileData;
