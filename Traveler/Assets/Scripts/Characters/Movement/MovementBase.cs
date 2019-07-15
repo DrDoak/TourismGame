@@ -56,9 +56,9 @@ public class MovementBase : MonoBehaviour
     // Movement tracking
     protected bool m_jumpHold;
     protected bool m_jumpDown;
-    private Vector3 m_inputMove;
+    public Vector3 m_inputMove;
     public Vector3 InputMove { get { return m_inputMove; } private set { m_inputMove = value; } }
-    public Vector3 m_jumpVector;
+    private Vector3 m_jumpVector;
     private float m_jumpVelocity;
     private Vector3 m_velocity;
 

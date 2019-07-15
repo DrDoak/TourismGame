@@ -8,16 +8,16 @@ public class ControlPlayer : CharCustomControl
     {
         InputPacket newPacket = new InputPacket();
         Vector3 m_inputMove = new Vector3(0f, 0f);
+
+        if (Input.GetButton("Up"))
+            m_inputMove.z += 1f;
+        if (Input.GetButton("Down"))
+            m_inputMove.z -= 1f;
         if (Input.GetButton("Left"))
             m_inputMove.x -= 1f;
         if (Input.GetButton("Right"))
             m_inputMove.x += 1f;
-        if (Input.GetButton("Up"))
-            m_inputMove.z += 1f;
-        if (Input.GetButton("Down"))
-        {
-            m_inputMove.z -= 1f;
-        }
+        
         if (Input.GetButtonDown("Interact"))
         {
             newPacket.Interact = true;

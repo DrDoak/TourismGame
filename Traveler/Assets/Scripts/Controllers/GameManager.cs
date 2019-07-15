@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     public GameObject Canvas;
     public GameObject PauseCanvas;
 
+    public Vector3 InputMove;
+
     public static GameManager Instance
     {
         get { return m_instance; }
@@ -42,7 +44,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
     public static void Reset()
     {

@@ -18,6 +18,7 @@ public class InventoryManager : MonoBehaviour
     private ItemUIElement m_currentItem;
     private Dictionary<InventoryContainer,GameObject> m_containerPrefabs;
     private Dictionary<InventoryHolder,int> m_openHolder;
+    private InventoryContainer m_Container;
 
     public static InventoryManager Instance
     {
@@ -42,6 +43,7 @@ public class InventoryManager : MonoBehaviour
     {
         m_containerPrefabs = new Dictionary<InventoryContainer, GameObject>();
         m_openHolder = new Dictionary<InventoryHolder, int>();
+        m_Container = GetComponent<InventoryContainer>();
     }
 
     public static GameObject CreateInventoryGUI(InventoryContainer ic)
@@ -139,9 +141,15 @@ public class InventoryManager : MonoBehaviour
             item2.ItemInfo.CanEnterInventory(slot1.m_container,slot1))
         {
             Debug.Log("Moving item 1");
-            m_instance.MoveItemTo(item1, slot2);
+            GameObject newSlot = Instantiate(m_instance.SlotPrefab, m_instance.transform);
+            InventorySlot tempSlot = newSlot.GetComponent<InventorySlot>();
+            tempSlot.m_container = m_instance.m_Container;
+            m_instance.MoveItemTo(item1, tempSlot);
+            
             Debug.Log("Moving item 2");
             m_instance.MoveItemTo(item2, slot1);
+            m_instance.MoveItemTo(item1, slot2);
+            Destroy(newSlot);
             return true;
         }
         item1.ReturnPos();
@@ -151,8 +159,12 @@ public class InventoryManager : MonoBehaviour
     private void MoveItemTo(ItemUIElement iue, InventorySlot slot)
     {
         iue.UpdateReturnPos(slot.ItemOffsetPos);
-        iue.transform.SetParent( slot.transform.parent.parent.Find("Items") );
-        iue.ReturnPos();
+        if (slot.transform.parent.parent != null)
+        {
+            iue.transform.SetParent(slot.transform.parent.parent.Find("Items"));
+            iue.ReturnPos();
+        }
+        
         iue.ItemInfo.CurrentSlot.m_container.ClearItem(iue.ItemInfo.CurrentSlot.Coordinate);
         slot.AddItem(iue.ItemInfo,iue);
         iue.ItemInfo.CurrentSlot = slot;

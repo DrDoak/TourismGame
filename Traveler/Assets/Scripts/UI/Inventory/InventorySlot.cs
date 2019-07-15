@@ -17,6 +17,7 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler , IPointerExitH
     public InventorySlotType SlotType = InventorySlotType.NORMAL;
     public string SlotName = "noname";
 
+
     // Start is called before the first frame update
     void Start()
     {

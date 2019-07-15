@@ -39,7 +39,7 @@ public class Projectile : Hitbox {
 	protected override void OnHitObject(Collider other) {
 		if (TravelThroughWalls)
 			return;
-		if (other.gameObject != Creator && !other.isTrigger && !JumpThruTag (other.gameObject)
+		if (other.gameObject != Creator && !other.isTrigger // && !JumpThruTag (other.gameObject)
 		    && other.GetComponent<Attackable> () == null) {
 			//FindObjectOfType<AudioManager> ().PlayClipAtPos (FXHit.Instance.SFXGuard,transform.position,0.05f,0f,0.25f);
 			Duration = 0f;
@@ -49,11 +49,11 @@ public class Projectile : Hitbox {
 		if (ProjectileSpeed != 0f)
 			transform.rotation = Quaternion.Euler (new Vector3(0f,0f,Mathf.Rad2Deg * Mathf.Atan2 (speed.y, speed.x)));
 	}
-
+    /*
 	private bool JumpThruTag( GameObject obj ) {
 		return (obj.CompareTag ("JumpThru") || (obj.transform.parent != null &&
 			obj.transform.parent.CompareTag ("JumpThru")));
-	}
+	}*/
 
 	public override void SetHitboxActive(bool a) {
 		base.SetHitboxActive (a);

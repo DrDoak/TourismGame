@@ -180,11 +180,15 @@ public class HitboxMaker : MonoBehaviour
         return go;
     }
     
+    public Projectile CreateProjectile(ProjectileInfo pi)
+    {
+        return CreateProjectile(pi.Projectile, pi.ProjectileCreatePos, pi.ProjectileAimDirection, pi.ProjectileSpeed, pi.Damage, pi.Stun, pi.HitboxDuration, pi.Knockback, true, pi.Element);
+    }
     public Projectile CreateProjectile(GameObject prefab, Vector3 creationPoint, Vector3 targetPoint,
         float projectileSpeed, float damage, float stun, float projectileDuration, Vector3 knockback, 
         bool fixedKnockback = true, ElementType element = ElementType.PHYSICAL)
     {
-        Vector3 cOff = (m_charBase == null) ? creationPoint : m_orient.OrientVectorToDirection(creationPoint);
+        Vector3 cOff = (m_charBase == null) ? creationPoint : m_orient.OrientVectorToDirection2D(creationPoint);
         Vector3 newPos = transform.position + (Vector3)cOff;
         GameObject go;
         if (prefab != null) {
@@ -196,13 +200,13 @@ public class HitboxMaker : MonoBehaviour
 
         newProjectile.Damage = damage;
         newProjectile.Duration = projectileDuration;
-        newProjectile.Knockback = (m_charBase == null) ? knockback : m_orient.OrientVectorToDirection(knockback);
+        newProjectile.Knockback = (m_charBase == null) ? knockback : m_orient.OrientVectorToDirection2D(knockback);
         newProjectile.IsFixedKnockback = fixedKnockback;
         newProjectile.Stun = stun;
         newProjectile.AddElement(element);
         newProjectile.Creator = gameObject;
         newProjectile.Faction = Faction;
-        newProjectile.AimPoint = (m_charBase == null) ? targetPoint : m_orient.OrientVectorToDirection(targetPoint);
+        newProjectile.AimPoint = (m_charBase == null) ? targetPoint : m_orient.OrientVectorToDirection2D(targetPoint);
         newProjectile.ProjectileSpeed = projectileSpeed;
 
         ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnHitboxCreate(newProjectile));
