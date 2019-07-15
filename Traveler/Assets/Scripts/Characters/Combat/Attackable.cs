@@ -213,8 +213,6 @@ public class Attackable : MonoBehaviour
 		{
 			if (kb.y != 0f && hi.ResetKnockback)
 				m_physics.CancelVerticalMomentum ();
-            Debug.Log("Applying knockback: " + kb);
-            kb.y += 100f;
 			m_physics.AddToVelocity(kb);
 			return;
 		}
