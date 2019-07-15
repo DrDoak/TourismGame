@@ -107,9 +107,14 @@ public class MovementBase : MonoBehaviour
 
     internal void Update()
     {
+        InputPacket ip = new InputPacket();
         if (GetComponent<CharacterBase>() == null || 
             GetComponent<CharacterBase>().IsAutonomous)
+        {
             updateCustomControl();
+            ip = m_currentControl.BaseMovement();
+        }
+            
         if (!m_physics.CanMove)
         {
             m_inputMove = new Vector2(0f, 0f);
@@ -117,7 +122,7 @@ public class MovementBase : MonoBehaviour
         if (m_FootStepInfo.PlayFootsteps)
             playStepSounds();
         moveSmoothly();
-        currentPlayerControl();
+        currentPlayerControl(ip);
         if (m_inputMove != m_lastInput)
         {
             updateAverageVelocity();
@@ -194,14 +199,14 @@ public class MovementBase : MonoBehaviour
         m_physics.InputMove(m_velocity, m_inputMove);
     }
     
-    private void currentPlayerControl()
+    private void currentPlayerControl(InputPacket ip)
     {
         /*if (m_savedCurrentPlayer != IsCurrentPlayer)
         {
             ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnControllableChange(IsCurrentPlayer));
             m_savedCurrentPlayer = IsCurrentPlayer;
         }*/
-        InputPacket ip = m_currentControl.BaseMovement();
+        
         if (ip.InputMove.magnitude > 0.01f)
         {
             Direction d = m_orient.VectorToDirection(ip.InputMove);

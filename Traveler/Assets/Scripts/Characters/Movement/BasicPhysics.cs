@@ -68,7 +68,9 @@ public class BasicPhysics : MonoBehaviour
 
     private void DecelerateAutomatically(float threshold)
     {
-        if (m_accumulatedVelocity.sqrMagnitude > threshold)
+        if (!m_controller.isGrounded)
+            return;
+        else if (m_accumulatedVelocity.sqrMagnitude > threshold)
             m_accumulatedVelocity *= (1.0f - Time.fixedDeltaTime * DecelerationRatio * 3.0f);
         else
             m_accumulatedVelocity = Vector2.zero;
