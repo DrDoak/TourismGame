@@ -246,7 +246,6 @@ public class CharacterBase : MonoBehaviour
     public void EndAction()
     {
         IsAutonomous = true;
-        GetComponent<BasicPhysics>().CanMove = true;
         m_currentAction = null;
         m_anim.SetSpeed(1.0f);
         m_actionAnim = "";
@@ -342,7 +341,6 @@ public class CharacterBase : MonoBehaviour
         if (!canAct())
             return;
         m_currentAction = ai;
-        GetComponent<BasicPhysics>().CanMove = false;
         IsAutonomous = false;
         ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnAttack(m_currentAction));
         if (m_currentAction != null)

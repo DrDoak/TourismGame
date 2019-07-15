@@ -113,12 +113,11 @@ public class MovementBase : MonoBehaviour
         {
             updateCustomControl();
             ip = m_currentControl.BaseMovement();
-        }
-            
-        if (!m_physics.CanMove)
+        } else
         {
             m_inputMove = new Vector2(0f, 0f);
         }
+            
         if (m_FootStepInfo.PlayFootsteps)
             playStepSounds();
         moveSmoothly();
@@ -194,6 +193,16 @@ public class MovementBase : MonoBehaviour
     private void moveSmoothly()
     {
         Vector3 targetVel = new Vector3(m_inputMove.x * MoveSpeed,0, m_inputMove.z * MoveSpeed);
+        if (!m_physics.OnGround())
+        {
+            if (m_velocity.x > 0.1f && m_inputMove.x >= 0f)
+            {
+                targetVel.x = Mathf.Sign(m_velocity.x) * MoveSpeed;
+            } else if (m_velocity.x < -0.1f && m_inputMove.x <= 0f)
+            {
+                targetVel.x = Mathf.Sign(m_velocity.x) * MoveSpeed;
+            }
+        }
         m_velocity.x = Mathf.SmoothDamp(m_velocity.x, targetVel.x, ref m_accelerationTimeX, SMOOTH_TIME);
         m_velocity.z = Mathf.SmoothDamp(m_velocity.z, targetVel.z, ref m_accelerationTimeZ, SMOOTH_TIME);
         m_physics.InputMove(m_velocity, m_inputMove);

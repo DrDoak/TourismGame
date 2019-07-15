@@ -13,7 +13,6 @@ public class BasicPhysics : MonoBehaviour
     public float DecelerationRatio = 1.0f;
     public float TerminalVelocity = -1f;
     public float GravityForce = -1.0f;
-    public bool CanMove = true;
     public bool Floating = false;
 
     // Tracking movement
@@ -25,6 +24,7 @@ public class BasicPhysics : MonoBehaviour
     private Vector3 m_velocity;
     public Dictionary<Direction, float> TimeCollided { get { return m_timeCollided; } private set { m_timeCollided = value; } }
     public Dictionary<Direction, float> m_timeCollided;
+    public bool IsGrounded;
 
     // Tracking inputed movement
     private Force m_inputedForce;
@@ -64,13 +64,12 @@ public class BasicPhysics : MonoBehaviour
     {
         m_trueVelocity = (transform.position - m_lastPosition) / Time.deltaTime;
         m_lastPosition = transform.position;
+        IsGrounded = m_controller.isGrounded;
     }
 
     private void DecelerateAutomatically(float threshold)
     {
-        if (!m_controller.isGrounded)
-            return;
-        else if (m_accumulatedVelocity.sqrMagnitude > threshold)
+         if (m_accumulatedVelocity.sqrMagnitude > threshold)
             m_accumulatedVelocity *= (1.0f - Time.fixedDeltaTime * DecelerationRatio * 3.0f);
         else
             m_accumulatedVelocity = Vector2.zero;
@@ -87,17 +86,9 @@ public class BasicPhysics : MonoBehaviour
 
     private void ProcessMovement()
     {
-        checkCanMove();
         applyForcesToVelocity();
         processArtificialVelocity();
         m_controller.Move(m_velocity);
-    }
-
-    private void checkCanMove()
-    {
-        if (CanMove)
-            return;
-        m_inputedForce.MyForce = new Vector3(0, 0, 0);
     }
 
     private void applyForcesToVelocity()
