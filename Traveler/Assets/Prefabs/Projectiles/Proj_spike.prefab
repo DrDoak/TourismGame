@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_damage: 10
   m_focusDamage: -1
-  m_penetration: 0
+  m_penetration: 1
   m_duration: 1
   m_hasDuration: 1
   m_isFixedKnockback: 0
