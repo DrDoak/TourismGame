@@ -80,6 +80,7 @@ public class InventoryContainer : MonoBehaviour
                 m_freeSlots.Add(new Vector2(x, y));
             }
         }
+        m_freeSlots.Sort((a, b) => (a.x + a.y * 10).CompareTo(b.x + b.y * 10));
         if (!m_inventoryInitialized)
             InitInventory();
     }
@@ -170,7 +171,8 @@ public class InventoryContainer : MonoBehaviour
         items.Remove(v);
         Debug.Log("Adding free slot: " + v);
         m_freeSlots.Add(v);
-        m_freeSlots.Sort((a, b) => a.y.CompareTo(b.y));
+        m_freeSlots.Sort((a, b) => (a.x + a.y*10).CompareTo(b.x + b.y*10));
+
     }
     public Vector2 findFreeSlot(Item i)
     {

@@ -267,7 +267,7 @@ MonoBehaviour:
     MaxAngle: 0
     ProjectileAimDirection: {x: 1, y: 0, z: 0}
     ProjectileSpeed: 10
-    PenetrativePower: 0
+    PenetrativePower: 1
     Damage: 10
     Stun: 0.5
     HitboxDuration: 2
