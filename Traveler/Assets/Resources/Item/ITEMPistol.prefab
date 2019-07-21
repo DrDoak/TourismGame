@@ -162,7 +162,7 @@ MonoBehaviour:
   MaxStack: 1
   Rotated: 0
   baseSize: {x: 1, y: 1}
-  displayname: 
+  displayname: Pistol
   InventoryIcon: {fileID: 21300000, guid: eff985b0bcc4eef439d27e259a0e4351, type: 3}
   ItemProperties:
     regID: Not Assigned

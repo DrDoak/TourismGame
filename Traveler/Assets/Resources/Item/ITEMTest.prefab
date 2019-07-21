@@ -133,9 +133,9 @@ MonoBehaviour:
   DecelerationRatio: 1
   TerminalVelocity: -1
   GravityForce: -1
-  CanMove: 1
   Floating: 0
   m_trueVelocity: {x: 0, y: 0, z: 0}
+  IsGrounded: 0
 --- !u!114 &6742281933180776549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,7 +213,7 @@ MonoBehaviour:
   MaxStack: 1
   Rotated: 0
   baseSize: {x: 1, y: 1}
-  displayname: 
+  displayname: Knife
   InventoryIcon: {fileID: 21300000, guid: 02b32763d3b2bd548acf918569965aa7, type: 3}
   ItemProperties:
     regID: Not Assigned

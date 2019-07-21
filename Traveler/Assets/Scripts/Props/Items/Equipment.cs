@@ -45,6 +45,7 @@ public class Equipment : Item
             if (EquipmentPiecePrefab != null && s.GetComponent<AnimatorMultiSprite>() != null)
             {
                 GameObject go = Instantiate(EquipmentPiecePrefab, s.gameObject.transform.Find("SpritePieces"));
+                go.GetComponent<AnimationPiece>().PieceType = es.SlotName;
                 s.GetComponent<AnimatorMultiSprite>().AddPiece(go);
                 m_equipmentPieceType = go.GetComponent<AnimationPiece>().PieceType;
             }
@@ -60,7 +61,7 @@ public class Equipment : Item
             Destroy(ItemInstance);
             if (EquipmentPiecePrefab != null && s.GetComponent<AnimatorMultiSprite>() != null)
             {
-//                Debug.Log("Removing Piece");
+                Debug.Log("Removing Piece " + displayname);
                 s.GetComponent<AnimatorMultiSprite>().RemovePiece(m_equipmentPieceType);
             }
         }
