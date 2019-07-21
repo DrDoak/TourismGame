@@ -96,10 +96,10 @@ public class AnimatorMultiSprite : AnimatorSprite
 
     public void RemovePiece(string pieceType)
     {
-        Debug.Log("Trying to remove type: " + pieceType);
+        //Debug.Log("Trying to remove type: " + pieceType);
         if (m_pieces.ContainsKey(pieceType))
         {
-            Debug.Log("Attempting to remove: " + pieceType);
+            //Debug.Log("Attempting to remove: " + pieceType);
             GameObject go = m_pieces[pieceType].gameObject;
             //Debug.Log("Removing attachpoints: " + go.transform.childCount);
             for (int j = 0; j < go.transform.childCount; j++)

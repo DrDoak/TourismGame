@@ -192,7 +192,9 @@ public class MovementBase : MonoBehaviour
 
     private void moveSmoothly()
     {
-        Vector3 targetVel = new Vector3(m_inputMove.x * MoveSpeed,0, m_inputMove.z * MoveSpeed);
+        Vector2 input = new Vector2(m_inputMove.x, m_inputMove.z);
+        
+        Vector3 targetVel = new Vector3(input.normalized.x * MoveSpeed,0, input.normalized.y * MoveSpeed);
         if (!m_physics.OnGround())
         {
             if (m_velocity.x > 0.1f && m_inputMove.x >= 0f)
