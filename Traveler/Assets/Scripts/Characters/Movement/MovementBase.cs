@@ -58,6 +58,7 @@ public class MovementBase : MonoBehaviour
     protected bool m_jumpDown;
     public Vector3 m_inputMove;
     public Vector3 InputMove { get { return m_inputMove; } private set { m_inputMove = value; } }
+    public bool DecelerateInAir = true;
     private Vector3 m_jumpVector;
     private float m_jumpVelocity;
     private Vector3 m_velocity;
@@ -195,7 +196,7 @@ public class MovementBase : MonoBehaviour
         Vector2 input = new Vector2(m_inputMove.x, m_inputMove.z);
         
         Vector3 targetVel = new Vector3(input.normalized.x * MoveSpeed,0, input.normalized.y * MoveSpeed);
-        if (!m_physics.OnGround())
+        if (!m_physics.OnGround() && !DecelerateInAir)
         {
             if (m_velocity.x > 0.1f && m_inputMove.x >= 0f)
             {

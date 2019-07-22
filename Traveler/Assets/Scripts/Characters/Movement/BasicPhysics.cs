@@ -14,6 +14,7 @@ public class BasicPhysics : MonoBehaviour
     public float TerminalVelocity = -1f;
     public float GravityForce = -1.0f;
     public bool Floating = false;
+    
 
     // Tracking movement
     private Vector3 m_accumulatedVelocity = Vector3.zero;

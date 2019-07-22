@@ -55,6 +55,9 @@ public class Equipment : Item
     public override void OnExitInventory(InventoryContainer s , EquipmentSlot es)
     {
         base.OnExitInventory(s, es);
+        if (CurrentSlot.m_container.GetComponent<CharacterBase>() != null)
+            CurrentSlot.m_container.GetComponent<CharacterBase>().SkipActionToEnd();
+
         if (es != null && es.SlotType == InventorySlotType.EQUIPMENT)
         {
             OnDeequip(s, es);

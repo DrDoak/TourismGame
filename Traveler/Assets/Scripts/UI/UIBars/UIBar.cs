@@ -33,9 +33,11 @@ public class UIBar : MonoBehaviour {
 	private float m_scale = 1.0f;
 	private bool m_use_scale = true;
 	public int Num = 0;
+    
 	private const float BarHeight = 25;
 	private const float StartingHeight = -100;
 	private const float StartingX = 100;
+    
 	// Use this for initialization
 	void Awake () {
 		m_slider = transform.Find ("Health_Bar").GetComponent<Slider> ();

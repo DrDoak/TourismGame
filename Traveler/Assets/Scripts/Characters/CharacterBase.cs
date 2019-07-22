@@ -250,6 +250,7 @@ public class CharacterBase : MonoBehaviour
         m_currentAction = null;
         m_anim.SetSpeed(1.0f);
         m_actionAnim = "";
+        GetComponent<MovementBase>().DecelerateInAir = true;
     }
 
     public void QueueHitbox(HitboxInfo hi, float delay)
@@ -388,6 +389,7 @@ public class CharacterBase : MonoBehaviour
         m_currentAction = ai;
         IsAutonomous = false;
         ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnAttack(m_currentAction));
+        GetComponent<MovementBase>().DecelerateInAir = false;
         if (m_currentAction != null)
         {
             m_currentAction.ResetAndProgress();
