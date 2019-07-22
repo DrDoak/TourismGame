@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6925129237880359042
+--- !u!1 &2697869835998051784
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,36 +8,36 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2316241853444349686}
-  - component: {fileID: 7989791202754181400}
+  - component: {fileID: 7300110395603233724}
+  - component: {fileID: 3137516696216292434}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: InitialTask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2316241853444349686
+--- !u!4 &7300110395603233724
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6925129237880359042}
+  m_GameObject: {fileID: 2697869835998051784}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 8689861291486308997}
+  m_Father: {fileID: 4464004867133087695}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7989791202754181400
+--- !u!114 &3137516696216292434
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6925129237880359042}
+  m_GameObject: {fileID: 2697869835998051784}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a457341d0e6a874cacd5b9a6675da6a, type: 3}
@@ -49,8 +49,9 @@ MonoBehaviour:
   TransitionsTo: []
   TransitionsFrom: []
   Target: {fileID: 0}
+  ParentGoal: {fileID: 0}
   ParentAI: {fileID: 0}
---- !u!1 &8689861291450319487
+--- !u!1 &4464004866126704660
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -58,113 +59,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8689861291450319480}
-  - component: {fileID: 8689861291450319482}
-  - component: {fileID: 8689861291450319481}
-  m_Layer: 0
-  m_Name: GoToZone
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8689861291450319480
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8689861291450319487}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 8689861291486308997}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8689861291450319482
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8689861291450319487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 313c34399dd257143a0fdc1b36731a55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MasterAI: {fileID: 0}
-  MyTaskType: 0
-  IsInitialTask: 0
-  TransitionsTo: []
-  TransitionsFrom: []
-  Target: {fileID: 0}
-  ParentAI: {fileID: 0}
---- !u!114 &8689861291450319481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8689861291450319487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14bae9c3125606f4bae618699d3f9f80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TypeOfTransition: 1
-  MasterAI: {fileID: 0}
-  OriginType: 0
-  OriginTask: {fileID: 0}
-  TargetType: 0
-  TargetTask: {fileID: 0}
-  ZoneName: testzone
-  TriggerWhenInZone: 0
---- !u!1 &8689861291486308996
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8689861291486308997}
-  m_Layer: 0
-  m_Name: BehaviourExample
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8689861291486308997
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8689861291486308996}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1572538, y: 2.7922757, z: -0.6281681}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 2316241853444349686}
-  - {fileID: 8689861291450319480}
-  - {fileID: 8689861292493145439}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8689861292493145438
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8689861292493145439}
-  - component: {fileID: 8689861292493145433}
-  - component: {fileID: 8689861292493145432}
+  - component: {fileID: 4464004866126704661}
+  - component: {fileID: 4464004866126704659}
+  - component: {fileID: 4464004866126704658}
   m_Layer: 0
   m_Name: WanderInZone
   m_TagString: Untagged
@@ -172,27 +69,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8689861292493145439
+--- !u!4 &4464004866126704661
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8689861292493145438}
+  m_GameObject: {fileID: 4464004866126704660}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 8689861291486308997}
+  m_Father: {fileID: 4464004867133087695}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8689861292493145433
+--- !u!114 &4464004866126704659
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8689861292493145438}
+  m_GameObject: {fileID: 4464004866126704660}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cddb1a04c7ca9e44ea6bae5302fd13f4, type: 3}
@@ -204,16 +101,17 @@ MonoBehaviour:
   TransitionsTo: []
   TransitionsFrom: []
   Target: {fileID: 0}
+  ParentGoal: {fileID: 0}
   ParentAI: {fileID: 0}
   WaitTimeRange: {x: 3, y: 4}
   WanderDistanceRange: {x: 1, y: 3}
---- !u!114 &8689861292493145432
+--- !u!114 &4464004866126704658
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8689861292493145438}
+  m_GameObject: {fileID: 4464004866126704660}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14bae9c3125606f4bae618699d3f9f80, type: 3}
@@ -227,3 +125,108 @@ MonoBehaviour:
   TargetTask: {fileID: 0}
   ZoneName: testzone
   TriggerWhenInZone: 1
+--- !u!1 &4464004867133087694
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4464004867133087695}
+  m_Layer: 0
+  m_Name: BehaviourExample 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4464004867133087695
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4464004867133087694}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.15725374, y: 2.792276, z: -0.6281681}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 7300110395603233724}
+  - {fileID: 4464004867168417586}
+  - {fileID: 4464004866126704661}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4464004867168417589
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4464004867168417586}
+  - component: {fileID: 4464004867168417584}
+  - component: {fileID: 4464004867168417587}
+  m_Layer: 0
+  m_Name: GoToZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4464004867168417586
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4464004867168417589}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4464004867133087695}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4464004867168417584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4464004867168417589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 313c34399dd257143a0fdc1b36731a55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MasterAI: {fileID: 0}
+  MyTaskType: 0
+  IsInitialTask: 0
+  TransitionsTo: []
+  TransitionsFrom: []
+  Target: {fileID: 0}
+  ParentGoal: {fileID: 0}
+  ParentAI: {fileID: 0}
+--- !u!114 &4464004867168417587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4464004867168417589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14bae9c3125606f4bae618699d3f9f80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TypeOfTransition: 1
+  MasterAI: {fileID: 0}
+  OriginType: 0
+  OriginTask: {fileID: 0}
+  TargetType: 0
+  TargetTask: {fileID: 0}
+  ZoneName: testzone
+  TriggerWhenInZone: 0

@@ -37,7 +37,7 @@ public class UIBar : MonoBehaviour {
 	private const float StartingHeight = -100;
 	private const float StartingX = 100;
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		m_slider = transform.Find ("Health_Bar").GetComponent<Slider> ();
 		m_text = transform.Find ("UI_Label").GetComponent<TextMeshProUGUI> ();
 		m_fill_image = transform.Find ("Health_Bar").Find ("Fill_Area").Find ("Fill").GetComponent<Image> ();

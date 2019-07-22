@@ -322,9 +322,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30b06aef560460b4483046684cdf2170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AutoFindTarget: 1
   Canvas: {fileID: 8805943007277689911, guid: 7bec775412bda3c4ba6348482b0aa904, type: 3}
   PauseCanvas: {fileID: 5200270396139487243, guid: 7721ce468a896904191447cb2d50ecc7,
     type: 3}
+  InputMove: {x: 0, y: 0, z: 0}
+  TimeNoPlayer: 0
 --- !u!114 &5386132830991850500
 MonoBehaviour:
   m_ObjectHideFlags: 0

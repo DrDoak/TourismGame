@@ -37,6 +37,7 @@ public class CharacterBase : MonoBehaviour
     private bool m_hitStateIsGuard = false;
 
     private string m_actionAnim = "";
+    private List<UIBarInfo> m_uiBars;
 
     //private Dictionary<ProjectileInfo, float> m_queuedProjectiles = new Dictionary<ProjectileInfo, float>();
 
@@ -320,7 +321,51 @@ public class CharacterBase : MonoBehaviour
         return (StunTime <= 0 && IsAutonomous);
     }
 
+    public void AddUIBar(UIBarInfo uib)
+    {
+        if (m_uiBars == null)
+        {
+            m_uiBars = new List<UIBarInfo>();
+        }
+        m_uiBars.Add(uib);
+    }
+    public void ClearUIBars()
+    {
+        if (m_uiBars != null)
+        {
+            m_uiBars.Clear();
+        }
+    }
+    public void RemoveUIBar(string id)
+    {
+        if (m_uiBars == null)
+            m_uiBars = new List<UIBarInfo>();
+        List<UIBarInfo> m_newList = new List<UIBarInfo>();
+        foreach (UIBarInfo uib in m_uiBars)
+        {
+            if (uib.id != id)
+                m_newList.Add(uib);
 
+        }
+        m_uiBars = m_newList;
+    }
+
+    public void DrawAllUIBars(GUIManager guiManager)
+    {
+        if (m_uiBars == null)
+            m_uiBars = new List<UIBarInfo>();
+        List<UIBarInfo> m_newList = new List<UIBarInfo>();
+        foreach (UIBarInfo uib in m_uiBars)
+        {
+            guiManager.AddUIBar(uib);
+        }
+    }
+    public int GetNumUIBars()
+    {
+        if (m_uiBars == null)
+            return 0;
+        return m_uiBars.Count;
+    }
     // MAY NEED TO REFACTOR
 
     public void RegisterHit(GameObject otherObj, HitInfo hi, HitResult hr)

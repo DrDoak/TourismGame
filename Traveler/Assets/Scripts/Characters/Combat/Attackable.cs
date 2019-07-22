@@ -70,6 +70,13 @@ public class Attackable : MonoBehaviour
 	}
 
 	internal void Start() {
+        UIBarInfo ubi = new UIBarInfo();
+        ubi.FillColor = Color.red;
+        ubi.UILabel = "Health";
+        ubi.funcUpdate = UpdateHealthValues;
+        ubi.target = gameObject;
+        if (GetComponent<CharacterBase>() != null)
+            GetComponent<CharacterBase>().AddUIBar(ubi);
         /*
 		if (DisplayHealth) {
 			if (GetComponent<BasicMovement>() != null && GetComponent<BasicMovement> ().IsCurrentPlayer) {
@@ -84,13 +91,13 @@ public class Attackable : MonoBehaviour
 				m_display.SetMaxHealth (MaxHealth);
 			}
 		} */
-	}
-	/* 
-	void UpdateHealthValues(UIBarInfo ubi) {
+    }
+
+	public void UpdateHealthValues(UIBarInfo ubi) {
 		ubi.element.GetComponent<UIBar> ().UpdateValues (Mathf.Round(ubi.target.GetComponent<Attackable>().Health), 
 			Mathf.Round(ubi.target.GetComponent<Attackable>().MaxHealth));
 	}
-    */
+    
 	private void CheckDeath()
 	{
 		Alive = Health > 0;

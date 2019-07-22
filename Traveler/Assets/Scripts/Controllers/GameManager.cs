@@ -5,12 +5,23 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public bool AutoFindTarget = true;
+
     private static GameManager m_instance;
 
     public GameObject Canvas;
     public GameObject PauseCanvas;
 
-    public Vector3 InputMove;
+    [SerializeField]
+    private Vector3 InputMove;
+
+    private int numUIBars;
+    private GameObject CurrentPlayer;
+    public float TimeNoPlayer = 0f;
+
+    private float SEARCHFORPLAYER = 0.2f;
+    private float aggressiveSearchEnd;
+    private const float AGGRESSIVE_SEARCH_TIME = 0.5f;
 
     public static GameManager Instance
     {
@@ -19,6 +30,12 @@ public class GameManager : MonoBehaviour
     }
     void Awake()
     {
+        if (AutoFindTarget && CurrentPlayer == null && FindObjectOfType<ControlPlayer>() != null)
+        {
+            //SetCameraTarget();
+            SearchForPlayer();
+        }
+        SceneManager.sceneLoaded += onRoomLoad;
 
         if (m_instance == null)
         {
@@ -36,14 +53,32 @@ public class GameManager : MonoBehaviour
 
     }
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    void Start() {}
 
     // Update is called once per frame
     void Update()
     {
+        if (AutoFindTarget && CurrentPlayer == null && FindObjectOfType<ControlPlayer>() != null)
+        {
+            if (TimeNoPlayer < SEARCHFORPLAYER && Time.timeSinceLevelLoad > aggressiveSearchEnd)
+            {
+                TimeNoPlayer += Time.deltaTime;
+            }
+            else
+            {
+                SearchForPlayer();
+            }
+        }
+
+        if (CurrentPlayer != null && CurrentPlayer.GetComponent<CharacterBase>() != null)
+        {
+            if (numUIBars != CurrentPlayer.GetComponent<CharacterBase>().GetNumUIBars())
+            {
+                FindObjectOfType<GUIManager>().ClearAllUIBars();
+                CurrentPlayer.GetComponent<CharacterBase>().DrawAllUIBars(FindObjectOfType<GUIManager>());
+            }
+        }
+
     }
     public static void Reset()
     {
@@ -59,5 +94,54 @@ public class GameManager : MonoBehaviour
     {
         Instantiate(Canvas);
         //Instantiate(PauseCanvas);
+    }
+    private void SearchForPlayer()
+    {
+        ControlPlayer[] players = FindObjectsOfType<ControlPlayer>();
+        foreach (ControlPlayer pl in players)
+        {
+            if (pl.GetComponent<MovementBase>().IsPlayerControl)
+            {
+                SetPlayer(pl.gameObject);
+            }
+        }
+    }
+
+    private void onRoomLoad(Scene scene, LoadSceneMode mode)
+    {
+        ResetPlayerSearch();
+        Debug.Log("On room load");
+        TimeNoPlayer = 10f;
+        aggressiveSearchEnd = Time.timeSinceLevelLoad + AGGRESSIVE_SEARCH_TIME;
+
+    }
+    public void ResetPlayerSearch()
+    {
+        TimeNoPlayer = 10f;
+        aggressiveSearchEnd = Time.timeSinceLevelLoad + AGGRESSIVE_SEARCH_TIME;
+    }
+    public void SetPlayer(GameObject newPlayer)
+    {
+        GetComponent<CameraController>().SetCameraTarget(newPlayer);
+        
+        CurrentPlayer = newPlayer;
+        TimeNoPlayer = 0f;
+        if (FindObjectOfType<GUIManager>() == null)
+            return;
+        FindObjectOfType<GUIManager>().ClearAllUIBars();
+
+        if (newPlayer == null)
+            return;
+
+        if (newPlayer.GetComponent<CharacterBase>() != null)
+            newPlayer.GetComponent<CharacterBase>().DrawAllUIBars(FindObjectOfType<GUIManager>());
+        CurrentPlayer = newPlayer;
+        numUIBars = CurrentPlayer.GetComponent<CharacterBase>().GetNumUIBars();
+        
+    }
+
+    public void ClearPlayer()
+    {
+        SetPlayer(null);
     }
 }

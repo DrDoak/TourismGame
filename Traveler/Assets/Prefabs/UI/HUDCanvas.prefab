@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8805943007277689906}
   - component: {fileID: 8805943007277689905}
   - component: {fileID: 8805943007277689904}
+  - component: {fileID: 1325293027987628686}
   m_Layer: 5
   m_Name: HUDCanvas
   m_TagString: Untagged
@@ -98,3 +99,22 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1325293027987628686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8805943007277689911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca6703b817f679a43a39503ef2f0ca93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MenuProperty: {fileID: 0}
+  SelectionProperty: {fileID: 0}
+  ActionTextPrefab: {fileID: 0}
+  UIBarPrefab: {fileID: 1083654102755788, guid: 4a03a77428b3d0a49a965e4a4b58dc0f,
+    type: 3}
+  CurrentTarget: {fileID: 0}
+  ExpText: {fileID: 0}

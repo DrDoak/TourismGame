@@ -284,7 +284,7 @@ public class SaveObjManager : MonoBehaviour{
 			//PersistentItem pi = RecreatePersistentItem
 			//pi.registryCheck ();
 		}
-        FindObjectOfType<CameraController>().ResetCamera();
+        FindObjectOfType<GameManager>().ResetPlayerSearch();
 		//OnLoaded();
 		//ClearActorList();
 	}

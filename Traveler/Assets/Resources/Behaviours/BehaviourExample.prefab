@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 8964541888624021563}
   - component: {fileID: 3651841143664949205}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: InitialTask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

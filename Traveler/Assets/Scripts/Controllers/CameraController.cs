@@ -19,17 +19,16 @@ public class CameraController : MonoBehaviour
     void Awake()
     {
 
-        if (AutoFindTarget && Target == null && FindObjectOfType<ControlPlayer>() != null)
+        /*if (AutoFindTarget && Target == null && FindObjectOfType<ControlPlayer>() != null)
         {
             SetCameraTarget();
             transform.position = Target.transform.position + Offset;
-        }
-        //TimeNoPlayer = 0f;
-        SceneManager.sceneLoaded += onRoomLoad;
+        }*/
+        //SceneManager.sceneLoaded += onRoomLoad;
     }
     private void Update()
     {
-        if (AutoFindTarget && Target == null && FindObjectOfType<ControlPlayer>() != null)
+        /*if (AutoFindTarget && Target == null && FindObjectOfType<ControlPlayer>() != null)
         {
             if (TimeNoPlayer < SEARCHFORPLAYER && Time.timeSinceLevelLoad > aggressiveSearchEnd)
             {
@@ -39,22 +38,15 @@ public class CameraController : MonoBehaviour
                 
                 SetCameraTarget();
             }
-        }
+        }*/
     }
-    private void SetCameraTarget()
+    
+
+    public void SetCameraTarget(GameObject target)
     {
-        ControlPlayer[] players = FindObjectsOfType<ControlPlayer>();
-        foreach (ControlPlayer pl in players)
-        {
-            if (pl.GetComponent<MovementBase>().IsPlayerControl)
-            {
-                GetComponent<Camera>().enabled = true;
-                TimeNoPlayer = 0f;
-                Target = pl.gameObject;
-            }
-                
-        }
-        
+        GetComponent<Camera>().enabled = true;
+        Target = target;
+        transform.position = Target.transform.position + Offset;
     }
     // Update is called once per frame
     void LateUpdate()
@@ -65,12 +57,7 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    public void SetTarget(GameObject go)
-    {
-        Target = go;
-    }
-
-    private void onRoomLoad(Scene scene, LoadSceneMode mode)
+    /*private void onRoomLoad(Scene scene, LoadSceneMode mode)
     {
         ResetCamera();
         Debug.Log("On room load");
@@ -82,5 +69,5 @@ public class CameraController : MonoBehaviour
     {
         TimeNoPlayer = 10f;
         aggressiveSearchEnd = Time.timeSinceLevelLoad + AGGRESSIVE_SEARCH_TIME;
-    }
+    }*/
 }
