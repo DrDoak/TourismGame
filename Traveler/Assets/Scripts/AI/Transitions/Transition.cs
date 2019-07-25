@@ -10,8 +10,10 @@ public class Transition : MonoBehaviour {
 
 	[HideInInspector]
 	public AITaskManager MasterAI;
+    [HideInInspector]
+    public Goal ParentGoal;
 
-	public TaskType OriginType;
+    public TaskType OriginType;
 	public Task OriginTask;
 	public TaskType TargetType;
 	public Task TargetTask;
@@ -53,6 +55,14 @@ public class Transition : MonoBehaviour {
 			MasterAI.TransitionToTask (GetComponent<Task>());
 		}
 	}
+    public virtual void OnLoad(Goal g)
+    {
 
+    }
+
+    public virtual void OnSave(Goal g)
+    {
+
+    }
 
 }

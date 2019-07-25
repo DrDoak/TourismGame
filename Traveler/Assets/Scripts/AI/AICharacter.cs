@@ -87,14 +87,8 @@ public class AICharacter : MonoBehaviour
         OnStart();
     }
 
-    private void Update()
-    {
-        //Debug.Log(m_currentGoal);
-    }
-
     public void SetBehaviour(GameObject g, Goal originGoal, float priorityScore)
     {
-        Debug.Log("Setting behaviour to: " + g + " from: " + originGoal);
         m_taskManager.SetBehaviour(g,originGoal);
         m_currentPriority = priorityScore;
         m_currentBehaviourName = g.name;
@@ -176,7 +170,7 @@ public class AICharacter : MonoBehaviour
             SetBehaviour(b.BehaviourPrefab,b.ParentGoal,b.PriorityScore);
             return;
         }
-        if (b.PriorityScore * b.ParentGoal.GoalPriority >
+        if (b.PriorityScore * b.ParentGoal.GoalPriority >  
             m_currentPriority * m_currentGoal.GoalPriority) {
             SetBehaviour(b.BehaviourPrefab, b.ParentGoal,b.PriorityScore);
         }

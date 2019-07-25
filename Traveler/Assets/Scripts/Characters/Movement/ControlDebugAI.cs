@@ -32,8 +32,6 @@ public class ControlDebugAI : CharCustomControl
                 m_agent.SetDestination(hit.point);
             }
         }
-        
-
         return;
     }
 

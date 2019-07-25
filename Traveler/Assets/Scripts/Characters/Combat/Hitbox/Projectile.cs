@@ -26,7 +26,6 @@ public class Projectile : Hitbox {
 	}
 	protected override HitResult OnAttackable(Attackable atkObj)
 	{
-        Debug.Log("On Attackable");
         if (canAttack (atkObj))
 			incrementPenetration ();
 		return base.OnAttackable (atkObj);
@@ -34,12 +33,10 @@ public class Projectile : Hitbox {
 
 	void incrementPenetration() {
 		m_numPenetrated++;
-        Debug.Log("Increment Penetration: " + m_numPenetrated + " power: " + PenetrativePower);
         if (m_numPenetrated > PenetrativePower)
 			Duration = 0f;
 	}
 	protected override void OnHitObject(Collider other) {
-        Debug.Log("On hit object");
 		if (TravelThroughWalls)
 			return;
 		if (other.gameObject != Creator && !other.isTrigger // && !JumpThruTag (other.gameObject)

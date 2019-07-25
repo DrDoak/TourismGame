@@ -173,7 +173,6 @@ public class Hitbox : MonoBehaviour {
 	private void MaintainOrDestroyHitbox()
 	{
 		if (m_duration <= 0.0f) {
-			Debug.Log ("Hitbox destroyed!" + m_duration);
 			GameObject.Destroy (gameObject);
 		}
 		Duration -= Time.deltaTime;

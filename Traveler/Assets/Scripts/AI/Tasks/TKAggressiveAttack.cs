@@ -18,8 +18,8 @@ public class TKAggressiveAttack : Task {
 	
 	// Update is called once per frame
 	public override void OnTransition () {
-		if (Target != null) {
-			MasterAI.GetComponent<OffenseAI> ().setTarget (Target.GetComponent<MovementBase> (),
+		if (GetTargetObj() != null) {
+			MasterAI.GetComponent<OffenseAI> ().setTarget (GetTargetObj().GetComponent<MovementBase> (),
 				TargetPositionOffset,TargetPositionTolerance + Random.Range(-TargetToleranaceVariance/2f,TargetToleranaceVariance/2f));
 		}
 	}

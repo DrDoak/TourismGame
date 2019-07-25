@@ -37,20 +37,37 @@ public class AITaskManager : MonoBehaviour {
 			if (m_currentTask == null || t.IsInitialTask)
 				TransitionToTask (t);
 			AddTask (t);
-		}
-	}
+            t.OnSave(t.ParentGoal);
+        }
+        Transition[] trList = GetComponentsInChildren<Transition>();
+        foreach (Transition t in trList)
+        {
+            t.MasterAI = this;
+            t.OnSave(t.ParentGoal);
+        }
+    }
 
     public void SetBehaviour(GameObject g, Goal originGoal)
     {
         
         GameObject newG = Instantiate(g);
         Task[] tList = newG.GetComponentsInChildren<Task>();
+        Transition[] trList = newG.GetComponentsInChildren<Transition>();
         foreach (Task t in tList)
         {
             t.ParentGoal = originGoal;
             t.transform.parent = transform;
+            t.OnLoad(originGoal);
         }
-//        newG.GetComponent<Animation>().GetClip("hwierowh");
+
+        foreach (Transition t in trList)
+        {
+            t.ParentGoal = originGoal;
+            t.transform.parent = transform;
+            t.OnLoad(originGoal);
+        }
+
+        //        newG.GetComponent<Animation>().GetClip("hwierowh");
         ReloadTasks();
         Destroy(newG);
     }
@@ -63,8 +80,10 @@ public class AITaskManager : MonoBehaviour {
 			}
 		}
 	}
-	public void OnSight(Observable o) { 
+	public void OnSight(Observable o) {
+        Debug.Log("Calling AIM on sight");
 		if (m_currentTask != null) {
+            Debug.Log("Current task on sight");
 			m_currentTask.OnSight (o);
 			foreach (Transition t in GenericTransitions[m_currentTask.MyTaskType]) {
 				t.OnSight (o);

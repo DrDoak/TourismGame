@@ -15,15 +15,8 @@ public class Task : MonoBehaviour {
 	public List<Transition> TransitionsTo;
 	public List<Transition> TransitionsFrom;
 
-	public GameObject Target;
+    [HideInInspector]
     public Goal ParentGoal;
-    public Dictionary<string, GameObject> TargetDict;
-	public AITaskManager ParentAI;
-
-	// Use this for initialization
-	void Start () {
-		
-	}
 
 	public void Init() {
 		TransitionsTo = new List<Transition> ();
@@ -112,4 +105,21 @@ public class Task : MonoBehaviour {
 
 	public virtual void OnActiveUpdate() {
 	}
+
+    public virtual void OnLoad(Goal g) {}
+
+    public virtual void OnSave(Goal g) {}
+
+    public void SetTargetObj(GameObject go)
+    {
+        if (go == null)
+            return;
+        ParentGoal.SetVariable("Target", go.name,this);
+    }
+    public GameObject GetTargetObj()
+    {
+        if (ParentGoal == null || ParentGoal.ContainsKey("Target", this))
+            return null;
+        return GameObject.Find(ParentGoal.GetVariable("Target", this));
+    }
 }

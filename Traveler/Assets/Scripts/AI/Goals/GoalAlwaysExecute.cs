@@ -5,7 +5,7 @@ using UnityEngine;
 public class GoalAlwaysExecute : Goal
 {
     AIBehaviour b;
-    void Start()
+    void Awake()
     {
         init();
     }
@@ -31,6 +31,7 @@ public class GoalAlwaysExecute : Goal
         //Debug.Log("On enter zone: " + z.Label);
     }
     protected override void initVariableDictionary() {
+        base.initVariableDictionary();
         if (!GoalVariables.ContainsKey("ExecutePrefab"))
         {
             GoalVariables["ExecutePrefab"] = "ExecuteThisBehaviour";

@@ -78,6 +78,7 @@ public class MovementBase : MonoBehaviour
     public Vector3 TrueAverageVelocity { get { return m_trueAverageVelocity; } private set { m_trueAverageVelocity = value; } }
 
     private Vector3 m_lastInput;
+    private InputPacket m_extraInputs;
 
     internal void Awake()
     {
@@ -123,11 +124,14 @@ public class MovementBase : MonoBehaviour
             playStepSounds();
         moveSmoothly();
         currentPlayerControl(ip);
+        processExtraMovement();
+
         if (m_inputMove != m_lastInput)
         {
             updateAverageVelocity();
         }
         m_lastInput = m_inputMove;
+       
         resetJumps();
         updateAverageVelocity();
     }
@@ -246,6 +250,22 @@ public class MovementBase : MonoBehaviour
         m_inputMove = ip.InputMove;
     }
 
+    private void processExtraMovement()
+    {
+        if (m_extraInputs != null)
+        {
+            m_eqp.EquipmentUseUpdatePlayer(m_extraInputs.equipmentSlotUsed, m_extraInputs.InputMove);
+            m_extraInputs = null;
+        }
+    }
+
+    public void UseItem(string slot, Vector2 direction)
+    {
+        if (m_extraInputs == null)
+            m_extraInputs = new InputPacket();
+        m_extraInputs.equipmentSlotUsed = slot;
+        m_extraInputs.InputMove = direction;
+    }
     protected void JumpMovement()
     {
         if (m_jumpDown)

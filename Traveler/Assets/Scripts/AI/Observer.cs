@@ -35,9 +35,10 @@ public class Observer : MonoBehaviour {
 			Vector3 myPos = transform.position;
             float cDist = Vector3.Distance(otherPos, myPos);
             if (o.gameObject != gameObject && cDist < detectionRange && 
-                m_orient.FacingPoint(otherPos)) {
+                m_orient.FacingPoint2D(otherPos)) {
 				RaycastHit[] hits = Physics.RaycastAll (myPos, otherPos - myPos, cDist);
 				Debug.DrawRay (myPos, otherPos - myPos, Color.green);
+                
 				float minDist = float.MaxValue;
 				foreach (RaycastHit h in hits) {
 					GameObject oObj = h.collider.gameObject;
@@ -77,7 +78,7 @@ public class Observer : MonoBehaviour {
     }
 
     internal void OnSight(Observable o) {
-		//ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnSight (o));
+        //ExecuteEvents.Execute<ICustomMessageTarget> (gameObject, null, (x, y) => x.OnSight (o));
 		if (GetComponent<AICharacter>()) {
 			GetComponent<AICharacter> ().OnSight (o);
 		}

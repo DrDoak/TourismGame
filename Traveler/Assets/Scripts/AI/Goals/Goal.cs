@@ -25,7 +25,10 @@ public class Goal : MonoBehaviour
 
     public virtual void OnExitZone(Zone z) { }
 
-    public StringDictionary GoalVariables;
+    [SerializeField]
+    protected int NumGoalVariables = 0;
+    [SerializeField]
+    protected StringDictionary GoalVariables;
 
     public void SetGoalPriority(float newP)
     {
@@ -68,11 +71,46 @@ public class Goal : MonoBehaviour
         init();
     }
 
-    protected virtual void initVariableDictionary() { }
+    protected virtual void initVariableDictionary() {
+        int c = GoalVariables.Keys.Count;
+        for (int i = c; i < NumGoalVariables; i++)
+        {
+            GoalVariables.Add(i.ToString(), "");
+        }
+    }
 
     protected virtual void init() {
         if (GoalVariables == null)
             GoalVariables = new StringDictionary();
         initVariableDictionary();
+    }
+
+    public void SetVariable(string key, string value, Task origin)
+    {
+        GoalVariables[origin.GetType() + "-" + origin.ParentGoal.GetType() + "-" + key] = value;
+    }
+    public string GetVariable(string key, Task origin)
+    {
+        if (!ContainsKey(key,origin))
+            return "";
+        return GoalVariables[origin.GetType() + "-" + origin.ParentGoal.name + "-" + key];
+    }
+    public bool ContainsKey(string key, Task origin)
+    {
+        return GoalVariables.ContainsKey(origin.GetType() + "-" + origin.ParentGoal.name + "-" + key);
+    }
+    public void SetVariable(string key, string value, Transition origin)
+    {
+        GoalVariables[origin.GetType() + "-" + origin.ParentGoal.name + "-" + key] = value;
+    }
+    public string GetVariable(string key, Transition origin)
+    {
+        if (!ContainsKey(key, origin))
+            return "";
+        return GoalVariables[origin.GetType() + "-" + origin.ParentGoal.name + "-" + key];
+    }
+    public bool ContainsKey(string key, Transition origin)
+    {
+        return GoalVariables.ContainsKey(origin.GetType() + "-" + origin.ParentGoal.name + "-" + key);
     }
 }

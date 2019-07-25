@@ -145,6 +145,14 @@ public class Orientation : MonoBehaviour
     {
         return DirectionToPoint(point) == CurrentDirection;
     }
+    public bool FacingPoint2D(Vector3 point)
+    {
+        return FacingPoint2D(point, FacingLeft);
+    }
+    public bool FacingPoint2D(Vector3 point, bool left)
+    {
+        return (point.x < transform.position.x == left);
+    }
     private void storeData(CharData d)
     {
         d.SetInt("Direction", (int)CurrentDirection);

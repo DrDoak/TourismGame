@@ -6,7 +6,7 @@ public class TKPickupObject : Task
 {
     public override void OnActiveUpdate()
     {
-        if (Target != null)
-            MasterAI.GetComponent<MovementBase>().SetTargetPoint(Target.transform.position);
+        if (GetTargetObj() != null)
+            MasterAI.GetComponent<MovementBase>().SetTargetPoint(GetTargetObj().transform.position);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class TRSeeLogicalObject : Transition
 {
     public string ObjectSeen = "none";
-    public string IfSeenInZone = "";
+    public string IfSeenInZone = "NONE";
     public bool TriggerIfInZone = true;
 
     public override void OnSight(Observable o)
@@ -24,8 +24,29 @@ public class TRSeeLogicalObject : Transition
                     return;
                 }
             }
-            TargetTask.Target = o.gameObject;
+            TargetTask.SetTargetObj(o.gameObject);
             TriggerTransition();
         }
     }
+    public override void OnLoad(Goal g)
+    {
+        if (g.ContainsKey("ObjectSeen", this))
+            ObjectSeen = g.GetVariable("ObjectSeen", this);
+        if (g.ContainsKey("IfSeenInZone", this))
+            IfSeenInZone = g.GetVariable("IfSeenInZone", this);
+        if (g.ContainsKey("TriggerIfInZone", this))
+        {
+            string s = g.GetVariable("TriggerIfInZone", this);
+            TriggerIfInZone = (s == "TRUE");
+        }
+            
+    }
+
+    public override void OnSave(Goal g)
+    {
+        g.SetVariable("ObjectSeen", ObjectSeen, this);
+        g.SetVariable("IfSeenInZone", IfSeenInZone, this);
+        g.SetVariable("TriggerIfInZone", (TriggerIfInZone)?"TRUE":"FALSE", this);
+    }
+
 }
