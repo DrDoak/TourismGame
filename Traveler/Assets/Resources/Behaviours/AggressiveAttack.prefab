@@ -48,9 +48,7 @@ MonoBehaviour:
   IsInitialTask: 0
   TransitionsTo: []
   TransitionsFrom: []
-  Target: {fileID: 0}
   ParentGoal: {fileID: 0}
-  ParentAI: {fileID: 0}
 --- !u!1 &4591468263757878929
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,14 +130,16 @@ MonoBehaviour:
   IsInitialTask: 0
   TransitionsTo: []
   TransitionsFrom: []
-  Target: {fileID: 0}
   ParentGoal: {fileID: 0}
-  ParentAI: {fileID: 0}
-  TargetPositionOffset: {x: 0, y: 0}
-  TargetPositionTolerance: 0
-  TargetToleranaceVariance: 0
+  TargetPositionOffset: {x: 0, y: 0, z: 0}
+  TargetPositionTolerance: 5
+  TargetToleranaceVariance: 1
   OnlyUseSpecificAttacks: 0
+  DistanceToTarget: 0
   AcceptableAttacks: []
+  currentAction: wait
+  baseSpacing: 1
+  baseAggression: 0.5
 --- !u!114 &4591468264559506527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TypeOfTransition: 1
   MasterAI: {fileID: 0}
+  ParentGoal: {fileID: 0}
   OriginType: 0
   OriginTask: {fileID: 0}
   TargetType: 1

@@ -396,6 +396,42 @@ public class CharacterBase : MonoBehaviour
         }
     }
 
+    public List<ActionInfo> GetValidActions(Vector3 otherPos)
+    {
+        List<ActionInfo> allAttacks = new List<ActionInfo>();
+
+        foreach (ActionInfo ainfo in GetAllActions())
+        {
+            float dir = GetComponent<Orientation>().FacingLeft ? -1f : 1f;
+            float xDiff = Mathf.Abs(transform.position.x + (dir * ainfo.m_AIInfo.AIPredictionOffset.x) - otherPos.x);
+            float yDiff = Mathf.Abs(transform.position.y + ainfo.m_AIInfo.AIPredictionOffset.y - otherPos.y);
+            if ((ainfo.m_AIInfo.AIPredictionHitbox.x) +
+                (ainfo.m_AIInfo.AIPredictionHitbox.x) > xDiff &&
+                (ainfo.m_AIInfo.AIPredictionHitbox.y) +
+                (ainfo.m_AIInfo.AIPredictionHitbox.y) > yDiff)
+            {
+                allAttacks.Add(ainfo);
+            }
+        }
+        return allAttacks;
+    }
+
+    public List<ActionInfo> GetAllActions()
+    {
+        List<ActionInfo> allAttacks = new List<ActionInfo>();
+
+        foreach (ActionInfo ai in GetComponents<ActionInfo>())
+        {
+            allAttacks.Add(ai);
+        }
+        foreach (ActionInfo ai in GetComponentsInChildren<ActionInfo>())
+        {
+            allAttacks.Add(ai);
+        }
+        Debug.Log("Getting all actions length: " + allAttacks.Count);
+        return allAttacks;
+    }
+
     private void storeData(CharData d)
     {
         d.SetBool("IsAutonomous",IsAutonomous);

@@ -118,7 +118,7 @@ public class Task : MonoBehaviour {
     }
     public GameObject GetTargetObj()
     {
-        if (ParentGoal == null || ParentGoal.ContainsKey("Target", this))
+        if (ParentGoal == null || !ParentGoal.ContainsKey("Target", this))
             return null;
         return GameObject.Find(ParentGoal.GetVariable("Target", this));
     }

@@ -4,23 +4,94 @@ using UnityEngine;
 
 public class TKAggressiveAttack : Task {
 
-	public Vector2 TargetPositionOffset = new Vector2 ();
-	public float TargetPositionTolerance = 0f;
+	public Vector3 TargetPositionOffset = new Vector3();
+	public float TargetPositionTolerance = 5f;
 	public float TargetToleranaceVariance = 0f;
 
 	public bool OnlyUseSpecificAttacks = false;
+    [SerializeField]
+    private float DistanceToTarget = 0f;
 	public List<string> AcceptableAttacks;
 
-	// Use this for initialization
-	void Start () {
+    private MovementBase m_movement;
+    private CharacterBase m_charBase;
+    private Vector3 m_currentTargetPoint;
+
+    [SerializeField]
+    private string currentAction = "wait";
+
+    private const float DETERMINATION_INTERVAL = 0.05f;
+    private float m_nextDetermination;
+
+    private float m_minDistance;
+    public float baseSpacing = 1.0f;
+
+    //public float baseReactionSpeed = 1.0f;
+    //public float baseDecisionMaking = 1.0f;
+    public float baseAggression = 0.5f;
+
+    float spacing;
+    //float reactionSpeed;
+    //float decisionMaking;
+    float aggression;
+
+    // Use this for initialization
+    void Start () {
 		Init ();
-	}
-	
-	// Update is called once per frame
-	public override void OnTransition () {
-		if (GetTargetObj() != null) {
+        m_movement = MasterAI.GetComponent<MovementBase>();
+        m_charBase = MasterAI.GetComponent<CharacterBase>();
+    }
+
+    public override void OnActiveUpdate()
+    {
+        if (GetTargetObj() != null) {
+            if (currentAction == "wait") {
+                decideNextAction ();
+            } else if (currentAction == "moveToTarget") {
+                if (GetTargetObj().transform.position.x > transform.position.x) {
+                    m_currentTargetPoint = GetTargetObj().transform.position + TargetPositionOffset;
+                } else {
+                    m_currentTargetPoint = GetTargetObj().transform.position + new Vector3(-TargetPositionOffset.x, TargetPositionOffset.y,0f);
+                }
+                DistanceToTarget = Vector3.Distance(transform.position, m_currentTargetPoint);
+                if (Vector3.Distance(transform.position, m_currentTargetPoint) > TargetPositionTolerance)
+                    m_movement.SetTargetPoint(m_currentTargetPoint);
+                else
+                    m_movement.SetTargetPoint(transform.position);
+                decideNextAction ();
+            } else if (currentAction == "attack") {
+                if (m_charBase.IsAutonomous) {
+                    decideNextAction ();
+                }
+            }
+        }
+    }
+    public void decideNextAction()
+    {
+        Vector3 otherPos = GetTargetObj().transform.position;
+		float dir = (MasterAI.GetComponent<Orientation> ().FacingLeft) ? -1f : 1f;
+
+		if (Time.timeSinceLevelLoad > m_nextDetermination) {
+			if (Random.value < (aggression * 0.1f)) {
+				foreach (ActionInfo ainfo in m_charBase.GetValidActions(otherPos)) {
+					float p = Random.value;
+					if (p < ainfo.m_AIInfo.Frequency) {
+						m_charBase.TryAction (ainfo);
+						currentAction = "attack";
+						break;
+					}
+				}
+			}
+			m_nextDetermination = Time.timeSinceLevelLoad + DETERMINATION_INTERVAL;
+		}
+		currentAction = "moveToTarget";
+    }
+
+    // Update is called once per frame
+    public override void OnTransition () {
+		/*if (GetTargetObj() != null) {
 			MasterAI.GetComponent<OffenseAI> ().setTarget (GetTargetObj().GetComponent<MovementBase> (),
 				TargetPositionOffset,TargetPositionTolerance + Random.Range(-TargetToleranaceVariance/2f,TargetToleranaceVariance/2f));
-		}
+		}*/
 	}
 }

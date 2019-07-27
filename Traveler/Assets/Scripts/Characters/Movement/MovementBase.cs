@@ -93,7 +93,6 @@ public class MovementBase : MonoBehaviour
         lastPos = transform.position;
         if (CanJump)
             SetJumpHeight(JumpHeight);
-        //m_savedCurrentPlayer = IsCurrentPlayer;
         updateCustomControl();
         if (GetComponent<PersistentItem>() != null)
             GetComponent<PersistentItem>().InitializeSaveLoadFuncs(storeData, loadData);
@@ -146,9 +145,9 @@ public class MovementBase : MonoBehaviour
             LastCalculatedTime = Time.timeSinceLevelLoad;
         }
     }
-    public void SetTargetPoint(Vector3 target)
+    public void SetTargetPoint(Vector3 target, float tolerance = 4f)
     {
-        m_currentControl.SetTarget(target);
+        m_currentControl.SetTarget(target, tolerance);
     }
     public void SetJumpHeight(float jumpHeight)
     {
@@ -216,13 +215,7 @@ public class MovementBase : MonoBehaviour
     }
     
     private void currentPlayerControl(InputPacket ip)
-    {
-        /*if (m_savedCurrentPlayer != IsCurrentPlayer)
-        {
-            ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnControllableChange(IsCurrentPlayer));
-            m_savedCurrentPlayer = IsCurrentPlayer;
-        }*/
-        
+    {        
         if (ip.InputMove.magnitude > 0.01f)
         {
             Direction d = m_orient.VectorToDirection(ip.InputMove);

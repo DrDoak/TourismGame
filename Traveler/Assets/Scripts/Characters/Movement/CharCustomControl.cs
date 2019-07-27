@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CharCustomControl : MonoBehaviour
 {
-    private Vector3 targetPoint;
+    protected Vector3 m_targetPoint;
     public virtual InputPacket BaseMovement() { return new InputPacket();}
 
-    public virtual void SetTarget(Vector3 v)
+    public virtual void SetTarget(Vector3 target, float tolerance = 4f)
     {
-        targetPoint = v;
+        m_targetPoint = target;
     }
 }

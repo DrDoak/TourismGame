@@ -59,7 +59,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4464004866126704661}
   - component: {fileID: 5372912141082540389}
-  - component: {fileID: 2028409276043135130}
+  - component: {fileID: 253316316961456651}
   m_Layer: 0
   m_Name: UseItem
   m_TagString: Untagged
@@ -103,7 +103,7 @@ MonoBehaviour:
   TriggeringFaction: 1
   IfSeenInZone: 
   InvertInZoneCondition: 0
---- !u!114 &2028409276043135130
+--- !u!114 &253316316961456651
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,17 +112,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 4464004866126704660}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6895ee1e643f8ac44a1e9d8eead0c0bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 79d4462ccf8fe4244a5a42bf4829d814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MasterAI: {fileID: 0}
-  MyTaskType: 1
+  MyTaskType: 0
   IsInitialTask: 0
   TransitionsTo: []
   TransitionsFrom: []
   ParentGoal: {fileID: 0}
-  UseItemSlot: Item1
-  UseSecondary: 0
+  TargetPositionOffset: {x: 1, y: 0, z: 0}
+  TargetPositionTolerance: 1
+  TargetToleranaceVariance: 0
+  OnlyUseSpecificAttacks: 0
+  DistanceToTarget: 0
+  AcceptableAttacks: []
+  currentAction: wait
+  baseSpacing: 1
+  baseAggression: 0.5
 --- !u!1 &4464004867133087694
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,7 +140,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4464004867133087695}
   m_Layer: 0
-  m_Name: DebugUseItem
+  m_Name: DebugAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

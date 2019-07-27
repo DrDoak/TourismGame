@@ -61,7 +61,7 @@ public class Goal : MonoBehaviour
             var keyValueCombo = s.Split(':');
             if (keyValueCombo.Length > 1)
             {
-                GoalVariables.Add(keyValueCombo[0], keyValueCombo[1]);
+                GoalVariables[keyValueCombo[0]] = keyValueCombo[1];
             }
         }
     }
@@ -87,7 +87,7 @@ public class Goal : MonoBehaviour
 
     public void SetVariable(string key, string value, Task origin)
     {
-        GoalVariables[origin.GetType() + "-" + origin.ParentGoal.GetType() + "-" + key] = value;
+        GoalVariables[origin.GetType() + "-" + origin.ParentGoal.name + "-" + key] = value;
     }
     public string GetVariable(string key, Task origin)
     {
@@ -97,7 +97,8 @@ public class Goal : MonoBehaviour
     }
     public bool ContainsKey(string key, Task origin)
     {
-        return GoalVariables.ContainsKey(origin.GetType() + "-" + origin.ParentGoal.name + "-" + key);
+        string realKey = origin.GetType() + "-" + origin.ParentGoal.name + "-" + key;
+        return GoalVariables.ContainsKey(realKey);
     }
     public void SetVariable(string key, string value, Transition origin)
     {
