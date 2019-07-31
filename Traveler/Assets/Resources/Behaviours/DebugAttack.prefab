@@ -121,15 +121,15 @@ MonoBehaviour:
   TransitionsTo: []
   TransitionsFrom: []
   ParentGoal: {fileID: 0}
-  TargetPositionOffset: {x: 1, y: 0, z: 0}
-  TargetPositionTolerance: 1
+  TargetPositionOffset: {x: -1, y: 0, z: 0}
+  TargetPositionTolerance: 0.75
   TargetToleranaceVariance: 0
   OnlyUseSpecificAttacks: 0
   DistanceToTarget: 0
   AcceptableAttacks: []
   currentAction: wait
   baseSpacing: 1
-  baseAggression: 0.5
+  baseAggression: 10
 --- !u!1 &4464004867133087694
 GameObject:
   m_ObjectHideFlags: 0

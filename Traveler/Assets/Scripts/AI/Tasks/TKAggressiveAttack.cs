@@ -28,7 +28,7 @@ public class TKAggressiveAttack : Task {
 
     //public float baseReactionSpeed = 1.0f;
     //public float baseDecisionMaking = 1.0f;
-    public float baseAggression = 0.5f;
+    public float baseAggression = 100f;
 
     float spacing;
     //float reactionSpeed;
@@ -38,6 +38,7 @@ public class TKAggressiveAttack : Task {
     // Use this for initialization
     void Start () {
 		Init ();
+        aggression = baseAggression;
         m_movement = MasterAI.GetComponent<MovementBase>();
         m_charBase = MasterAI.GetComponent<CharacterBase>();
     }
@@ -45,34 +46,41 @@ public class TKAggressiveAttack : Task {
     public override void OnActiveUpdate()
     {
         if (GetTargetObj() != null) {
+
             if (currentAction == "wait") {
+                m_movement.FacePoint2D(GetTargetObj().transform.position);
                 decideNextAction ();
-            } else if (currentAction == "moveToTarget") {
-                if (GetTargetObj().transform.position.x > transform.position.x) {
+            } else if (currentAction == "moveToTarget") {   
+                if (GetTargetObj().transform.position.x > MasterAI.transform.position.x) {
                     m_currentTargetPoint = GetTargetObj().transform.position + TargetPositionOffset;
                 } else {
-                    m_currentTargetPoint = GetTargetObj().transform.position + new Vector3(-TargetPositionOffset.x, TargetPositionOffset.y,0f);
+                    m_currentTargetPoint = GetTargetObj().transform.position + new Vector3(-TargetPositionOffset.x, TargetPositionOffset.y,TargetPositionOffset.z);
                 }
-                DistanceToTarget = Vector3.Distance(transform.position, m_currentTargetPoint);
-                if (Vector3.Distance(transform.position, m_currentTargetPoint) > TargetPositionTolerance)
-                    m_movement.SetTargetPoint(m_currentTargetPoint);
+                DistanceToTarget = Vector3.Distance(MasterAI.transform.position, m_currentTargetPoint);
+                //Debug.Log("from " + MasterAI.transform.position + " to " + m_currentTargetPoint + " Actual distance: " + DistanceToTarget + " tolerance " + TargetPositionTolerance);
+                if (DistanceToTarget > TargetPositionTolerance)
+                    m_movement.SetTargetPoint(m_currentTargetPoint, TargetPositionTolerance);
                 else
-                    m_movement.SetTargetPoint(transform.position);
+                {
+                    m_movement.FacePoint2D(GetTargetObj().transform.position);
+                }
+                    
                 decideNextAction ();
             } else if (currentAction == "attack") {
+                m_movement.FacePoint2D(GetTargetObj().transform.position);
                 if (m_charBase.IsAutonomous) {
                     decideNextAction ();
                 }
             }
         }
     }
-    public void decideNextAction()
+    void decideNextAction()
     {
         Vector3 otherPos = GetTargetObj().transform.position;
 		float dir = (MasterAI.GetComponent<Orientation> ().FacingLeft) ? -1f : 1f;
-
 		if (Time.timeSinceLevelLoad > m_nextDetermination) {
 			if (Random.value < (aggression * 0.1f)) {
+                Debug.Log("Aggression triggerred");
 				foreach (ActionInfo ainfo in m_charBase.GetValidActions(otherPos)) {
 					float p = Random.value;
 					if (p < ainfo.m_AIInfo.Frequency) {

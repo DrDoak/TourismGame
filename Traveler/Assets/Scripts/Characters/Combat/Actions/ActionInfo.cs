@@ -43,7 +43,7 @@ public class SoundInfo {
 
 [System.Serializable]
 public class AIInfo {
-	public float Frequency = 0.5f;
+	public float Frequency = 1f;
 	public bool UniqueAIPrediction = false;
 	public bool AutoAttack = false;
 	public Vector3 AIPredictionHitbox = Vector3.zero;
@@ -232,16 +232,36 @@ public class ActionInfo : MonoBehaviour
 	void OnDrawGizmos() {
 		if (m_AIInfo.DrawPredictionHitbox) {
 			Gizmos.color = new Color (0, 0, 1, .25f);
-			if (m_AIInfo.UniqueAIPrediction) {
-				Vector3 off = GetComponent<Orientation> ().OrientVectorToDirection (m_AIInfo.AIPredictionOffset);
-				Gizmos.DrawCube (transform.position + new Vector3(off.x,off.y,0f), new Vector3 (m_AIInfo.AIPredictionHitbox.x, m_AIInfo.AIPredictionHitbox.y, 0f));
-			} else {
-				Vector3 off = GetComponent<Orientation> ().OrientVectorToDirection (m_HitboxInfo[0].HitboxOffset);
-				Gizmos.DrawCube (transform.position + new Vector3(off.x,off.y,0f), new Vector3 (m_HitboxInfo[0].HitboxScale.x, m_HitboxInfo[0].HitboxScale.y, 0f));
+			if (m_AIInfo.UniqueAIPrediction && m_hitboxMaker != null && m_hitboxMaker.GetComponent<Orientation>() != null) {
+				Vector3 off = m_hitboxMaker.GetComponent<Orientation> ().OrientVectorToDirection2D (m_AIInfo.AIPredictionOffset);
+				Gizmos.DrawCube (transform.position + new Vector3(off.x,off.y, off.z), new Vector3 (m_AIInfo.AIPredictionHitbox.x, m_AIInfo.AIPredictionHitbox.y, m_AIInfo.AIPredictionHitbox.z));
+			} else if (m_hitboxMaker != null && m_hitboxMaker.GetComponent<Orientation>() != null)
+            {
+				Vector3 off = m_hitboxMaker.GetComponent<Orientation> ().OrientVectorToDirection2D(m_HitboxInfo[0].HitboxOffset);
+				Gizmos.DrawCube (transform.position + new Vector3(off.x,off.y, off.z), new Vector3 (m_HitboxInfo[0].HitboxScale.x, m_HitboxInfo[0].HitboxScale.y, m_HitboxInfo[0].HitboxScale.z));
 			}
 		}
 	}
 	
+    public bool IsInActiveZone(Vector3 targetPoint)
+    {
+        if (!m_AIInfo.UniqueAIPrediction)
+        {
+            m_AIInfo.AIPredictionHitbox = m_HitboxInfo[0].HitboxScale;
+            m_AIInfo.AIPredictionOffset = m_HitboxInfo[0].HitboxOffset;
+        }
+        float dir = m_hitboxMaker.GetComponent<Orientation>().FacingLeft ? -1f : 1f;
+        float xDiff = Mathf.Abs(transform.position.x + (dir * m_AIInfo.AIPredictionOffset.x) - targetPoint.x);
+        float yDiff = Mathf.Abs(transform.position.y + m_AIInfo.AIPredictionOffset.y - targetPoint.y);
+        float zDiff = Mathf.Abs(transform.position.z + m_AIInfo.AIPredictionOffset.z - targetPoint.z);
+        if ((m_AIInfo.AIPredictionHitbox.x)/2f > xDiff &&
+            (m_AIInfo.AIPredictionHitbox.y)/2f > yDiff && 
+            (m_AIInfo.AIPredictionHitbox.z)/2f > zDiff)
+        {
+            return true;
+        }
+        return false;
+    }
 	/*protected GameObject CreateAttackFX(AttackFXInfo afxi) {
 		Vector3 p = afxi.Offset + new Vector3(
 			UnityEngine.Random.Range (-afxi.OffsetVariation.x / 2f, afxi.OffsetVariation.x / 2f),

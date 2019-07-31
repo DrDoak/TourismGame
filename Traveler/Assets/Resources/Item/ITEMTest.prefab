@@ -150,8 +150,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttackName: default
   m_HitboxInfo:
-  - HitboxScale: {x: 1, y: 1, z: 1}
-    HitboxOffset: {x: 0.5, y: 0.5, z: 0}
+  - HitboxScale: {x: 1.5, y: 1, z: 1}
+    HitboxOffset: {x: 0.75, y: 0.5, z: 0}
     Damage: 25
     FocusDamage: 0
     Penetration: 0
@@ -173,7 +173,7 @@ MonoBehaviour:
     StartUpAnimation: slash_s
     RecoveryAnimation: slash_r
   m_AIInfo:
-    Frequency: 0.5
+    Frequency: 1
     UniqueAIPrediction: 0
     AutoAttack: 0
     AIPredictionHitbox: {x: 0, y: 0, z: 0}

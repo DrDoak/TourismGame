@@ -245,11 +245,11 @@ MonoBehaviour:
     RecoveryAnimation: slash_r
   m_AIInfo:
     Frequency: 0.5
-    UniqueAIPrediction: 0
+    UniqueAIPrediction: 1
     AutoAttack: 0
-    AIPredictionHitbox: {x: 0, y: 0, z: 0}
-    AIPredictionOffset: {x: 0, y: 0, z: 0}
-    DrawPredictionHitbox: 0
+    AIPredictionHitbox: {x: 6, y: 1, z: 1}
+    AIPredictionOffset: {x: 3, y: 0, z: 0}
+    DrawPredictionHitbox: 1
   m_SoundInfo:
     StartupSoundFX: {fileID: 0}
     AttackSoundFX: {fileID: 0}

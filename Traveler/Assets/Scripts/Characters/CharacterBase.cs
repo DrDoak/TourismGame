@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.EventSystems;
 
 [RequireComponent (typeof (Orientation))]
 public class CharacterBase : MonoBehaviour
 {
-    public bool IsAutonomous = true;
+    public bool IsAutonomous { get { return m_isAutonomous; } private set { m_isAutonomous = value; } }
+    private bool m_isAutonomous = true;
 
     public bool AutoOrientSprite = true;
     public string IdleAnimation = "idle";
@@ -174,7 +176,7 @@ public class CharacterBase : MonoBehaviour
     {
         if (m_attackable.Alive)
         {
-            IsAutonomous = true;
+            m_isAutonomous = true;
             StunTime = 0.0f;
         }
     }
@@ -188,7 +190,7 @@ public class CharacterBase : MonoBehaviour
         EndAction();
         StunTime = st;
         m_hitStateIsGuard = guard;
-        IsAutonomous = false;
+        m_isAutonomous = false;
     }
 
     // --- ACTIONS
@@ -246,7 +248,7 @@ public class CharacterBase : MonoBehaviour
 
     public void EndAction()
     {
-        IsAutonomous = true;
+        m_isAutonomous = true;
         m_currentAction = null;
         m_anim.SetSpeed(1.0f);
         m_actionAnim = "";
@@ -319,7 +321,7 @@ public class CharacterBase : MonoBehaviour
 
     bool canAct()
     {
-        return (StunTime <= 0 && IsAutonomous);
+        return (StunTime <= 0 && m_isAutonomous);
     }
 
     public void AddUIBar(UIBarInfo uib)
@@ -371,9 +373,9 @@ public class CharacterBase : MonoBehaviour
 
     public void RegisterHit(GameObject otherObj, HitInfo hi, HitResult hr)
     {
-        Debug.Log ("Collision: " + this + " " + otherObj);
+        //Debug.Log ("Collision: " + this + " " + otherObj);
         ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnHitConfirm(hi, otherObj, hr));
-        Debug.Log ("Registering hit with: " + otherObj);
+        //Debug.Log ("Registering hit with: " + otherObj);
         if (otherObj.GetComponent<Attackable>() != null)
         {
             m_hitTargets[otherObj.GetComponent<Attackable>()] = hi;
@@ -387,7 +389,7 @@ public class CharacterBase : MonoBehaviour
         if (!canAct())
             return;
         m_currentAction = ai;
-        IsAutonomous = false;
+        m_isAutonomous = false;
         ExecuteEvents.Execute<ICustomMessageTarget>(gameObject, null, (x, y) => x.OnAttack(m_currentAction));
         GetComponent<MovementBase>().DecelerateInAir = false;
         if (m_currentAction != null)
@@ -399,16 +401,13 @@ public class CharacterBase : MonoBehaviour
     public List<ActionInfo> GetValidActions(Vector3 otherPos)
     {
         List<ActionInfo> allAttacks = new List<ActionInfo>();
-
+        
         foreach (ActionInfo ainfo in GetAllActions())
         {
             float dir = GetComponent<Orientation>().FacingLeft ? -1f : 1f;
             float xDiff = Mathf.Abs(transform.position.x + (dir * ainfo.m_AIInfo.AIPredictionOffset.x) - otherPos.x);
             float yDiff = Mathf.Abs(transform.position.y + ainfo.m_AIInfo.AIPredictionOffset.y - otherPos.y);
-            if ((ainfo.m_AIInfo.AIPredictionHitbox.x) +
-                (ainfo.m_AIInfo.AIPredictionHitbox.x) > xDiff &&
-                (ainfo.m_AIInfo.AIPredictionHitbox.y) +
-                (ainfo.m_AIInfo.AIPredictionHitbox.y) > yDiff)
+            if (ainfo.IsInActiveZone(otherPos))
             {
                 allAttacks.Add(ainfo);
             }
@@ -428,10 +427,14 @@ public class CharacterBase : MonoBehaviour
         {
             allAttacks.Add(ai);
         }
-        Debug.Log("Getting all actions length: " + allAttacks.Count);
         return allAttacks;
     }
 
+    public void SetAutonomy(bool autonomous)
+    {
+        //gameObject.GetComponent<NavMeshAgent>().nextPosition = transform.position;
+        m_isAutonomous = autonomous;
+    }
     private void storeData(CharData d)
     {
         d.SetBool("IsAutonomous",IsAutonomous);

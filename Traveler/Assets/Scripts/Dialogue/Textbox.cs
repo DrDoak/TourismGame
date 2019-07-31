@@ -89,7 +89,7 @@ public class Textbox : MonoBehaviour {
 	public void FreezeCharacter(MovementBase bm, bool isFrozen = true) {
 		if (!FrozenCharacters.ContainsKey (bm))
 			FrozenCharacters.Add (bm, bm.IsPlayerControl);
-		bm.GetComponent<CharacterBase>().IsAutonomous = !isFrozen;
+		bm.GetComponent<CharacterBase>().SetAutonomy(!isFrozen);
 	}
 		
 	/* Cutscene scripting guide:

@@ -24,12 +24,17 @@ public class Equipment : Item
         base.OnEnterInventory(s, es);
         if (es != null && es.SlotType == InventorySlotType.EQUIPMENT)
         {
-            ItemInstance = Instantiate((GameObject)Resources.Load(ItemProperties.prefabPath), s.gameObject.transform);
+            ItemInstance = Instantiate((GameObject)Resources.Load(ItemProperties.prefabPath),s.transform.position,Quaternion.identity);
+            ItemInstance.transform.SetParent(s.gameObject.transform);
+            
             ItemInstance.GetComponent<Item>().ItemProperties = ItemProperties;
             ItemInstance.GetComponent<Item>().LoadItems();
+            ItemInstance.GetComponent<BasicPhysics>().enabled = false;
+            ItemInstance.GetComponent<CharacterController>().enabled = false;
             m_onSave = ItemInstance.GetComponent<Item>().onItemSave;
 
             Destroy(ItemInstance.GetComponent<PersistentItem>());
+            
             ItemInstance.name = es.SlotName;
 
             ItemInstance.GetComponent<Equipment>().AddActionListeners(s.gameObject);

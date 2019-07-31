@@ -8,7 +8,7 @@ public class ControlAI : CharCustomControl
     public Vector3 Destination;
 
     private NavMeshAgent m_agent;
-    private CharacterController m_charControl;
+
     
     private GameObject m_followTarget;
     private bool m_isFollow = false;
@@ -18,7 +18,7 @@ public class ControlAI : CharCustomControl
     void Start()
     {
         m_agent = gameObject.GetComponent<NavMeshAgent>();
-        m_charControl = gameObject.GetComponent<CharacterController>();
+        //m_charControl = gameObject.GetComponent<CharacterController>();
         m_targetPoint = transform.position;
     }
     void Update()
@@ -43,22 +43,29 @@ public class ControlAI : CharCustomControl
         m_agent.updatePosition = false;
         m_agent.updateRotation = false;
 
+        if (m_toFace)
+        {
+            GetComponent<Orientation>().OrientToPoint2D(m_facePoint);
+            m_toFace = false;
+        }
         if (Vector3.Distance(transform.position, m_targetPoint) > m_tolerance)
         {
             newPacket.InputMove = m_agent.desiredVelocity.normalized;
-            m_agent.velocity = m_charControl.velocity;
+            //m_agent.velocity = m_charControl.velocity;
             Destination = m_agent.destination;
         }
 
+        
         return newPacket;
     }
 
-    public override void SetTarget(Vector3 target, float tolerance = 4f)
+    public override void SetTarget(Vector3 target, float tolerance = 0.5f)
     {
         //Debug.Log("Setting destination to : " + t);
         m_agent.SetDestination(target);
         m_tolerance = tolerance;
         m_targetPoint = target;
+        
     }
     public void SetFollowGameObject(GameObject follow, bool keepFollowing = true)
     {

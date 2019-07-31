@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BasicPhysics : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class BasicPhysics : MonoBehaviour
 
     // References
     private CharacterController m_controller;
+    private NavMeshAgent m_agent;
 
     //Persistent Stats
     public float DecelerationRatio = 1.0f;
@@ -47,6 +49,7 @@ public class BasicPhysics : MonoBehaviour
         m_lastPosition = transform.position;
         m_trueVelocity = new Vector3();
         m_timeCollided = new Dictionary<Direction, float>();
+        m_agent = GetComponent<NavMeshAgent>();
         for (int i = 0; i < 4; i++)
             m_timeCollided[(Direction)i] = 0f;
 
@@ -66,6 +69,10 @@ public class BasicPhysics : MonoBehaviour
         m_trueVelocity = (transform.position - m_lastPosition) / Time.deltaTime;
         m_lastPosition = transform.position;
         IsGrounded = m_controller.isGrounded;
+        if (m_agent != null)
+        {
+            m_agent.velocity = m_controller.velocity;
+        }
     }
 
     private void DecelerateAutomatically(float threshold)
@@ -106,7 +113,6 @@ public class BasicPhysics : MonoBehaviour
         foreach (Force force in m_forces)
         {
             m_velocity += force.MyForce * Time.fixedDeltaTime;
-            Debug.Log("Added force, " + force.MyForce + " now is: " + m_velocity);
             force.Duration -= Time.fixedDeltaTime;
             if (force.MyForce.y != 0f)
                 noYForces = false;

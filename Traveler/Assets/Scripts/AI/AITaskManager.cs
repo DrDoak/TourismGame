@@ -81,9 +81,9 @@ public class AITaskManager : MonoBehaviour {
 		}
 	}
 	public void OnSight(Observable o) {
-        Debug.Log("Calling AIM on sight");
+        //Debug.Log("Calling AIM on sight");
 		if (m_currentTask != null) {
-            Debug.Log("Current task on sight");
+            //Debug.Log("Current task on sight");
 			m_currentTask.OnSight (o);
 			foreach (Transition t in GenericTransitions[m_currentTask.MyTaskType]) {
 				t.OnSight (o);

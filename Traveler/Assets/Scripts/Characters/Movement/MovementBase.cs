@@ -24,6 +24,7 @@ public class InputPacket
     public string equipmentSlotUsed = "None";
     public bool OpenInventory;
     public bool Interact = false;
+   // public bool FacePoint = false;
 }
 
 public class MovementBase : MonoBehaviour
@@ -38,7 +39,6 @@ public class MovementBase : MonoBehaviour
     ControlPlayer m_playerCustomControl;
     ControlAI m_aiCustomControl;
     CharCustomControl m_currentControl;
-    NavMeshAgent m_navMesh;
     InventoryContainer m_eqp;
 
     [SerializeField]
@@ -88,7 +88,6 @@ public class MovementBase : MonoBehaviour
         m_playerCustomControl = GetComponent<ControlPlayer>();
         m_orient = GetComponent<Orientation>();
         m_eqp = GetComponent<InventoryContainer>();
-        m_navMesh = GetComponent<NavMeshAgent>();
         m_trueAverageVelocity = new Vector3();
         lastPos = transform.position;
         if (CanJump)
@@ -145,9 +144,14 @@ public class MovementBase : MonoBehaviour
             LastCalculatedTime = Time.timeSinceLevelLoad;
         }
     }
-    public void SetTargetPoint(Vector3 target, float tolerance = 4f)
+    public void SetTargetPoint(Vector3 target, float tolerance = 0.5f)
     {
         m_currentControl.SetTarget(target, tolerance);
+    }
+    public void FacePoint2D(Vector3 target)
+    {
+        m_currentControl.FacePoint(target);
+        //GetComponent<Orientation>().OrientToPoint2D(target);
     }
     public void SetJumpHeight(float jumpHeight)
     {
@@ -161,12 +165,12 @@ public class MovementBase : MonoBehaviour
         if (IsPlayerControl)
         {
             m_currentControl = m_playerCustomControl;
-            m_navMesh.enabled = false;
+            //m_navMesh.enabled = false;
         }
         else
         {
             m_currentControl = m_aiCustomControl;
-            m_navMesh.enabled = true;
+            //m_navMesh.enabled = true;
         }
     }
     private void playStepSounds()

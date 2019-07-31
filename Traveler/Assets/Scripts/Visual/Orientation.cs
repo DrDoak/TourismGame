@@ -137,6 +137,14 @@ public class Orientation : MonoBehaviour
             testDirection = Direction.RIGHT;
         return testDirection;
     }
+    public bool DirectionToPoint2D(Vector3 point)
+    {
+        return (point.x < transform.position.x);
+    }
+    public void OrientToPoint2D(Vector3 point)
+    {
+        SetDirection(point.x < transform.position.x);
+    }
     public bool FacingPoint(Vector3 point)
     {
         return FacingPoint(point,CurrentDirection);

@@ -149,7 +149,6 @@ public class InventoryContainer : MonoBehaviour
         {
             i.OnEnterInventory(this, null);
         }
-        onItemAdded(i, pos);
         if (items.ContainsKey(pos))
             items.Remove(pos);
         items.Add(pos, new InventoryItemData(i));
@@ -166,10 +165,8 @@ public class InventoryContainer : MonoBehaviour
         } else {
             items[v].exitFunc(this, null);
         }
-            
-        onItemRemoved(items[v], v);
+
         items.Remove(v);
-        Debug.Log("Adding free slot: " + v);
         m_freeSlots.Add(v);
         m_freeSlots.Sort((a, b) => (a.x + a.y*10).CompareTo(b.x + b.y*10));
 
@@ -210,13 +207,6 @@ public class InventoryContainer : MonoBehaviour
     public virtual bool canAcceptItem(Item i)
     {
         return true;
-    }
-
-    public virtual void onItemAdded(Item i, Vector2 pos)
-    {
-    }
-    public virtual void onItemRemoved(InventoryItemData i, Vector2 pos)
-    {
     }
 
     public virtual void EquipmentUseUpdatePlayer(string slot, Vector2 input)

@@ -35,7 +35,7 @@ public class InteractionTrigger : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.color = new Color(0, 0, 1, .2f);
+        Gizmos.color = new Color(0, 0, 1, .05f);
         Gizmos.DrawCube(transform.position, transform.lossyScale);
     }
 }
