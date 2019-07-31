@@ -80,7 +80,6 @@ public class TKAggressiveAttack : Task {
 		float dir = (MasterAI.GetComponent<Orientation> ().FacingLeft) ? -1f : 1f;
 		if (Time.timeSinceLevelLoad > m_nextDetermination) {
 			if (Random.value < (aggression * 0.1f)) {
-                Debug.Log("Aggression triggerred");
 				foreach (ActionInfo ainfo in m_charBase.GetValidActions(otherPos)) {
 					float p = Random.value;
 					if (p < ainfo.m_AIInfo.Frequency) {

@@ -43,7 +43,6 @@ public class TRSeeFaction : Transition
 
     public override void OnSave(Goal g)
     {
-        Debug.Log(g);
         g.SetVariable("IfSeenInZone", IfSeenInZone, this);
         g.SetVariable("InvertInZoneCondition", InvertInZoneCondition ? "TRUE" : "FALSE", this);
         g.SetVariable("TriggeringFaction", ((int)TriggeringFaction).ToString(), this);
