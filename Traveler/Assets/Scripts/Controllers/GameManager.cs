@@ -110,7 +110,6 @@ public class GameManager : MonoBehaviour
     private void onRoomLoad(Scene scene, LoadSceneMode mode)
     {
         ResetPlayerSearch();
-        Debug.Log("On room load");
         TimeNoPlayer = 10f;
         aggressiveSearchEnd = Time.timeSinceLevelLoad + AGGRESSIVE_SEARCH_TIME;
 

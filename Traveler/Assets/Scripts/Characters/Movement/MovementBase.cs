@@ -24,6 +24,7 @@ public class InputPacket
     public string equipmentSlotUsed = "None";
     public bool OpenInventory;
     public bool Interact = false;
+    public bool Sprint = false;
    // public bool FacePoint = false;
 }
 
@@ -34,12 +35,12 @@ public class MovementBase : MonoBehaviour
     public int MidAirJumps = 0;
 
     private BasicPhysics m_physics;
-    private const float MIN_JUMP_INTERVAL = 0.2f;
-    private const float SMOOTH_TIME = .1f;
-    ControlPlayer m_playerCustomControl;
-    ControlAI m_aiCustomControl;
-    CharCustomControl m_currentControl;
-    InventoryContainer m_eqp;
+
+    private ControlPlayer m_playerCustomControl;
+    private ControlAI m_aiCustomControl;
+    private CharCustomControl m_currentControl;
+    private InventoryContainer m_eqp;
+    private Orientation m_orient;
 
     [SerializeField]
     private float m_moveSpeed = 8.0f;
@@ -49,29 +50,32 @@ public class MovementBase : MonoBehaviour
     [SerializeField]
     private bool VariableJumpHeight = false;
     public float JumpHeight { get { return m_jumpHeight; } private set { m_jumpHeight = value; } }
+    [SerializeField]
+    private float m_sprintRatio = 1.5f;
+    //public float SprintRatio { get { return m_sprintRatio; } private set { m_sprintRatio = value; } }
+    [SerializeField]
+    private bool m_currentlySprinting = false;
+    public bool IsSprinting { get { return m_currentlySprinting; } private set { m_currentlySprinting = value; } }
 
-    private int m_currentAirJumps = 0;
-    public int CurrentAirJumps { get { return m_currentAirJumps; } private set { m_currentAirJumps = value; } }
+    public Vector3 InputMove { get { return m_inputMove; } private set { m_inputMove = value; } }
+    public bool DecelerateInAir = true;
 
     // Movement tracking
     protected bool m_jumpHold;
     protected bool m_jumpDown;
-    public Vector3 m_inputMove;
-    public Vector3 InputMove { get { return m_inputMove; } private set { m_inputMove = value; } }
-    public bool DecelerateInAir = true;
+    protected Vector3 m_inputMove;
     private Vector3 m_jumpVector;
     private float m_jumpVelocity;
     private Vector3 m_velocity;
+    private int m_currentAirJumps;
 
     private float m_lastJump = 0.0f;
-    public FootstepInfo m_FootStepInfo;
     private bool m_variableJumpApplied = false;
-    float m_sinceStep = 0f;
+    private float m_sinceStep = 0f;
     private float m_accelerationTimeX = .1f;
     private float m_accelerationTimeZ = .1f;
-    private Orientation m_orient;
 
-    private const float VEL_CALC_INTERVAL = 0.1f;
+
     private float LastCalculatedTime = 0;
     private Vector3 lastPos;
     private Vector3 m_trueAverageVelocity;
@@ -79,6 +83,10 @@ public class MovementBase : MonoBehaviour
 
     private Vector3 m_lastInput;
     private InputPacket m_extraInputs;
+
+    private const float VEL_CALC_INTERVAL = 0.1f;
+    private const float MIN_JUMP_INTERVAL = 0.2f;
+    private const float SMOOTH_TIME = .1f;
 
     internal void Awake()
     {
@@ -118,8 +126,8 @@ public class MovementBase : MonoBehaviour
             m_inputMove = new Vector2(0f, 0f);
         }
             
-        if (m_FootStepInfo.PlayFootsteps)
-            playStepSounds();
+        /*if (m_FootStepInfo.PlayFootsteps)
+            playStepSounds(); */
         moveSmoothly();
         currentPlayerControl(ip);
         processExtraMovement();
@@ -173,7 +181,7 @@ public class MovementBase : MonoBehaviour
             //m_navMesh.enabled = true;
         }
     }
-    private void playStepSounds()
+    /*private void playStepSounds()
     {
         if (m_inputMove.x != 0f && m_physics.OnGround())
         {
@@ -181,16 +189,16 @@ public class MovementBase : MonoBehaviour
             if (m_sinceStep > m_FootStepInfo.FootstepInterval)
             {
                 m_sinceStep = 0f;
-                /*FindObjectOfType<AudioManager>().PlayClipAtPos(
+                FindObjectOfType<AudioManager>().PlayClipAtPos(
                     (m_FootStepInfo.FootStepClip == null) ? FXBody.Instance.SFXFootstep : m_FootStepInfo.FootStepClip, transform.position,
-                    m_FootStepInfo.FootStepVolume, m_FootStepInfo.FootStepVolumeVariation, m_FootStepInfo.FootStepPitchVariation);*/
+                    m_FootStepInfo.FootStepVolume, m_FootStepInfo.FootStepVolumeVariation, m_FootStepInfo.FootStepPitchVariation);
             }
-        }
+}
         else
         {
             m_sinceStep = m_FootStepInfo.FootstepInterval;
         }
-    }
+    }*/
 
     private void resetJumps()
     {
@@ -213,7 +221,10 @@ public class MovementBase : MonoBehaviour
                 targetVel.x = Mathf.Sign(m_velocity.x) * MoveSpeed;
             }
         }
-        m_velocity.x = Mathf.SmoothDamp(m_velocity.x, targetVel.x, ref m_accelerationTimeX, SMOOTH_TIME);
+        if (m_currentlySprinting)
+            m_velocity.x = Mathf.SmoothDamp(m_velocity.x, targetVel.x * m_sprintRatio, ref m_accelerationTimeX, SMOOTH_TIME);
+        else
+            m_velocity.x = Mathf.SmoothDamp(m_velocity.x, targetVel.x, ref m_accelerationTimeX, SMOOTH_TIME);
         m_velocity.z = Mathf.SmoothDamp(m_velocity.z, targetVel.z, ref m_accelerationTimeZ, SMOOTH_TIME);
         m_physics.InputMove(m_velocity, m_inputMove);
     }
@@ -245,6 +256,7 @@ public class MovementBase : MonoBehaviour
             GetComponent<Interactor>().OnAttemptInteract();
         }
         m_inputMove = ip.InputMove;
+        m_currentlySprinting = ip.Sprint;
     }
 
     private void processExtraMovement()

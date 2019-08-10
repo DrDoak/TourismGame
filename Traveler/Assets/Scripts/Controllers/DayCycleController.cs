@@ -24,6 +24,12 @@ public class TimeOfDay
     {
         return (Hours * 60f) + Minutes;
     }
+    public void AddMinutes(float TotalMin)
+    {
+        TotalMinutes += TotalMin;
+        Hours = Mathf.Floor(TotalMin / 60f);
+        Minutes = TotalMin - (Hours * 60f);
+    }
 }
 public class DayCycleController : MonoBehaviour
 {
@@ -47,12 +53,6 @@ public class DayCycleController : MonoBehaviour
     [HideInInspector]
     public GameObject MoonObject;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -60,10 +60,11 @@ public class DayCycleController : MonoBehaviour
         {
             SunObject = Instantiate(SunPrefab);
         }
-        AdjustedTimeElapsed += Time.deltaTime * Time.timeScale;
+        AdjustedTimeElapsed += Time.deltaTime * timeRatio;
 
-        float TimeMinutes = ((int)(AdjustedTimeElapsed)) % (60 * 24);
-        CurrentTime = new TimeOfDay(TimeMinutes);
+        
+        CurrentTime.AddMinutes(((int)(AdjustedTimeElapsed)) % (60 * 24));
+        float TimeMinutes = CurrentTime.ToMinutes();
         float proportionTime = 0f;
         if (TimeMinutes > (SunriseTime.ToMinutes() - SunriseDuration.ToMinutes()/2) && TimeMinutes < SunriseTime.ToMinutes())
         {
@@ -90,6 +91,7 @@ public class DayCycleController : MonoBehaviour
 
     private void setColor(Color c)
     {
+        //Debug.Log("Setting color to: " + c);
         SunObject.GetComponent<Light>().color = c;
         amCol = c;
     }

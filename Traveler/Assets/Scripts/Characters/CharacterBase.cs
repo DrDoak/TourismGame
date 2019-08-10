@@ -15,8 +15,9 @@ public class CharacterBase : MonoBehaviour
     public string WalkAnimation = "walk";
     public string HurtAnimation = "hit";
     public string AirAnimation = "air";
-    public string JumpAnimation = "air";
+    public string JumpAnimation = "jump";
     public string LandAnimation = "land";
+    public string SprintAnimation = "sprint";
 
     CharacterController m_controller;
 
@@ -92,26 +93,44 @@ public class CharacterBase : MonoBehaviour
         if (!m_controller.isGrounded)
         {
             m_haveMovedOnGround = false;
-            if (GetComponent<MovementBase>().TrueAverageVelocity.y > 0f)
+            if (GetComponent<MovementBase>().TrueAverageVelocity.z > 0.1f)
             {
-                m_anim.Play(new string[] { JumpAnimation, AirAnimation ,IdleAnimation});
+                if (GetComponent<MovementBase>().TrueAverageVelocity.y > 0f) {
+                    m_anim.Play(new string[] { JumpAnimation + "_back", AirAnimation + "_back", JumpAnimation, AirAnimation, IdleAnimation });
+                } else {
+                    m_anim.Play(new string[] { AirAnimation + "_back", AirAnimation, IdleAnimation });
+                }
             }
             else
             {
-                m_anim.Play(new string[] { AirAnimation, IdleAnimation });
+                if (GetComponent<MovementBase>().TrueAverageVelocity.y > 0f)
+                {
+                    m_anim.Play(new string[] { JumpAnimation, AirAnimation, IdleAnimation });
+                }
+                else
+                {
+                    m_anim.Play(new string[] { AirAnimation, IdleAnimation });
+                }
             }
+            
         }
         else
         {
             if (GetComponent<MovementBase>().IsAttemptingMovement() && GetComponent<MovementBase>().TrueAverageVelocity.magnitude > 0.01f)
             {
-                if (GetComponent<MovementBase>().TrueAverageVelocity.z > 0.1f)
+                if (GetComponent<MovementBase>().IsSprinting)
                 {
-                    //m_anim.Play(WalkAnimation + "_back");
-                    m_anim.Play(new string[] { WalkAnimation + "_back", WalkAnimation },false);
+                    m_anim.Play(new string[] { SprintAnimation, WalkAnimation }, false);
                 } else
                 {
-                    m_anim.Play(WalkAnimation);
+                    if (GetComponent<MovementBase>().TrueAverageVelocity.z > 0.1f)
+                    {
+                        //m_anim.Play(WalkAnimation + "_back");
+                        m_anim.Play(new string[] { WalkAnimation + "_back", WalkAnimation }, false);
+                    }  else
+                    {
+                        m_anim.Play(WalkAnimation);
+                    }
                 }
                 m_haveMovedOnGround = true;
             }

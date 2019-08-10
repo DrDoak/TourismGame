@@ -39,6 +39,10 @@ public class CameraController : MonoBehaviour
                 SetCameraTarget();
             }
         }*/
+        if (Target != null)
+        {
+            transform.position = Target.transform.position + Offset;
+        }
     }
     
 
