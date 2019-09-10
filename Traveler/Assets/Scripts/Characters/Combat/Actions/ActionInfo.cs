@@ -32,6 +32,9 @@ public class HitboxInfo {
 	public bool FollowCharacter = true;
 	public float FreezeTime = 0.0f;
 	public float Delay = 0.0f;
+
+    [HideInInspector]
+    public Equipment SourceEqp = null;
 }
 
 [System.Serializable]
@@ -59,6 +62,15 @@ public class SentimentAttack {
 	public bool TransferSentiment = false;
 }
 
+[System.Serializable]
+public class ActionIcons
+{
+    public Vector2 IconOffset = new Vector2(0f, 2f);
+    public Sprite PreUseAnimation;
+    public Sprite PostUseAnimation;
+}
+
+
 /*[System.Serializable]
 public class AttackFXList {
 	public List<AttackFXInfo> OnStartUp = new List<AttackFXInfo>();
@@ -85,10 +97,14 @@ public class ActionInfo : MonoBehaviour
 	public AIInfo m_AIInfo;
 	public SoundInfo m_SoundInfo;
 	public SentimentAttack m_SentimentInfo;
+    public ActionIcons m_actionIcons;
+    private GameObject m_CurrentIcon;
 
-	//public AttackFXList m_attackFXList;
+    [HideInInspector]
+    public Equipment SourceEqp = null;
+    //public AttackFXList m_attackFXList;
 
-	protected CharacterBase m_charBase;
+    protected CharacterBase m_charBase;
 	protected HitboxMaker m_hitboxMaker;
 
 	//private Dictionary<AttackFXInfo,float> m_queuedFX;
@@ -176,6 +192,13 @@ public class ActionInfo : MonoBehaviour
 			m_AIInfo.AIPredictionHitbox = m_HitboxInfo[0].HitboxScale;
 			m_AIInfo.AIPredictionOffset = m_HitboxInfo[0].HitboxOffset;
 		}
+        if (m_actionIcons.PreUseAnimation != null)
+        {
+            Debug.Log("Creating a pre use animation");
+            m_CurrentIcon = Instantiate(ListUI.Instance.ItemIcon, transform);
+            m_CurrentIcon.transform.localPosition = m_actionIcons.IconOffset;
+            m_CurrentIcon.GetComponent<SpriteRenderer>().sprite = m_actionIcons.PreUseAnimation;
+        }
         /*if (m_SoundInfo.StartupSoundFX != null)
 			FindObjectOfType<AudioManager> ().PlayClipAtPos (m_SoundInfo.StartupSoundFX,transform.position,0.5f,0f,0.25f);
 
@@ -192,6 +215,11 @@ public class ActionInfo : MonoBehaviour
 		if (m_HitboxInfo.Count > 0) {
 			createHitboxes ();
 		}
+        if (m_actionIcons.PostUseAnimation != null && m_CurrentIcon != null)
+        {
+            Debug.Log("Creating a post use Animation");
+            m_CurrentIcon.GetComponent<SpriteRenderer>().sprite = m_actionIcons.PostUseAnimation;
+        }
         /*if (m_SoundInfo.AttackSoundFX != null)
 			FindObjectOfType<AudioManager> ().PlayClipAtPos (m_SoundInfo.AttackSoundFX,transform.position,0.5f,0f,0.25f);
             
@@ -212,7 +240,14 @@ public class ActionInfo : MonoBehaviour
 		}*/
 	} 
 
-	protected virtual void OnConclude() {}
+	protected virtual void OnConclude() {
+        if ( m_CurrentIcon != null)
+        {
+            Debug.Log("destroy Animation");
+            Destroy(m_CurrentIcon);
+        }
+        SourceEqp.OnConclude();
+    }
 
 	protected virtual void StartUpTick() { } 
 	protected virtual void AttackTick() { } 
@@ -222,6 +257,7 @@ public class ActionInfo : MonoBehaviour
 	protected void createHitboxes()
 	{
 		foreach (HitboxInfo hi in m_HitboxInfo) {
+            hi.SourceEqp = SourceEqp;
 			if (hi.Delay <= 0f)
 				m_hitboxMaker.CreateHitbox (hi);
 			else
@@ -230,7 +266,7 @@ public class ActionInfo : MonoBehaviour
 	}
 
 	void OnDrawGizmos() {
-		if (m_AIInfo.DrawPredictionHitbox) {
+		if (m_AIInfo != null && m_AIInfo.DrawPredictionHitbox) {
 			Gizmos.color = new Color (0, 0, 1, .25f);
 			if (m_AIInfo.UniqueAIPrediction && m_hitboxMaker != null && m_hitboxMaker.GetComponent<Orientation>() != null) {
 				Vector3 off = m_hitboxMaker.GetComponent<Orientation> ().OrientVectorToDirection2D (m_AIInfo.AIPredictionOffset);

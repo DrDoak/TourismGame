@@ -134,6 +134,9 @@ MonoBehaviour:
   TerminalVelocity: -1
   GravityForce: -1
   Floating: 0
+  DrawParticles: 0
+  DefaultParticle: {fileID: 0}
+  DefaultNumParticles: 5
   m_trueVelocity: {x: 0, y: 0, z: 0}
   IsGrounded: 0
 --- !u!114 &6742281933180776549
@@ -165,6 +168,7 @@ MonoBehaviour:
     FollowCharacter: 0
     FreezeTime: 0
     Delay: 0
+    SourceEqp: {fileID: 0}
   m_AttackAnimInfo:
     AnimSpeed: 1
     StartUpTime: 0.5
@@ -187,6 +191,11 @@ MonoBehaviour:
     ConsumedSentiment: 0
     DrainOnWhiff: 1
     TransferSentiment: 0
+  m_actionIcons:
+    IconOffset: {x: 0, y: 2.5}
+    PreUseAnimation: {fileID: 21300042, guid: 11eca8e57c0150740a42d8a4fa0512c5, type: 3}
+    PostUseAnimation: {fileID: 21300028, guid: 11eca8e57c0150740a42d8a4fa0512c5, type: 3}
+  SourceEqp: {fileID: 0}
 --- !u!114 &-4023153718459905314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,6 +247,8 @@ MonoBehaviour:
   prefabName: 
   EquipmentPiecePrefab: {fileID: 2842298981686436731, guid: 04ef7a023f9b8384987939ae639f8daa,
     type: 3}
+  MaxUses: 3
+  EqpDegradationType: 0
   PrimaryAction: {fileID: 6742281933180776549}
   SecondaryAction: {fileID: 0}
 --- !u!114 &8095627233711443176

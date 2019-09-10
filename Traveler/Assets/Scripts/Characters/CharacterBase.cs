@@ -381,6 +381,15 @@ public class CharacterBase : MonoBehaviour
         {
             guiManager.AddUIBar(uib);
         }
+        if (GetComponent<InventoryContainer>() != null)
+        {
+            Debug.Log("Adding a inventory container preview");
+            foreach( Vector2 v in GetComponent<InventoryContainer>().eqpSlotInfo.Keys)
+            {
+                Debug.Log("Adding container vector: " + v);
+                guiManager.AddEquipmentPreviewIcon(GetComponent<InventoryContainer>(), v);
+            }
+        }
     }
     public int GetNumUIBars()
     {

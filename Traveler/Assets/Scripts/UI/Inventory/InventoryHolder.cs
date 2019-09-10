@@ -70,6 +70,7 @@ public class InventoryHolder : Interactable
             if (v != badV)
             {
                 m_container.AddItem(i, v);
+                i.SetSlotData(m_container, v);
                 return true;
             }
         }

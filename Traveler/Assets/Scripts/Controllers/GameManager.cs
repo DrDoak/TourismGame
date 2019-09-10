@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class GameManager : MonoBehaviour
 {
@@ -50,7 +51,9 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
         Reset();
-
+        GraphicsSettings.transparencySortMode = TransparencySortMode.CustomAxis;
+        GraphicsSettings.transparencySortAxis = new Vector3(1f, 0f, 0f);// new Vector3(0f, 0.4f, 0.9f);// new Vector3(0.9f,0.0f, 0.1f);
+        Debug.Log(GraphicsSettings.transparencySortAxis);
     }
     // Start is called before the first frame update
     void Start() {}
@@ -74,8 +77,10 @@ public class GameManager : MonoBehaviour
         {
             if (numUIBars != CurrentPlayer.GetComponent<CharacterBase>().GetNumUIBars())
             {
+                Debug.Log("NumUIBars:" + numUIBars + " numBars: " + CurrentPlayer.GetComponent<CharacterBase>().GetNumUIBars());
                 FindObjectOfType<GUIManager>().ClearAllUIBars();
                 CurrentPlayer.GetComponent<CharacterBase>().DrawAllUIBars(FindObjectOfType<GUIManager>());
+                numUIBars = CurrentPlayer.GetComponent<CharacterBase>().GetNumUIBars();
             }
         }
 
@@ -144,3 +149,6 @@ public class GameManager : MonoBehaviour
         SetPlayer(null);
     }
 }
+/*
+Mahogany
+    */

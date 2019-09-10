@@ -7,29 +7,27 @@ public class EqpDebug : Equipment
     public ActionInfo PrimaryAction;
     public ActionInfo SecondaryAction;
 
-    private int timesUsed = 0;
-
     public override void OnPrimaryUse(Vector2 input,GameObject user) {
         if (PrimaryAction != null)
         {
+            PrimaryAction.SourceEqp = this;
+            OverrideCurrentEquipSprite(user);
             user.GetComponent<CharacterBase>().TryAction(PrimaryAction);
-            timesUsed++;
+
         }
     }
     public override void OnSecondaryUse(Vector2 input, GameObject user)
     {
         if (SecondaryAction != null)
+        {
+            OverrideCurrentEquipSprite(user);
             user.GetComponent<CharacterBase>().TryAction(SecondaryAction);
+        } 
         else
+        {
             OnPrimaryUse(input, user);
-    }
-    public override void onItemSave(CharData d)
-    {
-        d.SetInt("TimesUsed", timesUsed);
+        }
+            
     }
 
-    public override void onItemLoad(CharData d)
-    {
-        timesUsed = d.GetInt("TimesUsed");
-    }
 }

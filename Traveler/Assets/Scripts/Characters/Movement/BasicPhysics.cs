@@ -16,7 +16,18 @@ public class BasicPhysics : MonoBehaviour
     public float TerminalVelocity = -1f;
     public float GravityForce = -1.0f;
     public bool Floating = false;
-    
+
+    // Particles
+    public bool DrawParticles = true;
+    public GameObject DefaultParticle;
+    public int DefaultNumParticles = 5;
+    private int NumParticles = 0;
+    private float MAX_PARTICLE_INTERVAL = 5f;
+    private Vector3 last_part_position;
+    private float MIN_PARTICLE_DISTANCE = 0.5f;
+    private float m_lastMovement = 0f;
+    private Dictionary<GameObject, GameObject> m_particleSystems;
+    private bool m_shouldDrawParticle = false;
 
     // Tracking movement
     private Vector3 m_accumulatedVelocity = Vector3.zero;
@@ -52,7 +63,12 @@ public class BasicPhysics : MonoBehaviour
         m_agent = GetComponent<NavMeshAgent>();
         for (int i = 0; i < 4; i++)
             m_timeCollided[(Direction)i] = 0f;
-
+        m_particleSystems = new Dictionary<GameObject, GameObject>();
+        if (DrawParticles && DefaultParticle != null)
+        {
+            m_particleSystems[gameObject] = Instantiate(DefaultParticle, transform);
+        }
+        last_part_position = transform.position;
         if (GetComponent<PersistentItem>() != null)
             GetComponent<PersistentItem>().InitializeSaveLoadFuncs(storeData, loadData);
     }
@@ -73,6 +89,7 @@ public class BasicPhysics : MonoBehaviour
         {
             m_agent.velocity = m_controller.velocity;
         }
+        particleProcess();
     }
 
     private void DecelerateAutomatically(float threshold)
@@ -215,6 +232,64 @@ public class BasicPhysics : MonoBehaviour
             m_oldFloatingTime -= Time.fixedDeltaTime;
             if (m_oldFloatingTime <= 0f)
                 ContinueFromFreeze();
+        }
+    }
+
+    private void particleProcess()
+    {
+        if (DrawParticles && m_trueVelocity.magnitude > 0.1f && IsGrounded)
+        {
+            if (Vector3.Distance(last_part_position, transform.position) > MIN_PARTICLE_DISTANCE ||
+                Time.timeSinceLevelLoad - m_lastMovement > MAX_PARTICLE_INTERVAL)
+            {
+                m_lastMovement = Time.timeSinceLevelLoad;
+                last_part_position = transform.position;
+                if (NumParticles <= 0)
+                {
+                    EmitParticle(gameObject, DefaultNumParticles);
+                }
+                m_shouldDrawParticle = true;
+            } else
+            {
+                m_shouldDrawParticle = false;
+            }
+        }
+    }
+    public bool ShouldDrawParticle()
+    {
+        return m_shouldDrawParticle;
+    }
+    public void EmitParticle(GameObject origin, int numParticles)
+    {
+        if (m_particleSystems.ContainsKey(origin))
+        {
+            m_particleSystems[origin].GetComponent<ParticleSystem>().Emit(numParticles);
+        }
+    }
+    public void AddParticleSystem(GameObject origin, GameObject prefab)
+    {
+        if (!DrawParticles)
+            return;
+        if (NumParticles == 0)
+        {
+            GameObject defaultPart = m_particleSystems[gameObject];
+            m_particleSystems.Remove(gameObject);
+            Destroy(defaultPart);
+        }
+        m_particleSystems[origin] = Instantiate(prefab, transform);
+        NumParticles++;
+    }
+    public void RemoveParticleSystem(GameObject origin)
+    {
+        if (!DrawParticles)
+            return;
+        GameObject part = m_particleSystems[origin];
+        m_particleSystems.Remove(origin);
+        Destroy(part);
+        NumParticles--;
+        if (NumParticles <= 0 && DefaultParticle != null)
+        {
+            m_particleSystems[gameObject] = Instantiate(DefaultParticle, transform);
         }
     }
     /*

@@ -19,6 +19,7 @@ public class HitInfo  {
 
 	public ActionInfo Attack;
 	public GameObject Creator;
+    public Equipment SourceEqp;
 	public GameObject target;
 	public float LastTimeHit;
 
@@ -98,7 +99,8 @@ public class Hitbox : MonoBehaviour {
 	[SerializeField]
 	private List<Collider> m_upRightDownLeftColliders;
 
-	private CharacterBase m_charBase;
+    //private CharacterBase m_charBase;
+    public Equipment SourceEqp;
 	private Vector4 m_knockbackRanges;
 	public List<Attackable> m_collidedObjs = new List<Attackable> ();
 	public List<Attackable> m_overlappingControl = new List<Attackable> (); 
@@ -107,9 +109,43 @@ public class Hitbox : MonoBehaviour {
 	private bool m_hitboxActive = true;
     private BoxCollider m_box;
 
+    public void  InitFromHitboxInfo(HitboxInfo hbi, Orientation orient,FactionType f = FactionType.NEUTRAL)
+    {
+        Vector3 cOff = (orient == null) ? hbi.HitboxOffset : orient.OrientVectorToDirection2D(hbi.HitboxOffset);
+        //Debug.Log("Initial offset is: " + cOff);
+        Vector3 newPos = transform.position + (Vector3)cOff;
+        //Debug.Log("Instantiated at: " + newPos);
+        transform.localPosition = newPos;
+        if (hbi.FollowCharacter)
+        {
+            transform.SetParent(gameObject.transform);
+            transform.localScale = new Vector3(hbi.HitboxScale.x / transform.localScale.x, hbi.HitboxScale.y / transform.localScale.y, hbi.HitboxScale.z / transform.localScale.z);
+        }
+        else
+        {
+            SetScale((orient == null) ? hbi.HitboxScale : orient.OrientVectorToDirection2D(hbi.HitboxScale, false));
+        }
+        Damage = hbi.Damage;
+        SourceEqp = hbi.SourceEqp;
+
+        FocusDamage = hbi.FocusDamage;
+        Penetration = hbi.Penetration;
+        Duration = hbi.HitboxDuration;
+        Knockback = (orient == null) ? hbi.Knockback : orient.OrientVectorToDirection2D(hbi.Knockback);
+        IsFixedKnockback = hbi.FixedKnockback;
+        Stun = hbi.Stun;
+        FreezeTime = hbi.FreezeTime;
+        AddElement(hbi.Element);
+        Creator = gameObject;
+        Faction = Faction;
+        IsResetKnockback = hbi.ResetKnockback;
+        if (hbi.FollowCharacter)
+            SetFollow(gameObject, hbi.HitboxOffset);
+        Init();
+    }
 	virtual public void Init()
 	{
-        m_charBase = Creator.GetComponent<CharacterBase>();
+        //m_charBase = Creator.GetComponent<CharacterBase>();
         m_box = GetComponent<BoxCollider>();
 
         if (m_focusDamage == -1f)
@@ -133,9 +169,9 @@ public class Hitbox : MonoBehaviour {
 		//Debug.Log ("Hitbox created");
 		if (m_followObj != null)
 			FollowObj();
-		if (m_charBase != null) {
+		//if (m_charBase != null) {
 			//SwitchActiveCollider (m_charBase.FacingLeft);
-		}
+		//}
 		if (m_hasDuration)
 			MaintainOrDestroyHitbox();
 	}
@@ -207,7 +243,10 @@ public class Hitbox : MonoBehaviour {
 		if (Creator != null) {
 			Creator.GetComponent<HitboxMaker> ().RegisterHit (atkObj.gameObject, newHI, r);
 		}
-		CreateHitFX ( atkObj.gameObject, Knockback, r);
+        if (SourceEqp != null)
+            SourceEqp.OnRegisterHit(atkObj.gameObject, newHI, r);
+
+        CreateHitFX ( atkObj.gameObject, Knockback, r);
 		return r;
 	}
 

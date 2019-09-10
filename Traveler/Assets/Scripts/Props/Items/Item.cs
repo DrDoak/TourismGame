@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +20,8 @@ public class Item : Interactable
 
     [HideInInspector]
     public InventorySlot CurrentSlot;
+    protected InventoryContainer m_currentContainer;
+    protected Vector2 m_slotPosition;
 
     [HideInInspector]
     public string prefabName;
@@ -44,6 +46,18 @@ public class Item : Interactable
         return (s.SlotType == InventorySlotType.NORMAL);
     }
 
+    public void DestroyItem()
+    {
+        Debug.Log(m_currentContainer);
+        Debug.Log(m_slotPosition);
+        m_currentContainer.ClearItem(m_slotPosition);
+    }
+    public void SetSlotData(InventoryContainer container, Vector2 slotPos)
+    {
+        Debug.Log("Setting slot to: " + container);
+        m_currentContainer = container;
+        m_slotPosition = slotPos;
+    }
     protected override void onTrigger(GameObject interactor) {
         if (interactor.GetComponent<InventoryHolder>())
         {

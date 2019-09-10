@@ -41,7 +41,7 @@ public class PropertyProxy : PropertyHolder {
 		PropHolder.AddProperty (originalP);
 	}
 
-	public override void AddProperty(string pName) {
+	public override void AddProperty(string pName,bool timed = false, float duration = 5.0f) {
 		PropHolder.AddProperty (pName);
 	}
 

@@ -14,7 +14,14 @@ public class Property : MonoBehaviour, ICustomMessageTarget
 
 	public virtual void OnAttack() { }
     public virtual void OnDeath() { }
-    public virtual void OnUpdate() { }
+    public virtual void OnUpdate() {
+        if (Timed)
+        {
+            Duration -= Time.deltaTime;
+            if (Duration < 0f)
+                RemoveSelf();
+        }
+    }
     //public virtual void OnCollision() { }
 
 	public virtual void OnAttack(ActionInfo ai) { }
@@ -26,14 +33,21 @@ public class Property : MonoBehaviour, ICustomMessageTarget
 
 	public virtual void OnJump() {}
 
-	public virtual void OnSave(CharData d) {}
-	public virtual void OnLoad(CharData d) {}
+	public virtual void OnSave(CharData d) {
+        d.PersistentBools[PropertyName + "_timed"] = Timed;
+        d.PersistentFloats[PropertyName + "_duration"] = Duration;
+    }
+	public virtual void OnLoad(CharData d) {
+        Timed = d.PersistentBools[PropertyName + "_timed"];
+        Duration = d.PersistentFloats[PropertyName + "_duration"];
+    }
 
 	public bool Stealable = true;
 	public bool Viewable = true;
 	public bool Stackable = false;
 	public bool InstantUse = false;
-
+    public bool Timed = false;
+    public float Duration = 0.0f;
 	public string PropertyName = "";
 	public virtual string DefaultPropertyName {get {return "None";}}
 
@@ -61,4 +75,9 @@ public class Property : MonoBehaviour, ICustomMessageTarget
 			Description = p.Description;
 		icon = p.icon;;
 	}
+
+    protected void RemoveSelf()
+    {
+        GetComponent<PropertyHolder>().RequestRemoveProperty(PropertyName);
+    }
 }

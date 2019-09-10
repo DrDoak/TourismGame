@@ -139,6 +139,12 @@ public class InventoryContainer : MonoBehaviour
     {
 
     }
+    public InventoryItemData GetItem(Vector2 pos)
+    {
+        if (items.ContainsKey(pos))
+            return items[pos];
+        return null;
+    }
     public void AddItem(Item i , Vector2 pos)
     {
         //Debug.Log("Adding item: " + i + " to inventory: " + pos + " for:" + gameObject);

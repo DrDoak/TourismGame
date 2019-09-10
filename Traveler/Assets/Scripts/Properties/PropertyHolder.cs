@@ -76,12 +76,17 @@ public class PropertyHolder : MonoBehaviour {
 		p.OnAddProperty ();
 	}
 
-	public virtual void AddProperty(string pName) {
+	public virtual void AddProperty(string pName, bool timed = false, float duration = 5.0f) {
 		if (Type.GetType (pName) == null)
 			return;
 		//Property p = (Property)(System.Activator.CreateInstance (Type.GetType (pName)));
 		Type t = Type.GetType (pName);
 		Property p = (Property)gameObject.AddComponent (t);
+        if (timed)
+        {
+            p.Timed = true;
+            p.Duration = duration;
+        }
 		m_properties.Add (p);
 		p.OnAddProperty ();
 	}

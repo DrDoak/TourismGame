@@ -875,6 +875,8 @@ MonoBehaviour:
   TerminalVelocity: -1
   GravityForce: -0.5
   Floating: 0
+  DrawParticles: 1
+  DefaultParticle: {fileID: 0}
   m_trueVelocity: {x: 0, y: 0, z: 0}
   IsGrounded: 0
 --- !u!143 &1699882385
@@ -1554,7 +1556,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -8339542071881811976, guid: 9b02cf462ea2d0d4082a1cdc20e88342,
+  m_Sprite: {fileID: 2435871278607636218, guid: 9b02cf462ea2d0d4082a1cdc20e88342,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

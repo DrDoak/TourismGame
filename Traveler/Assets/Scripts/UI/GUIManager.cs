@@ -26,6 +26,8 @@ public class GUIManager : MonoBehaviour
     private List<UIActionText> m_actionTextList;
     Dictionary<string, GameObject> m_iconList;
 
+    private List<GameObject> EquipmentPreviews = new List<GameObject>();
+
     void Awake()
     {
         Instance = this;
@@ -67,6 +69,22 @@ public class GUIManager : MonoBehaviour
         }
         m_actionTextList = newL;
     }
+    public void AddEquipmentPreviewIcon(InventoryContainer c, Vector2 position)
+    {
+        GameObject newPreview = Instantiate(ListUI.Instance.EquipmentPreview, transform);
+        newPreview.GetComponent<RectTransform>().anchoredPosition = new Vector2(64f + (48f * EquipmentPreviews.Count),-64f);
+        newPreview.GetComponent<EquipmentPreview>().TargetContainer = c;
+        newPreview.GetComponent<EquipmentPreview>().SlotCoordinate = position;
+        EquipmentPreviews.Add(newPreview);
+    }
+    public void ClearEquipmentPreviewIcon()
+    {
+        foreach (GameObject g in EquipmentPreviews)
+        {
+            Destroy(g);
+        }
+        EquipmentPreviews.Clear();
+    }
 
     public void AddUIBar(UIBarInfo uib)
     {
@@ -94,7 +112,6 @@ public class GUIManager : MonoBehaviour
             }
         }
     }
-
     public void ClearAllUIBars()
     {
         int i = 0;
